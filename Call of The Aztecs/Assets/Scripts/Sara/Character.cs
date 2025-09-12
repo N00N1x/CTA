@@ -2,13 +2,12 @@ using UnityEngine;
 
 public class Character : MonoBehaviour
 {
-    void Start()
+   void Start()
     {
-     
+
     }
 
     void Update()
     {
-     
     }
 }

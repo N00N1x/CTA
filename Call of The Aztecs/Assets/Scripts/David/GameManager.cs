@@ -22,7 +22,20 @@ using UnityEngine.SceneManagement;
         {
             SceneManager.LoadScene(menuSceneName);
         }
+
+    public void StartGame(string Menu)
+    {
+
+        SceneManager.LoadScene(Menu);
+
+        
+
+
     }
+
+
+    }
+
 
 
 

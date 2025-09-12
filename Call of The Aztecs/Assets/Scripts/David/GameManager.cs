@@ -23,15 +23,13 @@ using UnityEngine.SceneManagement;
             SceneManager.LoadScene(menuSceneName);
         }
 
-    public void StartGame(string Menu)
+    public void StartGame(string Menu) // There was a imposter here >:(
     {
 
         SceneManager.LoadScene(Menu);
 
-        
-
-
     }
+
 
 
     }

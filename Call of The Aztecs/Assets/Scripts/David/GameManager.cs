@@ -1,27 +1,29 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 
-    public class GameManager : MonoBehaviour
+public class GameManager : MonoBehaviour
+{
+
+    public void RestartGame()
     {
-     
-        public void RestartGame()
-        {
-            Scene currentScene = SceneManager.GetActiveScene();
-            SceneManager.LoadScene(currentScene.name);
+        Scene currentScene = SceneManager.GetActiveScene();
+        SceneManager.LoadScene(currentScene.name);
 
-        }
+    }
 
-    
-        public void QuitGame()
-        {
-            Application.Quit();
-        }
 
-      
-        public void LoadMenu(string menuSceneName)
-        {
-            SceneManager.LoadScene(menuSceneName);
-        }
+    public void QuitGame()
+    {
+        Application.Quit();
+    }
+
+
+    public void LoadMenu(string menuSceneName)
+    {
+        SceneManager.LoadScene(menuSceneName);
+
+    }
 
     public void StartGame(string Menu) // There was a imposter here >:(
     {
@@ -30,6 +32,19 @@ using UnityEngine.SceneManagement;
 
 
     }
+    public void OnpointerEnter(PointerEventData eventData)
+    {
+
+
+
+    }
+    public void OnPointerExit(PointerEventData eventData)
+    {
+
+
+
+    }
+
 
 
 

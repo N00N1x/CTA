@@ -10,7 +10,7 @@ public class Pressureplate : MonoBehaviour
     private bool isTrapActivated = false;
 
     private void OnTriggerEnter(Collider other)
-    {
+    { 
         if (isTrapActivated)
         {
             Debug.Log("Trap already activated, ignoring trigger.");

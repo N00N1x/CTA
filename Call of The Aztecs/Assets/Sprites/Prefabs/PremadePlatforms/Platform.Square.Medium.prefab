@@ -2470,6 +2470,7 @@ GameObject:
   - component: {fileID: 4154328642620466669}
   - component: {fileID: 103748173166861301}
   - component: {fileID: 8001847448547763482}
+  - component: {fileID: 8216128802362344741}
   m_Layer: 0
   m_Name: Ledge4 (1)
   m_TagString: Untagged
@@ -2554,6 +2555,27 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &8216128802362344741
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1836038717128888277}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 2.0675626, y: 2.0675645, z: 2.0675619}
+  m_Center: {x: 0.00000023841858, y: 1.0370402, z: -2.067563}
 --- !u!1 &1853821649392920575
 GameObject:
   m_ObjectHideFlags: 0
@@ -5964,6 +5986,7 @@ GameObject:
   - component: {fileID: 5679831064940859216}
   - component: {fileID: 8931747302214874250}
   - component: {fileID: 908230182671682950}
+  - component: {fileID: 5636048521788504859}
   m_Layer: 0
   m_Name: Ledge4
   m_TagString: Untagged
@@ -6048,6 +6071,27 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &5636048521788504859
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3665785360944153896}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 2.0675626, y: 2.0675645, z: 2.0675619}
+  m_Center: {x: 0.00000023841858, y: 1.0370402, z: -2.067563}
 --- !u!1 &3722433366233660968
 GameObject:
   m_ObjectHideFlags: 0
@@ -6059,6 +6103,7 @@ GameObject:
   - component: {fileID: 9119041754739249071}
   - component: {fileID: 3820628603634744206}
   - component: {fileID: 7349938346993262564}
+  - component: {fileID: 6316997205316037576}
   m_Layer: 0
   m_Name: Ledge4 (2)
   m_TagString: Untagged
@@ -6143,6 +6188,27 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &6316997205316037576
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3722433366233660968}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 2.0675626, y: 2.0675645, z: 2.0675619}
+  m_Center: {x: 0.00000023841858, y: 1.0370402, z: -2.067563}
 --- !u!1 &3883856962051380102
 GameObject:
   m_ObjectHideFlags: 0
@@ -15281,6 +15347,7 @@ GameObject:
   - component: {fileID: 3263261388081330372}
   - component: {fileID: 401696148464229531}
   - component: {fileID: 3027154625428673355}
+  - component: {fileID: 8276463651499096411}
   m_Layer: 0
   m_Name: Ledge4 (3)
   m_TagString: Untagged
@@ -15365,3 +15432,24 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &8276463651499096411
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9210968121723566333}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 2.0675626, y: 2.0675645, z: 2.0675619}
+  m_Center: {x: 0.00000023841858, y: 1.0370402, z: -2.067563}

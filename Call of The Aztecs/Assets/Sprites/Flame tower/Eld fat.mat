@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: k,uyvktuvkvtu 1
-  m_Shader: {fileID: -6465566751694194690, guid: 788ced1ed5db47248aa66bef10958130, type: 3}
+  m_Name: Eld fat
+  m_Shader: {fileID: -6465566751694194690, guid: e95f50ccd231b6a429eb1148c0561361, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []

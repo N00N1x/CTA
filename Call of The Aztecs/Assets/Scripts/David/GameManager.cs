@@ -45,11 +45,12 @@ public class GameManager : MonoBehaviour
 
     }
 
-
-
-
+    public void UnlockCursor()
+    {
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
-
+}
 
 
 

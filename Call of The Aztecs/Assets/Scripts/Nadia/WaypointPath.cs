@@ -2,15 +2,20 @@ using UnityEngine;
 
 public class WaypointPath : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public Transform GetWaypoint (int  waypointIndex)
     {
-        
+        return transform.GetChild(waypointIndex);
     }
 
-    // Update is called once per frame
-    void Update()
+    public int GetNextWaypointIndex(int currentWaypointIndex)
     {
-        
+        int nextWaypointIndex = currentWaypointIndex + 1;
+
+        if (nextWaypointIndex == transform.childCount)
+        {
+            nextWaypointIndex = 0;
+        }
+
+        return nextWaypointIndex;
     }
 }

@@ -9,13 +9,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5199351144925756204}
-  - component: {fileID: 5114897418564988472}
   - component: {fileID: 5045152171535065180}
   - component: {fileID: 8566025257486832476}
   - component: {fileID: 1730968733764091960}
-  m_Layer: 7
+  - component: {fileID: 5114897418564988472}
+  m_Layer: 0
   m_Name: Killplane
-  m_TagString: Killplane
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -28,25 +28,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1246934887279235042}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.02749, y: -2.0000002, z: -8.49925}
-  m_LocalScale: {x: 25, y: 1, z: 36}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 65.9, y: 114.3, z: 180}
+  m_LocalScale: {x: 20.282734, y: 20.282734, z: 20.282734}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5114897418564988472
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1246934887279235042}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 379141b9dc1696c4aa2d32d403af85d6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Killplane
 --- !u!33 &5045152171535065180
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -80,7 +68,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 5564ee952b476a04fb3ee5aa29f24172, type: 2}
+  - {fileID: 2100000, guid: 75966bd00332f2a40a81b31dbbec59cd, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -125,3 +113,15 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &5114897418564988472
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1246934887279235042}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 379141b9dc1696c4aa2d32d403af85d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Killplane

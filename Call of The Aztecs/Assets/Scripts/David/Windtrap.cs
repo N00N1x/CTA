@@ -25,8 +25,7 @@ public class Windtrap : MonoBehaviour
     public Color gizmoColor = new Color(0f, 0.5f, 1f, 0.25f);
 
     // runtime
-    private bool isActive = true;
-    private bool isCoolingDown = false;
+    private bool isActive = false;
     private Coroutine cycleCoroutine;
     private readonly HashSet<Collider> trackedColliders = new HashSet<Collider>();
 
@@ -38,12 +37,13 @@ public class Windtrap : MonoBehaviour
             var main = windParticles.main;
             main.loop = false;
             windParticles.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+            windParticles.Clear();
         }
     }
 
     private void Start()
     {
-        if (autoCycle)
+        if (autoCycle && cycleCoroutine == null)
             cycleCoroutine = StartCoroutine(WindCycleRoutine());
     }
 
@@ -118,7 +118,6 @@ public class Windtrap : MonoBehaviour
             cycleCoroutine = null;
         }
         isActive = false;
-        isCoolingDown = false;
         SetVisuals(false);
     }
 
@@ -134,14 +133,12 @@ public class Windtrap : MonoBehaviour
             Debug.Log($"Windtrap: cycle OFF (cooldown) at {Time.time}");
 
             // OFF phase (cooldown)
-            isCoolingDown = true;
             float timer = 0f;
             while (timer < windCooldown)
             {
                 timer += Time.deltaTime;
                 yield return null;
             }
-            isCoolingDown = false;
         }
     }
 
@@ -170,15 +167,19 @@ public class Windtrap : MonoBehaviour
         {
             if (on)
             {
-                if (!windParticles.isPlaying) windParticles.Play();
+                windParticles.Clear();
+                windParticles.Play();
             }
             else
             {
-                windParticles.Stop(false, ParticleSystemStopBehavior.StopEmitting);
+                // stop and clear so it reliably restarts next cycle
+                windParticles.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+                windParticles.Clear();
             }
         }
     }
 
+    // Returns true when world position 'pos' is inside the oriented box defined by the gizmo.
     private bool IsInsideWindArea(Vector3 pos)
     {
         Vector3 forward = windDirection.normalized;

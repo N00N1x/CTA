@@ -1338,13 +1338,13 @@ MonoBehaviour:
   jumpForce: 10
   gravity: -9.81
   fallMultiplier: 2.5
-  lowJumpMultiplier: 8
+  lowJumpMultiplier: 9
   groundMask:
     serializedVersion: 2
     m_Bits: 1152
   groundCheckRadius: 1
   groundCheckOffset: 0.5
-  jumpCooldown: 1
+  jumpCooldown: 0.5
 --- !u!1 &1830203127
 GameObject:
   m_ObjectHideFlags: 0

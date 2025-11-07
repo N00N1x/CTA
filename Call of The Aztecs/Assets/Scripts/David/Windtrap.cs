@@ -1,132 +1,211 @@
-using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
 public class Windtrap : MonoBehaviour
 {
+    [Header("Wind settings")]
     public float windForce = 10f;
     public Vector3 windDirection = Vector3.forward;
-    public Animator windtrapAnimator;
-    public ParticleSystem windParticles;           // Assign particle system in Inspector
-    public float windDuration = 3f;
-    public float windCooldown = 2f;
+    public float windDuration = 3f;      // how long wind is ON
+    public float windCooldown = 2f;      // how long wind is OFF (between blows)
 
-    // Gizmo / area settings
-    public float windAreaLength = 5f;
+    [Header("Auto cycle")]
+    public bool autoCycle = true;        // if true the trap will toggle on/off automatically
+    public float startDelay = 0f;        // delay before first cycle starts
+
+    [Header("Visuals")]
+    public Animator windtrapAnimator;    // Animator parameter 'IsActive' expected
+    public ParticleSystem windParticles; // particle system for wind VFX
+
+    [Header("Gizmo / area (oriented box)")]
+    public float windAreaLength = 5f;    // forward direction length
     public float windAreaWidth = 2f;
     public float windAreaHeight = 2f;
-    public Color gizmoColor = new Color(0f, 0.5f, 1f, 0.3f);
+    public Color gizmoColor = new Color(0f, 0.5f, 1f, 0.25f);
 
-    private Coroutine windCoroutine;
-    private bool isActive = false;
+    // runtime
+    private bool isActive = true;
     private bool isCoolingDown = false;
+    private Coroutine cycleCoroutine;
+    private readonly HashSet<Collider> trackedColliders = new HashSet<Collider>();
 
+    private void Awake()
+    {
+        // ensure particle doesn't play by itself
+        if (windParticles != null)
+        {
+            var main = windParticles.main;
+            main.loop = false;
+            windParticles.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+        }
+    }
+
+    private void Start()
+    {
+        if (autoCycle)
+            cycleCoroutine = StartCoroutine(WindCycleRoutine());
+    }
+
+    private void OnDisable()
+    {
+        StopCycle();
+        SetVisuals(false);
+    }
+
+    private void OnDestroy()
+    {
+        StopCycle();
+    }
+
+    // Optional: add a child trigger collider and tag player with "Player".
     private void OnTriggerEnter(Collider other)
     {
-        if (!other.CompareTag("Player") || isActive || isCoolingDown)
-            return;
-
-        // only start if the player is actually inside the configured wind area (gizmo)
-        if (!IsInsideWindArea(other.transform.position))
-            return;
-
-        // start blowing coroutine (animator/particles will be toggled inside coroutine)
-        isActive = true;
-        windCoroutine = StartCoroutine(BlowPlayer(other));
+        if (other.CompareTag("Player"))
+            trackedColliders.Add(other);
     }
 
     private void OnTriggerExit(Collider other)
     {
-        // nothing special here; coroutine checks area each frame and will stop the blow (and animation/particles) if player leaves
+        if (other.CompareTag("Player"))
+            trackedColliders.Remove(other);
     }
 
-    private IEnumerator BlowPlayer(Collider player)
+    // Apply wind force every physics step while active
+    private void FixedUpdate()
     {
-        // turn on blow animation and particles when we actually start blowing
-        if (windtrapAnimator != null)
-            windtrapAnimator.SetBool("IsActive", true);
+        if (!isActive) return;
 
-        if (windParticles != null)
+        Vector3 dir = windDirection;
+        if (dir.sqrMagnitude < 0.0001f)
+            dir = transform.forward;
+        dir = dir.normalized;
+
+        // iterate over a snapshot to avoid collection-modification issues
+        var snapshot = new Collider[trackedColliders.Count];
+        trackedColliders.CopyTo(snapshot);
+        foreach (var col in snapshot)
         {
-            if (!windParticles.isPlaying)
-                windParticles.Play();
+            if (col == null) continue;
+
+            // ensure the player is within the oriented wind area (matches gizmo)
+            if (!IsInsideWindArea(col.transform.position))
+                continue;
+
+            Rigidbody rb = col.attachedRigidbody ?? col.GetComponent<Rigidbody>();
+            if (rb == null) continue;
+
+            rb.AddForce(dir * windForce * Time.fixedDeltaTime, ForceMode.VelocityChange);
         }
+    }
+
+    // Public control
+    public void StartBlowingOnce()
+    {
+        if (cycleCoroutine != null)
+        {
+            StopCoroutine(cycleCoroutine);
+            cycleCoroutine = null;
+        }
+        StartCoroutine(BlowOnceCoroutine());
+    }
+
+    public void StopCycle()
+    {
+        if (cycleCoroutine != null)
+        {
+            StopCoroutine(cycleCoroutine);
+            cycleCoroutine = null;
+        }
+        isActive = false;
+        isCoolingDown = false;
+        SetVisuals(false);
+    }
+
+    private IEnumerator WindCycleRoutine()
+    {
+        if (startDelay > 0f)
+            yield return new WaitForSeconds(startDelay);
+
+        while (true)
+        {
+            Debug.Log($"Windtrap: cycle ON at {Time.time}");
+            yield return BlowOnceCoroutine();
+            Debug.Log($"Windtrap: cycle OFF (cooldown) at {Time.time}");
+
+            // OFF phase (cooldown)
+            isCoolingDown = true;
+            float timer = 0f;
+            while (timer < windCooldown)
+            {
+                timer += Time.deltaTime;
+                yield return null;
+            }
+            isCoolingDown = false;
+        }
+    }
+
+    private IEnumerator BlowOnceCoroutine()
+    {
+        isActive = true;
+        SetVisuals(true);
 
         float timer = 0f;
-        Rigidbody rb = player.GetComponent<Rigidbody>();
-
         while (timer < windDuration)
         {
-            // stop blowing immediately if player leaves the wind area
-            if (!IsInsideWindArea(player.transform.position))
-                break;
-
-            if (rb != null)
-                rb.AddForce(windDirection.normalized * windForce * Time.deltaTime, ForceMode.VelocityChange);
-
             timer += Time.deltaTime;
             yield return null;
         }
 
-        // stop applying force and immediately stop the animation and particles
+        isActive = false;
+        SetVisuals(false);
+    }
+
+    private void SetVisuals(bool on)
+    {
         if (windtrapAnimator != null)
-            windtrapAnimator.SetBool("IsActive", false);
+            windtrapAnimator.SetBool("IsActive", on);
 
         if (windParticles != null)
         {
-            // stop emitting but let existing particles fade naturally
-            windParticles.Stop(false, ParticleSystemStopBehavior.StopEmitting);
+            if (on)
+            {
+                if (!windParticles.isPlaying) windParticles.Play();
+            }
+            else
+            {
+                windParticles.Stop(false, ParticleSystemStopBehavior.StopEmitting);
+            }
         }
-
-        isActive = false;
-
-        // start cooldown (animation/particles remain off during cooldown)
-        isCoolingDown = true;
-        yield return new WaitForSeconds(windCooldown);
-        isCoolingDown = false;
-
-        windCoroutine = null;
     }
 
-    // Returns true when world position 'pos' is inside the oriented box defined by the gizmo settings.
     private bool IsInsideWindArea(Vector3 pos)
     {
         Vector3 forward = windDirection.normalized;
         if (forward.sqrMagnitude < 0.0001f)
             forward = transform.forward;
 
-        // build orthonormal basis (forward, right, up)
         Vector3 up = Vector3.up;
         Vector3 right = Vector3.Cross(up, forward);
         if (right.sqrMagnitude < 0.0001f)
-        {
-            // forward parallel to up, pick arbitrary right
             right = Vector3.right;
-        }
         right = right.normalized;
         up = Vector3.Cross(forward, right).normalized;
 
-        // center of the box
         Vector3 center = transform.position + forward * (windAreaLength / 2f);
-
         Vector3 d = pos - center;
 
         float halfLength = windAreaLength / 2f;
         float halfWidth = windAreaWidth / 2f;
         float halfHeight = windAreaHeight / 2f;
 
-        float projForward = Mathf.Abs(Vector3.Dot(d, forward));
-        if (projForward > halfLength) return false;
-
-        float projRight = Mathf.Abs(Vector3.Dot(d, right));
-        if (projRight > halfWidth) return false;
-
-        float projUp = Mathf.Abs(Vector3.Dot(d, up));
-        if (projUp > halfHeight) return false;
-
+        if (Mathf.Abs(Vector3.Dot(d, forward)) > halfLength) return false;
+        if (Mathf.Abs(Vector3.Dot(d, right))   > halfWidth)  return false;
+        if (Mathf.Abs(Vector3.Dot(d, up))      > halfHeight) return false;
         return true;
     }
 
-    // Draw wind area gizmo in the editor, rotated to match windDirection
+    // Draw oriented gizmo
     private void OnDrawGizmos()
     {
         Gizmos.color = gizmoColor;
@@ -138,7 +217,6 @@ public class Windtrap : MonoBehaviour
         Vector3 center = transform.position + forward * (windAreaLength / 2f);
         Vector3 size = new Vector3(windAreaWidth, windAreaHeight, windAreaLength);
 
-        // create matrix so cube is oriented along forward
         Quaternion rot = Quaternion.LookRotation(forward, Vector3.up);
         Matrix4x4 old = Gizmos.matrix;
         Gizmos.matrix = Matrix4x4.TRS(center, rot, Vector3.one);

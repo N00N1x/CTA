@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Gem
   - Killplane
+  - Floor
+  - Trap
   layers:
   - Default
   - TransparentFX
@@ -17,8 +19,8 @@ TagManager:
   - Killplane
   - Gem
   - OverlayEffect
-  - 
-  - 
+  - floor
+  - Trap
   - 
   - 
   - 

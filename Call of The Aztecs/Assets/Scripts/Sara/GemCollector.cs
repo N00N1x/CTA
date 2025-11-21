@@ -3,10 +3,12 @@ using UnityEngine;
 
 public class GemCollector : MonoBehaviour
 {
-
+    [Header("Resets Gem count in Canvas to 0")]
     private int Gem = 0;
 
+    [Header("Refrences to Gem: text in Canvas")]
     public TextMeshProUGUI GemsText;
+ 
 
     private void OnTriggerEnter(Collider other)
     {
@@ -18,5 +20,5 @@ public class GemCollector : MonoBehaviour
             Destroy(other.gameObject);
         }
     }
-
+   
 }

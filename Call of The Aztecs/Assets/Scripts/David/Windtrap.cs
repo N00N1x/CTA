@@ -71,7 +71,7 @@ public class Windtrap : MonoBehaviour
             trackedColliders.Remove(other);
     }
 
-    // Apply wind force every physics step while active
+   
     private void FixedUpdate()
     {
         if (!isActive) return;
@@ -81,7 +81,7 @@ public class Windtrap : MonoBehaviour
             dir = transform.forward;
         dir = dir.normalized;
 
-        // iterate over a snapshot to avoid collection-modification issues
+        
         var snapshot = new Collider[trackedColliders.Count];
         trackedColliders.CopyTo(snapshot);
         foreach (var col in snapshot)
@@ -172,14 +172,14 @@ public class Windtrap : MonoBehaviour
             }
             else
             {
-                // stop and clear so it reliably restarts next cycle
+               
                 windParticles.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
                 windParticles.Clear();
             }
         }
     }
 
-    // Returns true when world position 'pos' is inside the oriented box defined by the gizmo.
+   
     private bool IsInsideWindArea(Vector3 pos)
     {
         Vector3 forward = windDirection.normalized;

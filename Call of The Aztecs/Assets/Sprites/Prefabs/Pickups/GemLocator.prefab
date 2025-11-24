@@ -31,8 +31,8 @@ Transform:
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 1258357871821703028}
-  - {fileID: 1108511325101001069}
   - {fileID: 7955666564844657770}
+  - {fileID: 3966334533234070915}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 88.725, y: 223.289, z: -194.864}
 --- !u!135 &-1342042534160294428
@@ -69,7 +69,7 @@ GameObject:
   - component: {fileID: 8611839296751203914}
   - component: {fileID: 2828858691634222872}
   m_Layer: 9
-  m_Name: GoldShine
+  m_Name: Shine
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -83,13 +83,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5084808433194244088}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.36290354, y: -0.63660556, z: -0.22720425, w: 0.64141464}
-  m_LocalPosition: {x: 0.42, y: 0.64, z: -0.46}
-  m_LocalScale: {x: 1.4299998, y: 1.43, z: 1.4299998}
+  m_LocalRotation: {x: 0.32266816, y: -0.6291942, z: -0.6291942, w: 0.32266816}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1.4299998, y: 1.43, z: 1.4299997}
   m_ConstrainProportionsScale: 1
   m_Children: []
-  m_Father: {fileID: 5107456095025016353}
-  m_LocalEulerAnglesHint: {x: -49.01, y: -96.472, z: 15.074}
+  m_Father: {fileID: 3966334533234070915}
+  m_LocalEulerAnglesHint: {x: 215.7, y: 90, z: 90}
 --- !u!33 &1334929176569221500
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -295,6 +295,38 @@ MonoBehaviour:
   m_ShadowLayerMask: 1
   m_RenderingLayers: 1
   m_ShadowRenderingLayers: 1
+--- !u!1 &7323924325982811844
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3966334533234070915}
+  m_Layer: 0
+  m_Name: ShineEmpty
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3966334533234070915
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7323924325982811844}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.5, y: 0.41, z: -0.72}
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
+  m_ConstrainProportionsScale: 1
+  m_Children:
+  - {fileID: 1108511325101001069}
+  m_Father: {fileID: 5107456095025016353}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1656247881293799583
 PrefabInstance:
   m_ObjectHideFlags: 0

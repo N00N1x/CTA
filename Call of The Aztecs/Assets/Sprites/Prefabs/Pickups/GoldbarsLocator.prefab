@@ -1,5 +1,37 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &307621573981717819
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5459013841977241114}
+  m_Layer: 0
+  m_Name: GoldShineEmpty
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5459013841977241114
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 307621573981717819}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1, y: -1.27, z: -1.8}
+  m_LocalScale: {x: 1.9999999, y: 1.9999999, z: 1.9999999}
+  m_ConstrainProportionsScale: 1
+  m_Children:
+  - {fileID: 4571427735080881454}
+  m_Father: {fileID: 8117731875807725351}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1808529684430271745
 GameObject:
   m_ObjectHideFlags: 0
@@ -481,7 +513,7 @@ Transform:
   - {fileID: 1065889141345002652}
   - {fileID: 4825428099445792567}
   - {fileID: 7044933934780070937}
-  - {fileID: 4571427735080881454}
+  - {fileID: 5459013841977241114}
   m_Father: {fileID: 7148505300541153814}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &9014612494952616627
@@ -512,11 +544,11 @@ Transform:
   m_GameObject: {fileID: 9014612494952616627}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.819848, y: 1.0931312, z: 0.516503}
-  m_LocalScale: {x: 2.52, y: 2.52, z: 2.52}
+  m_LocalPosition: {x: 0.8198483, y: 1.0931313, z: 0.51650316}
+  m_LocalScale: {x: 2.5200002, y: 2.5200002, z: 2.5200002}
   m_ConstrainProportionsScale: 1
   m_Children: []
-  m_Father: {fileID: 8117731875807725351}
+  m_Father: {fileID: 5459013841977241114}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &6222501778560545620
 MeshFilter:

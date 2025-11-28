@@ -13,9 +13,9 @@ GameObject:
   - component: {fileID: 8566025257486832476}
   - component: {fileID: 1730968733764091960}
   - component: {fileID: 5114897418564988472}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Killplane
-  m_TagString: Untagged
+  m_TagString: Killplane
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -28,7 +28,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1246934887279235042}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 65.9, y: 114.3, z: 180}
   m_LocalScale: {x: 20.282734, y: 20.282734, z: 20.282734}
   m_ConstrainProportionsScale: 0

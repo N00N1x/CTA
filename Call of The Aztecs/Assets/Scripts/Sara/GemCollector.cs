@@ -10,7 +10,6 @@ public class GemCollector : MonoBehaviour
     public TextMeshProUGUI GemsText;
  
 
-    #region Function that destroys game when colliding with it, and adds to the Gem count in Canvas. 
     private void OnTriggerEnter(Collider other)
     {
         if (other.transform.tag == "Gem")
@@ -21,7 +20,5 @@ public class GemCollector : MonoBehaviour
             Destroy(other.gameObject);
         }
     }
-    #endregion
-
    
 }

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
 
 public class BamboTrap : MonoBehaviour
@@ -8,23 +9,22 @@ public class BamboTrap : MonoBehaviour
     public bool autoCycle = true;
     public bool startOnAwake = true;
     public float idleDuration = 2f;      // time between activations
-    public float activeDuration = 1f;    // time trap is "dangerous"
+    public float activeDuration = 1f;    // how long the spikes are dangerous
 
     [Header("Detection (optional)")]
     [Tooltip("If true, the trap will only start cycling while a player stands on the platform (requires a trigger collider on the platform).")]
     public bool onlyWhenPlayerOnPlatform = false;
 
     [Header("Animator / VFX")]
-    public Animator animator;            // Animator with a bool parameter named animatorBoolParameter
+    public Animator animator;
     public string animatorBoolParameter = "IsActive";
     public ParticleSystem particles;
 
-    [Header("Damage / knockback")]
-    public LayerMask playerLayer = 1 << 8; // default to layer 8 (set in Inspector)
+    [Header("Damage")]
+    public LayerMask playerLayer = 1 << 8; // set to your Player layer in the Inspector
     public int damageAmount = 1;
-    public float knockbackForce = 6f;
     public Vector3 damageBoxCenter = new Vector3(0f, 0.5f, 0.5f); // local offset
-    public Vector3 damageBoxSize = new Vector3(1f, 1f, 1f);      // world-aligned box extents
+    public Vector3 damageBoxSize = new Vector3(1f, 1f, 1f);      // box extents
 
     [Header("Gizmo")]
     public Color gizmoColor = new Color(1f, 0.5f, 0f, 0.25f);
@@ -37,12 +37,12 @@ public class BamboTrap : MonoBehaviour
 
     private void Awake()
     {
-        // ensure particle system does not play on awake
         if (particles != null)
         {
             var main = particles.main;
             main.loop = false;
             particles.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+            particles.Clear();
         }
     }
 
@@ -72,7 +72,6 @@ public class BamboTrap : MonoBehaviour
     {
         while (true)
         {
-            // wait until platform has player if required
             if (onlyWhenPlayerOnPlatform)
             {
                 while (playersOnPlatform.Count == 0)
@@ -81,7 +80,6 @@ public class BamboTrap : MonoBehaviour
 
             yield return new WaitForSeconds(idleDuration);
 
-            // same check before activation
             if (onlyWhenPlayerOnPlatform && playersOnPlatform.Count == 0)
                 continue;
 
@@ -114,14 +112,13 @@ public class BamboTrap : MonoBehaviour
             animator.SetBool(animatorBoolParameter, false);
 
         if (particles != null)
-            particles.Stop(true, ParticleSystemStopBehavior.StopEmitting);
+            particles.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
     }
 
     private void FixedUpdate()
     {
         if (!isActive) return;
 
-        // overlap box in world space
         Vector3 worldCenter = transform.TransformPoint(damageBoxCenter);
         Vector3 halfExtents = damageBoxSize * 0.5f;
         Collider[] cols = Physics.OverlapBox(worldCenter, halfExtents, transform.rotation, playerLayer, QueryTriggerInteraction.Collide);
@@ -129,28 +126,48 @@ public class BamboTrap : MonoBehaviour
         foreach (var c in cols)
         {
             if (c == null || c.transform == null) continue;
-
             if (damagedThisActivation.Contains(c.transform)) continue;
 
-            // apply knockback
-            Rigidbody rb = c.attachedRigidbody ?? c.GetComponent<Rigidbody>();
-            if (rb != null && knockbackForce > 0f)
-            {
-                Vector3 dir = (c.transform.position - worldCenter).normalized;
-                dir.y = Mathf.Max(dir.y, 0.2f); // give slight upward lift
-                rb.AddForce(dir * knockbackForce, ForceMode.Impulse);
-            }
-
-            // apply damage if target has a PlayerHealth (optional)
-         //   var ph = c.GetComponent<PlayerHealth>();
-          //  if (ph != null && damageAmount > 0)
-          //      ph.TakeDamage(damageAmount);
+            // Traditional spike trap: only apply damage (no knockback)
+            if (damageAmount > 0)
+                TryInvokeTakeDamage(c.gameObject, damageAmount);
 
             damagedThisActivation.Add(c.transform);
         }
     }
 
+    // Safe reflection-based damage caller: calls TakeDamage(int) on any component if present.
+    private void TryInvokeTakeDamage(GameObject target, int amount)
+    {
+        // try a component named "PlayerHealth" first (avoids compile-time dependency)
+        Component phComp = target.GetComponent("PlayerHealth") as Component;
+        if (phComp != null)
+        {
+            MethodInfo m = phComp.GetType().GetMethod("TakeDamage", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, null, new[] { typeof(int) }, null);
+            if (m != null)
+            {
+                m.Invoke(phComp, new object[] { amount });
+                return;
+            }
+        }
+
+        // fallback: search any component for a TakeDamage(int) method
+        var comps = target.GetComponents<Component>();
+        foreach (var comp in comps)
+        {
+            if (comp == null) continue;
+            MethodInfo method = comp.GetType().GetMethod("TakeDamage", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, null, new[] { typeof(int) }, null);
+            if (method != null)
+            {
+                method.Invoke(comp, new object[] { amount });
+                return;
+            }
+        }
+    }
+
     // Optional: track players standing on the platform if onlyWhenPlayerOnPlatform is enabled
+    // Existing OnTriggerEnter/Exit will still work if detector is the same GameObject.
+    // To support a separate detection GameObject, call the public methods below from the detector.
     private void OnTriggerEnter(Collider other)
     {
         if (!onlyWhenPlayerOnPlatform) return;
@@ -159,6 +176,22 @@ public class BamboTrap : MonoBehaviour
     }
 
     private void OnTriggerExit(Collider other)
+    {
+        if (!onlyWhenPlayerOnPlatform) return;
+        if (((1 << other.gameObject.layer) & playerLayer) == 0) return;
+        playersOnPlatform.Remove(other);
+    }
+
+    // PUBLIC API for an external detection GameObject to forward trigger events to this trap.
+    // Attach a small forwarding script to your detection GameObject and reference this BamboTrap.
+    public void OnDetectorEnter(Collider other)
+    {
+        if (!onlyWhenPlayerOnPlatform) return;
+        if (((1 << other.gameObject.layer) & playerLayer) == 0) return;
+        playersOnPlatform.Add(other);
+    }
+
+    public void OnDetectorExit(Collider other)
     {
         if (!onlyWhenPlayerOnPlatform) return;
         if (((1 << other.gameObject.layer) & playerLayer) == 0) return;

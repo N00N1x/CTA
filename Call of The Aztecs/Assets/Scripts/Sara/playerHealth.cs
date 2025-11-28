@@ -68,7 +68,6 @@ public class playerHealth : MonoBehaviour
             StartCoroutine(ReloadSceneAfterDelay(respawnDelay));
         }
     }
-
     private IEnumerator ReloadSceneAfterDelay(float delay)
     {
         yield return new WaitForSeconds(delay);

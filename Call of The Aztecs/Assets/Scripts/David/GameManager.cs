@@ -1,3 +1,4 @@
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
@@ -12,12 +13,15 @@ public class GameManager : MonoBehaviour
 
     }
 
-
     public void QuitGame()
     {
-        Application.Quit();
-    }
+        Debug.Log("You pressed the Quit Button");
 
+            Application.Quit();
+#if UNITY_EDITOR
+            EditorApplication.isPlaying = false;
+#endif
+    }
 
     public void LoadMenu(string menuSceneName)
     {
@@ -25,10 +29,15 @@ public class GameManager : MonoBehaviour
 
     }
 
-    public void StartGame(string Menu) // There was a imposter here >:(
+    public void StartGame(string Level0) 
     {
 
-        SceneManager.LoadScene(Menu);
+        SceneManager.LoadScene("Level0");
+
+    }
+
+    public void Options(string Options)
+    {
 
 
     }

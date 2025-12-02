@@ -10977,10 +10977,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 533278868323383704, guid: f61d4b0391e9a2342857fe3401d28b81, type: 3}
-      propertyPath: currentHealth
-      value: 50
-      objectReference: {fileID: 0}
     - target: {fileID: 683371897902628498, guid: f61d4b0391e9a2342857fe3401d28b81, type: 3}
       propertyPath: m_LocalPosition.x
       value: 12
@@ -11025,17 +11021,13 @@ PrefabInstance:
       propertyPath: GemsText
       value: 
       objectReference: {fileID: 1317466552}
+    - target: {fileID: 2110977922246012479, guid: f61d4b0391e9a2342857fe3401d28b81, type: 3}
+      propertyPath: slowPerPoint
+      value: 0.2
+      objectReference: {fileID: 0}
     - target: {fileID: 4000650650065783659, guid: f61d4b0391e9a2342857fe3401d28b81, type: 3}
       propertyPath: m_Name
       value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 4746974894660924114, guid: f61d4b0391e9a2342857fe3401d28b81, type: 3}
-      propertyPath: GemsText
-      value: 
-      objectReference: {fileID: 1317466552}
-    - target: {fileID: 4746974894660924114, guid: f61d4b0391e9a2342857fe3401d28b81, type: 3}
-      propertyPath: slowPerPoint
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

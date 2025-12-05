@@ -312,7 +312,7 @@ GameObject:
   - component: {fileID: 4764396513105181436}
   - component: {fileID: 3722966627105486435}
   - component: {fileID: 6540736807042326866}
-  - component: {fileID: 4746974894660924114}
+  - component: {fileID: 2110977922246012479}
   - component: {fileID: 1480210300579283469}
   - component: {fileID: 8555063804378189952}
   - component: {fileID: 533278868323383704}
@@ -471,7 +471,7 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &4746974894660924114
+--- !u!114 &2110977922246012479
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -484,6 +484,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GemCollector
   GemsText: {fileID: 0}
+  slowPerPoint: 1
+  minMoveSpeed: 1
+  diamondPoints: 10
+  gemPoints: 2
+  goldbarPoints: 5
+  healthRestoreAmount: 25
 --- !u!114 &1480210300579283469
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -582,7 +588,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   maxHealth: 100
-  currentHealth: 100
+  currentHealth: 50
   respawnDelay: 0
 --- !u!1001 &2711300541074421049
 PrefabInstance:

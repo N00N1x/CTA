@@ -52,7 +52,7 @@ public class Windtrap : MonoBehaviour
         StopCycle();
         SetVisuals(false);
     }
-
+    
     private void OnDestroy()
     {
         StopCycle();

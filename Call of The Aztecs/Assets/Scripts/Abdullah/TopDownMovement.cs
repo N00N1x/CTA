@@ -52,7 +52,8 @@ public class TopDownMovementNew : MonoBehaviour
             jumpHeld = true;
             if (animator != null)
             {
-                animator.SetTrigger("Jump");
+                // match Animator parameter name in Controller
+                animator.SetTrigger("jumped");
             }
         }
         else if (context.canceled)
@@ -121,10 +122,9 @@ public class TopDownMovementNew : MonoBehaviour
         if (animator != null)
         {
             bool isMoving = moveDirection.sqrMagnitude > 0.001f;
-            bool isFalling = rb.linearVelocity.y < -0.1f && !isGrounded;
+            // Animator parameters in your controller: "isRunning" and "onGround", and trigger "jumped"
             animator.SetBool("isRunning", isMoving && isGrounded);
-            animator.SetBool("isFalling", isFalling);
-            animator.SetBool("isGrounded", isGrounded);
+            animator.SetBool("onGround", isGrounded);
         }
 
         rb.linearVelocity = velocity;

@@ -230,6 +230,33 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0.194}
+--- !u!1 &725523497 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8824278099699166013, guid: 5a771ed924027474e98460d5ba3368ba, type: 3}
+  m_PrefabInstance: {fileID: 1413524104}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &725523499
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 725523497}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: c546dbd4b6224be46b75418c35e7c317, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &743616508
 GameObject:
   m_ObjectHideFlags: 0
@@ -450,6 +477,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2236041823010926210, guid: 5a771ed924027474e98460d5ba3368ba, type: 3}
+      propertyPath: m_Name
+      value: Trigger plate
+      objectReference: {fileID: 0}
     - target: {fileID: 3828989398314801433, guid: 5a771ed924027474e98460d5ba3368ba, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.053025436
@@ -466,9 +497,17 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: 0.0006
       objectReference: {fileID: 0}
+    - target: {fileID: 5037290224901168215, guid: 5a771ed924027474e98460d5ba3368ba, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6943704906552445634, guid: 5a771ed924027474e98460d5ba3368ba, type: 3}
       propertyPath: m_Name
-      value: bamboo trap 1 Variant
+      value: '  Spike trap'
+      objectReference: {fileID: 0}
+    - target: {fileID: 6943704906552445634, guid: 5a771ed924027474e98460d5ba3368ba, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6943704906552445634, guid: 5a771ed924027474e98460d5ba3368ba, type: 3}
       propertyPath: m_TagString
@@ -477,6 +516,14 @@ PrefabInstance:
     - target: {fileID: 7108919962553552903, guid: 5a771ed924027474e98460d5ba3368ba, type: 3}
       propertyPath: animator
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7108919962553552903, guid: 5a771ed924027474e98460d5ba3368ba, type: 3}
+      propertyPath: activeTime
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7108919962553552903, guid: 5a771ed924027474e98460d5ba3368ba, type: 3}
+      propertyPath: inactiveTime
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7108919962553552903, guid: 5a771ed924027474e98460d5ba3368ba, type: 3}
       propertyPath: detectUseTrigger
@@ -498,14 +545,68 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Trap
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 6372010951024747901, guid: 5a771ed924027474e98460d5ba3368ba, type: 3}
+    - {fileID: 7089647313085250775, guid: 5a771ed924027474e98460d5ba3368ba, type: 3}
+    - {fileID: 7108919962553552903, guid: 5a771ed924027474e98460d5ba3368ba, type: 3}
+    - {fileID: 5037290224901168215, guid: 5a771ed924027474e98460d5ba3368ba, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2236041823010926210, guid: 5a771ed924027474e98460d5ba3368ba, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1546191677}
+    - targetCorrespondingSourceObject: {fileID: 2236041823010926210, guid: 5a771ed924027474e98460d5ba3368ba, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1546191676}
+    - targetCorrespondingSourceObject: {fileID: 8824278099699166013, guid: 5a771ed924027474e98460d5ba3368ba, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 725523499}
     - targetCorrespondingSourceObject: {fileID: 6220446561466674578, guid: 5a771ed924027474e98460d5ba3368ba, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1953235276}
   m_SourcePrefab: {fileID: 100100000, guid: 5a771ed924027474e98460d5ba3368ba, type: 3}
+--- !u!1 &1546191674 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2236041823010926210, guid: 5a771ed924027474e98460d5ba3368ba, type: 3}
+  m_PrefabInstance: {fileID: 1413524104}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1546191676
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1546191674}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1fb7bac99b7703a4594802469fc9f4b7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BamboTrap
+  spikeAnimator: {fileID: 725523499}
+  damageDelay: 0.15
+  damage: 20
+--- !u!65 &1546191677
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1546191674}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.056545265, y: 0.0022858928, z: 0.056545265}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1838278984
 GameObject:
   m_ObjectHideFlags: 0
@@ -645,6 +746,7 @@ GameObject:
   - component: {fileID: 1887467597}
   - component: {fileID: 1887467596}
   - component: {fileID: 1887467595}
+  - component: {fileID: 1887467599}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Player
@@ -744,6 +846,33 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!54 &1887467599
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1887467594}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &1953235273 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6220446561466674578, guid: 5a771ed924027474e98460d5ba3368ba, type: 3}

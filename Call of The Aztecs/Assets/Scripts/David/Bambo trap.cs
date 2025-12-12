@@ -4,39 +4,35 @@ using UnityEngine;
 
 public class BamboTrap : MonoBehaviour
 {
+    public Animator spikeAnimator;     // Drag the Spike child’s Animator here
+    public float damageDelay = 0.1f;
     public int damage = 20;
-    public float activeTime = 1.0f;    // how long spikes are up
-    public float inactiveTime = 1.0f;  // how long spikes are down
-    public bool autoToggle = true;
 
-    private bool isActive = true;
-
-    void Start()
-    {
-        if (autoToggle)
-            StartCoroutine(ToggleRoutine());
-    }
-
-    private IEnumerator ToggleRoutine()
-    {
-        while (true)
-        {
-            isActive = true;      // spikes up
-            yield return new WaitForSeconds(activeTime);
-
-            isActive = false;     // spikes down
-            yield return new WaitForSeconds(inactiveTime);
-        }
-    }
+    private bool isBusy = false;
+    private GameObject playerRef;
 
     private void OnTriggerEnter(Collider other)
     {
-        if (!isActive) return;
-
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") && !isBusy)
         {
-            // Replace with your health system
-            other.GetComponent<PlayerHealth>()?.TakeDamage(damage);
+            playerRef = other.gameObject;
+            StartCoroutine(SpikeRoutine());
         }
     }
+
+    private System.Collections.IEnumerator SpikeRoutine()
+    {
+        isBusy = true;
+
+        spikeAnimator.SetTrigger("Pop");   // play spike child animation
+
+        yield return new WaitForSeconds(damageDelay);
+
+        playerRef.GetComponent<playerHealth>()?.TakeDamage(damage);
+
+        yield return new WaitForSeconds(0.4f);
+
+        isBusy = false;
+    }
 }
+ 

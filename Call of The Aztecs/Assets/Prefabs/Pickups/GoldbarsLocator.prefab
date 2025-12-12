@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5459013841977241114}
-  m_Layer: 12
+  m_Layer: 0
   m_Name: GoldShineEmpty
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -98,7 +98,7 @@ GameObject:
   - component: {fileID: 1065889141345002652}
   - component: {fileID: 4403481635407779227}
   - component: {fileID: 2709346512839588903}
-  m_Layer: 12
+  m_Layer: 0
   m_Name: Gold1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -187,7 +187,7 @@ GameObject:
   - component: {fileID: 7826318285387885868}
   - component: {fileID: 2606356729749041841}
   - component: {fileID: 8353784049275715593}
-  m_Layer: 12
+  m_Layer: 0
   m_Name: GoldLight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -314,7 +314,7 @@ GameObject:
   - component: {fileID: 4825428099445792567}
   - component: {fileID: 5307266775086168186}
   - component: {fileID: 3556543096134376993}
-  m_Layer: 12
+  m_Layer: 0
   m_Name: Gold2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -403,7 +403,7 @@ GameObject:
   - component: {fileID: 7044933934780070937}
   - component: {fileID: 7593979440538911534}
   - component: {fileID: 5503895949621686357}
-  m_Layer: 12
+  m_Layer: 0
   m_Name: Gold3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -490,7 +490,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8117731875807725351}
-  m_Layer: 12
+  m_Layer: 0
   m_Name: Bars
   m_TagString: Untagged
   m_Icon: {fileID: -5487077368411116049, guid: 0000000000000000d000000000000000, type: 0}
@@ -528,7 +528,7 @@ GameObject:
   - component: {fileID: 6222501778560545620}
   - component: {fileID: 384036470399420059}
   - component: {fileID: 1624209395989107841}
-  m_Layer: 12
+  m_Layer: 0
   m_Name: GoldShine
   m_TagString: Untagged
   m_Icon: {fileID: 0}

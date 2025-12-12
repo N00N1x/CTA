@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2965546937178594606}
   - component: {fileID: 5283826113722747523}
   - component: {fileID: 1709724878858872844}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: Shine
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -123,7 +123,7 @@ GameObject:
   - component: {fileID: 1683598539212556841}
   - component: {fileID: 3619666809207109756}
   - component: {fileID: 9011866962852460552}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: Diamond
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -211,7 +211,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5794859100038360562}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: ShineEmpty
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -300,7 +300,7 @@ GameObject:
   - component: {fileID: 1431703511734854461}
   - component: {fileID: 2087769977656023056}
   - component: {fileID: 5954137976335737555}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: DiamondLight
   m_TagString: Untagged
   m_Icon: {fileID: 0}

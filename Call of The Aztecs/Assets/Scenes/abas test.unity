@@ -376,6 +376,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1feb5d8d20aa17428d57a26e8c82c89, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  damageAmount: 100
+  targetTag: Player
+  targetLayer:
+    serializedVersion: 2
+    m_Bits: 8
+  useTrigger: 1
+  enableColliderOnlyDuringSwing: 1
+  swingActiveDuration: 0.25
+  perTargetCooldown: 0.25
+  hitOncePerSwing: 1
+--- !u!65 &517715662
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 517715659}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 7.35, y: 2.69, z: 0.55}
+  m_Center: {x: -0.73, y: -7.18, z: 0.12}
 --- !u!1 &688858835
 GameObject:
   m_ObjectHideFlags: 0
@@ -1165,6 +1196,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2259365620269558490, guid: 4bffb0e00a1f5144b99c3a5f22c00c51, type: 3}
       insertIndex: -1
       addedObject: {fileID: 517715661}
+    - targetCorrespondingSourceObject: {fileID: 2259365620269558490, guid: 4bffb0e00a1f5144b99c3a5f22c00c51, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 517715662}
   m_SourcePrefab: {fileID: 100100000, guid: 4bffb0e00a1f5144b99c3a5f22c00c51, type: 3}
 --- !u!1001 &2053305565338624338
 PrefabInstance:
@@ -1174,6 +1208,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 533278868323383704, guid: f61d4b0391e9a2342857fe3401d28b81, type: 3}
+      propertyPath: currentHealth
+      value: 100
+      objectReference: {fileID: 0}
     - target: {fileID: 683371897902628498, guid: f61d4b0391e9a2342857fe3401d28b81, type: 3}
       propertyPath: m_LocalPosition.x
       value: -9

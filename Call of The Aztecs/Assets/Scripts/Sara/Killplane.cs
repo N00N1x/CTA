@@ -16,17 +16,24 @@ public class Killplane : MonoBehaviour
     {
         if (obj == null) return;
 
-        var player = obj.GetComponent<playerHealth>() ?? obj.GetComponentInParent<playerHealth>();
-        if (player != null)
+        var playerHealth = obj.GetComponent<playerHealth>() ?? obj.GetComponentInParent<playerHealth>();
+
+        if (playerHealth != null)
         {
-            player.TakeDamage(float.MaxValue);
+            playerHealth.TakeDamage(float.MaxValue);
             return;
         }
 
-        if (obj.CompareTag("Player") || obj.CompareTag("player"))
+        if (obj.CompareTag("Player"))
         {
-            Destroy(obj);
+            if (CheckpointManager.Instance != null)
+            {
+                CheckpointManager.Instance.RespawnPlayer(obj);
+            }
+            else
+            {
+                Debug.LogWarning("CheckpointManager not found in scene.");
+            }
         }
     }
 }
-

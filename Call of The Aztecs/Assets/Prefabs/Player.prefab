@@ -29,8 +29,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2568774039166115317}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.2423012, y: 0.28317696, z: -0.074178554, w: 0.9249857}
-  m_LocalPosition: {x: -0.13, y: 12.6, z: -14.6}
+  m_LocalRotation: {x: 0.028712738, y: -0.68781567, z: 0.027247414, w: 0.72480536}
+  m_LocalPosition: {x: 53.928, y: 4.28524, z: -2.8261719}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -70,7 +70,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 60.000004
+  field of view: 30
   orthographic: 0
   orthographic size: 5
   m_Depth: 0
@@ -411,9 +411,9 @@ GameObject:
   - component: {fileID: 3722966627105486435}
   - component: {fileID: 6540736807042326866}
   - component: {fileID: 2110977922246012479}
-  - component: {fileID: 1480210300579283469}
-  - component: {fileID: 8555063804378189952}
   - component: {fileID: 533278868323383704}
+  - component: {fileID: 2305748298403920882}
+  - component: {fileID: 3957886827109689033}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
@@ -545,7 +545,7 @@ CharacterController:
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: 20000, z: 0}
 --- !u!136 &6540736807042326866
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -566,9 +566,9 @@ CapsuleCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.5
-  m_Height: 2
+  m_Height: 3.533966
   m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: 0.6205368, z: 0}
 --- !u!114 &2110977922246012479
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -588,7 +588,22 @@ MonoBehaviour:
   gemPoints: 2
   goldbarPoints: 5
   healthRestoreAmount: 25
---- !u!114 &1480210300579283469
+--- !u!114 &533278868323383704
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4000650650065783659}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65df9192a9b52d1468ff1b206a181d72, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  maxHealth: 100
+  currentHealth: 50
+  respawnDelay: 0
+--- !u!114 &2305748298403920882
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -600,10 +615,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f2831552ec49cc4487940c2c9b42814, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TopDownMovementNew
-  moveSpeed: 10
+  moveSpeed: 5
   runMultiplier: 1.8
-  jumpForce: 15
-  gravity: -9.8
+  jumpForce: 10
+  gravity: -9.81
   fallMultiplier: 2.5
   lowJumpMultiplier: 9
   groundMask:
@@ -613,7 +628,7 @@ MonoBehaviour:
   groundCheckOffset: 0.5
   jumpCooldown: 0.5
   snapAngle: 90
---- !u!114 &8555063804378189952
+--- !u!114 &3957886827109689033
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -640,7 +655,7 @@ MonoBehaviour:
   m_ActionEvents:
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1480210300579283469}
+      - m_Target: {fileID: 2305748298403920882}
         m_TargetAssemblyTypeName: TopDownMovementNew, Assembly-CSharp
         m_MethodName: OnMove
         m_Mode: 0
@@ -656,7 +671,7 @@ MonoBehaviour:
     m_ActionName: 'Player/move[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]'
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1480210300579283469}
+      - m_Target: {fileID: 2305748298403920882}
         m_TargetAssemblyTypeName: TopDownMovementNew, Assembly-CSharp
         m_MethodName: OnJump
         m_Mode: 0
@@ -671,29 +686,26 @@ MonoBehaviour:
     m_ActionId: 435ffebe-09f1-4073-bf14-1f1188ecac14
     m_ActionName: 'Player/Jump[/Keyboard/space]'
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2305748298403920882}
+        m_TargetAssemblyTypeName: TopDownMovementNew, Assembly-CSharp
+        m_MethodName: OnRun
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: dda4b3c3-cb5a-4a4b-95fe-8574199b9e3c
     m_ActionName: 'Player/run[/Keyboard/leftShift]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
-  m_Camera: {fileID: 7918579528529106972}
---- !u!114 &533278868323383704
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4000650650065783659}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 65df9192a9b52d1468ff1b206a181d72, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: '::'
-  maxHealth: 100
-  currentHealth: 50
-  respawnDelay: 0
+  m_Camera: {fileID: 0}
 --- !u!1001 &2711300541074421049
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -24,6 +24,7 @@ public class TopDownMovementNew : MonoBehaviour
     public float snapAngle = 90f; // Change to 45f or 60f for smoother movement  
 
     private Rigidbody rb;
+    private Animator animator;
     private Vector2 moveInput;
     private Vector3 moveDirection;
     private bool jumpPressed;
@@ -34,6 +35,7 @@ public class TopDownMovementNew : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        animator = GetComponent<Animator>();
         rb.freezeRotation = true;
     }
 
@@ -48,6 +50,10 @@ public class TopDownMovementNew : MonoBehaviour
         {
             jumpPressed = true;
             jumpHeld = true;
+            if (animator != null)
+            {
+                animator.SetTrigger("Jump");
+            }
         }
         else if (context.canceled)
         {
@@ -109,6 +115,16 @@ public class TopDownMovementNew : MonoBehaviour
         else
         {
             velocity.y += gravity * Time.fixedDeltaTime;
+        }
+
+        // Update animator parameters
+        if (animator != null)
+        {
+            bool isMoving = moveDirection.sqrMagnitude > 0.001f;
+            bool isFalling = rb.linearVelocity.y < -0.1f && !isGrounded;
+            animator.SetBool("isRunning", isMoving && isGrounded);
+            animator.SetBool("isFalling", isFalling);
+            animator.SetBool("isGrounded", isGrounded);
         }
 
         rb.linearVelocity = velocity;

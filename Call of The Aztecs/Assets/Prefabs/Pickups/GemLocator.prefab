@@ -68,7 +68,7 @@ GameObject:
   - component: {fileID: 1334929176569221500}
   - component: {fileID: 8611839296751203914}
   - component: {fileID: 2828858691634222872}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: Shine
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -179,7 +179,7 @@ GameObject:
   - component: {fileID: 7955666564844657770}
   - component: {fileID: 4834088504558475470}
   - component: {fileID: 5792349560917241494}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: GemLight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -304,7 +304,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3966334533234070915}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: ShineEmpty
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -393,7 +393,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: e1b0078809363124ca2fa769bf0b1b7e, type: 3}
       propertyPath: m_Layer
-      value: 8
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

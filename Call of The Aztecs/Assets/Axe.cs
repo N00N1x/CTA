@@ -5,16 +5,16 @@ public class Axe : MonoBehaviour
     [Tooltip("Animator containing the attack state.")]
     public Animator animator;
 
-    [Tooltip("Name of the attack state to monitor. Example: \"Attack\" or \"Base Layer.Attack\"")]
+    [Tooltip("Full or short state name. Example: \"Attack\" or \"Base Layer.Attack\"")]
     public string attackStateName = "Attack";
 
     [Tooltip("Animator layer index to check.")]
     public int layerIndex = 0;
 
-    [Tooltip("Reference to the AxeDamage component that will be enabled/disabled while in the attack state.")]
+    [Tooltip("Reference to the AxeDamage component to enable/disable during attack.")]
     public AxeDamage axeDamage;
 
-    bool wasInAttack = false;
+    bool wasInAttack;
 
     void Awake()
     {
@@ -34,19 +34,19 @@ public class Axe : MonoBehaviour
 
         if (inAttack && !wasInAttack)
         {
-            // Entered attack state
+            // entered attack state
             axeDamage.AnimationStart();
         }
         else if (!inAttack && wasInAttack)
         {
-            // Exited attack state
+            // exited attack state
             axeDamage.AnimationEnd();
         }
 
         wasInAttack = inAttack;
     }
 
-    // Optional: trigger attack from code
+    // Optional helper to trigger attack animations from code
     public void DoAttack(string triggerName = "Attack")
     {
         if (animator != null)

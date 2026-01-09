@@ -10,6 +10,7 @@ public class TopDownMovementNew : MonoBehaviour
     public float gravity = -9.81f;
     public float fallMultiplier = 2.5f;
     public float lowJumpMultiplier = 3f;
+    public float modelForwardAngle = 180f; // Use to correct model forward orientation (180 flips forward)
 
 [Header("Ground Check Settings")]
     public LayerMask groundMask;
@@ -86,7 +87,8 @@ public class TopDownMovementNew : MonoBehaviour
         // --- FACE MOVEMENT DIRECTION (SMOOTH) ---  
         if (moveDirection.sqrMagnitude > 0.001f)
         {
-            Quaternion targetRot = Quaternion.LookRotation(moveDirection, Vector3.up);
+            // Apply model forward offset in case the character model faces the wrong way
+            Quaternion targetRot = Quaternion.LookRotation(moveDirection, Vector3.up) * Quaternion.Euler(0f, modelForwardAngle, 0f);
             rb.MoveRotation(Quaternion.Slerp(rb.rotation, targetRot, 10f * Time.fixedDeltaTime));
         }
 

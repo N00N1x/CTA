@@ -17,6 +17,14 @@ public class AxeDamage : MonoBehaviour
     public float perTargetCooldown = 0.25f;
     public bool hitOncePerSwing = true;
 
+    [Header("Blade collider selection")]
+    [Tooltip("Assign the exact collider on the blade you want to use (preferred).")]
+    public Collider bladeCollider;
+    [Tooltip("Fallback: name of child GameObject that holds the blade collider.")]
+    public string bladeColliderName = "BladeCollider";
+    [Tooltip("Fallback: tag of child GameObject that holds the blade collider.")]
+    public string bladeColliderTag = "WeaponBlade";
+
     [Header("Debug / testing")]
     public bool debugMode = true;
     [Tooltip("Keep collider enabled for quick testing without animation events.")]
@@ -28,18 +36,89 @@ public class AxeDamage : MonoBehaviour
 
     void Awake()
     {
-        // Try to find collider on same GameObject first, then children.
-        axeCollider = GetComponent<Collider>() ?? GetComponentInChildren<Collider>();
+        // root collider (may be the old static box)
+        Collider rootCollider = GetComponent<Collider>();
+
+        // If inspector-assigned bladeCollider is set, use it; otherwise try to find a child collider
+        if (bladeCollider != null)
+        {
+            axeCollider = bladeCollider;
+        }
+        else
+        {
+            // search children for tag/name or first child collider
+            Collider[] all = GetComponentsInChildren<Collider>(true);
+            foreach (var c in all)
+            {
+                if (c.gameObject != gameObject && !string.IsNullOrEmpty(bladeColliderTag) && c.gameObject.CompareTag(bladeColliderTag))
+                {
+                    axeCollider = c;
+                    break;
+                }
+            }
+
+            if (axeCollider == null)
+            {
+                foreach (var c in all)
+                {
+                    if (c.gameObject != gameObject && !string.IsNullOrEmpty(bladeColliderName) && c.gameObject.name == bladeColliderName)
+                    {
+                        axeCollider = c;
+                        break;
+                    }
+                }
+            }
+
+            if (axeCollider == null)
+            {
+                foreach (var c in all)
+                {
+                    if (c.gameObject != gameObject)
+                    {
+                        axeCollider = c;
+                        break;
+                    }
+                }
+            }
+
+            // fallback: use root collider
+            if (axeCollider == null)
+                axeCollider = rootCollider;
+        }
+
         if (axeCollider == null)
         {
             Debug.LogError("[AxeDamage] No Collider found on this GameObject or children. Add a Box/Capsule collider to the blade.");
             return;
         }
 
-        if (debugMode) Debug.Log($"[AxeDamage] Found collider '{axeCollider.name}' (isTrigger={axeCollider.isTrigger})");
+        if (debugMode) Debug.Log($"[AxeDamage] Using collider '{axeCollider.name}' (isTrigger={axeCollider.isTrigger})");
 
-        // make sure trigger mode matches setting
+        // ensure trigger mode matches setting
         axeCollider.isTrigger = useTrigger;
+
+        // If we selected a child blade collider and there is a root (stale) collider, disable/remove it
+        if (rootCollider != null && rootCollider != axeCollider)
+        {
+            if (debugMode) Debug.Log("[AxeDamage] Disabling root collider to avoid interfering with blade hitbox.");
+            rootCollider.enabled = false;
+#if UNITY_EDITOR
+            // Remove the component in editor so inspector no longer shows it
+            UnityEngine.Object.DestroyImmediate(rootCollider);
+#else
+            UnityEngine.Object.Destroy(rootCollider);
+#endif
+        }
+
+        // If the selected collider is on another GameObject (child), add a proxy to forward triggers
+        if (axeCollider.gameObject != gameObject)
+        {
+            var proxy = axeCollider.gameObject.GetComponent<ColliderProxy>();
+            if (proxy == null)
+                proxy = axeCollider.gameObject.AddComponent<ColliderProxy>();
+
+            proxy.owner = this;
+        }
 
         // default testing behavior
         if (alwaysActiveForTesting)
@@ -48,57 +127,20 @@ public class AxeDamage : MonoBehaviour
             axeCollider.enabled = false;
     }
 
-    // call from animation event
-    public void BeginSwing()
+    // This will be called by ColliderProxy when the child collider triggers
+    public void OnProxyTriggerEnter(Collider other)
     {
-        if (debugMode) Debug.Log("[AxeDamage] BeginSwing()");
-        StopAllCoroutines();
-        StartCoroutine(SwingRoutine(swingActiveDuration));
+        if (debugMode) Debug.Log($"[AxeDamage] OnProxyTriggerEnter from '{axeCollider.name}' with '{other.gameObject.name}'");
+        TryHit(other.gameObject);
     }
 
-    IEnumerator SwingRoutine(float duration)
+    public void OnProxyCollisionEnter(Collision collision)
     {
-        ClearExpiredHits();
-        hitThisSwing.Clear();
-
-        if (enableColliderOnlyDuringSwing && axeCollider != null)
-            axeCollider.enabled = true;
-
-        float timer = 0f;
-        while (timer < duration)
-        {
-            timer += Time.deltaTime;
-            yield return null;
-        }
-
-        if (enableColliderOnlyDuringSwing && axeCollider != null && !alwaysActiveForTesting)
-            axeCollider.enabled = false;
-
-        hitThisSwing.Clear();
+        if (debugMode) Debug.Log($"[AxeDamage] OnProxyCollisionEnter from '{axeCollider.name}' with '{collision.gameObject.name}'");
+        TryHit(collision.gameObject);
     }
 
-    // Animation-driven full-state methods (public so an external controller can call them)
-    // Call at attack state enter: enables collider and clears previous hit tracking.
-    public void AnimationStart()
-    {
-        if (debugMode) Debug.Log("[AxeDamage] AnimationStart() - enabling collider for state");
-        ClearExpiredHits();
-        hitThisSwing.Clear();
-
-        if (axeCollider != null)
-            axeCollider.enabled = true;
-    }
-
-    // Call at attack state exit: disables collider and clears per-swing hits.
-    public void AnimationEnd()
-    {
-        if (debugMode) Debug.Log("[AxeDamage] AnimationEnd() - disabling collider for state");
-        hitThisSwing.Clear();
-
-        if (axeCollider != null && !alwaysActiveForTesting)
-            axeCollider.enabled = false;
-    }
-
+    // Direct callbacks (if the collider and this MonoBehaviour are on the same GameObject)
     private void OnTriggerEnter(Collider other)
     {
         if (!useTrigger) return;
@@ -172,6 +214,26 @@ public class AxeDamage : MonoBehaviour
         }
     }
 
+    // Animation-driven full-state methods
+    public void AnimationStart()
+    {
+        if (debugMode) Debug.Log("[AxeDamage] AnimationStart() - enabling collider for state");
+        ClearExpiredHits();
+        hitThisSwing.Clear();
+
+        if (axeCollider != null)
+            axeCollider.enabled = true;
+    }
+
+    public void AnimationEnd()
+    {
+        if (debugMode) Debug.Log("[AxeDamage] AnimationEnd() - disabling collider for state");
+        hitThisSwing.Clear();
+
+        if (axeCollider != null && !alwaysActiveForTesting)
+            axeCollider.enabled = false;
+    }
+
     // call from animation event instead of BeginSwing if you prefer manual control
     public void SetColliderEnabled(bool enabled)
     {
@@ -180,5 +242,45 @@ public class AxeDamage : MonoBehaviour
             axeCollider.enabled = enabled;
             if (debugMode) Debug.Log($"[AxeDamage] SetColliderEnabled({enabled})");
         }
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        if (axeCollider == null) return;
+        Gizmos.color = Color.red;                    
+        if (axeCollider is BoxCollider box)
+        {
+            Gizmos.matrix = axeCollider.transform.localToWorldMatrix;
+            Gizmos.DrawWireCube(box.center, box.size);
+            Gizmos.matrix = Matrix4x4.identity;
+        }
+        else if (axeCollider is SphereCollider sphere)
+        {
+            Gizmos.DrawWireSphere(axeCollider.transform.TransformPoint(sphere.center), sphere.radius * Mathf.Max(
+                axeCollider.transform.lossyScale.x,
+                axeCollider.transform.lossyScale.y,
+                axeCollider.transform.lossyScale.z));
+        }
+        else if (axeCollider is CapsuleCollider cap)
+        {
+            Gizmos.DrawWireSphere(axeCollider.transform.TransformPoint(cap.center + Vector3.up * (cap.height / 2f - cap.radius)), cap.radius);
+            Gizmos.DrawWireSphere(axeCollider.transform.TransformPoint(cap.center - Vector3.up * (cap.height / 2f - cap.radius)), cap.radius);
+        }
+    }
+}
+
+// Small helper component that forwards collision/trigger events from the blade collider gameobject to the AxeDamage owner.
+public class ColliderProxy : MonoBehaviour
+{
+    [HideInInspector] public AxeDamage owner;
+
+    void OnTriggerEnter(Collider other)
+    {
+        owner?.OnProxyTriggerEnter(other);
+    }
+
+    void OnCollisionEnter(Collision collision)
+    {
+        owner?.OnProxyCollisionEnter(collision);
     }
 }

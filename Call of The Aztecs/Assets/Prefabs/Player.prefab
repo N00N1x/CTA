@@ -621,6 +621,7 @@ MonoBehaviour:
   gravity: -9.81
   fallMultiplier: 2.5
   lowJumpMultiplier: 9
+  modelForwardAngle: 180
   groundMask:
     serializedVersion: 2
     m_Bits: 1152

@@ -25,15 +25,15 @@ public class Killplane : MonoBehaviour
         }
 
         if (obj.CompareTag("Player"))
-        {
+       {
             if (CheckpointManager.Instance != null)
             {
-                CheckpointManager.Instance.RespawnPlayer(obj);
+               CheckpointManager.Instance.RespawnPlayer(obj);
             }
-            else
-            {
-                Debug.LogWarning("CheckpointManager not found in scene.");
-            }
-        }
+           else
+           {
+               Debug.LogWarning("CheckpointManager not found in scene.");
+           }
+       }
     }
 }

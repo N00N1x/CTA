@@ -8,6 +8,8 @@ TagManager:
   - Killplane
   - Floor
   - Trap
+  - Healthpoint
+  - Checkpoint
   layers:
   - Default
   - TransparentFX
@@ -21,9 +23,9 @@ TagManager:
   - OverlayEffect
   - floor
   - Trap
-  - 
-  - 
-  - 
+  - Goldbar
+  - Diamond
+  - HealthPoint
   - 
   - 
   - 

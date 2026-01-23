@@ -242,6 +242,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: bamboo trap 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3903260414358767612, guid: 8102ad0abc620cc4cad0d45dd0ef7acd, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4770529302849441861, guid: 8102ad0abc620cc4cad0d45dd0ef7acd, type: 3}
       propertyPath: m_LocalScale.x
       value: 26.49943
@@ -256,11 +260,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4770529302849441861, guid: 8102ad0abc620cc4cad0d45dd0ef7acd, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.13
+      value: -1.2
       objectReference: {fileID: 0}
     - target: {fileID: 4770529302849441861, guid: 8102ad0abc620cc4cad0d45dd0ef7acd, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.57
+      value: -0.56
       objectReference: {fileID: 0}
     - target: {fileID: 4770529302849441861, guid: 8102ad0abc620cc4cad0d45dd0ef7acd, type: 3}
       propertyPath: m_LocalPosition.z
@@ -319,6 +323,10 @@ PrefabInstance:
     - target: {fileID: 3834526700971445900, guid: fad7e50b164a6f14bbf368529c2c25c6, type: 3}
       propertyPath: m_Name
       value: Log
+      objectReference: {fileID: 0}
+    - target: {fileID: 3834526700971445900, guid: fad7e50b164a6f14bbf368529c2c25c6, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5636579545436694600, guid: fad7e50b164a6f14bbf368529c2c25c6, type: 3}
       propertyPath: m_LocalPosition.x
@@ -590,7 +598,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1fb7bac99b7703a4594802469fc9f4b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BamboTrap
-  animator: {fileID: 1317866928}
+  activeTime: 0.8
+  cooldownTime: 1.2
 --- !u!95 &1317866928
 Animator:
   serializedVersion: 7
@@ -634,6 +643,37 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &1523763584
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1523763585}
+  m_Layer: 0
+  m_Name: Log station
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1523763585
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1523763584}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -5.06874, y: 0.20544, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1697837254 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3834526700971445900, guid: fad7e50b164a6f14bbf368529c2c25c6, type: 3}
@@ -966,7 +1006,7 @@ Transform:
   m_GameObject: {fileID: 1887467594}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.16, y: -0.07, z: -0.44}
+  m_LocalPosition: {x: 1.68, y: -0.1, z: -0.37}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1026,3 +1066,4 @@ SceneRoots:
   - {fileID: 283329680}
   - {fileID: 1702024018}
   - {fileID: 237983091}
+  - {fileID: 1523763585}

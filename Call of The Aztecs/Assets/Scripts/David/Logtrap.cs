@@ -28,8 +28,11 @@ public class LogTrap : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             other.GetComponent<playerHealth>()?.TakeDamage(damage);
+
+            Destroy(gameObject);
         }
     }
+
     public class DirectionGizmo : MonoBehaviour
     {
         public float length = 2f;

@@ -5972,6 +5972,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Platform.Square.Small (6)
       objectReference: {fileID: 0}
+    - target: {fileID: 2952587958572284774, guid: 75f5b9fef9614f34780fd57a5969ffdd, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2952587958572284774, guid: 75f5b9fef9614f34780fd57a5969ffdd, type: 3}
+      propertyPath: m_TagString
+      value: Floor
+      objectReference: {fileID: 0}
     - target: {fileID: 6499847259949235723, guid: 75f5b9fef9614f34780fd57a5969ffdd, type: 3}
       propertyPath: m_LocalPosition.x
       value: 121.7
@@ -10639,6 +10647,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Platform.Square.Medium
       objectReference: {fileID: 0}
+    - target: {fileID: 2000126231526771342, guid: fcc6da8248e039c4cad9064821db6b24, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2000126231526771342, guid: fcc6da8248e039c4cad9064821db6b24, type: 3}
+      propertyPath: m_TagString
+      value: Floor
+      objectReference: {fileID: 0}
     - target: {fileID: 3347550945474812282, guid: fcc6da8248e039c4cad9064821db6b24, type: 3}
       propertyPath: m_LocalPosition.x
       value: 133.70999
@@ -15282,6 +15298,14 @@ PrefabInstance:
     - target: {fileID: 2952587958572284774, guid: 75f5b9fef9614f34780fd57a5969ffdd, type: 3}
       propertyPath: m_Name
       value: Platform.Square.Small (11)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2952587958572284774, guid: 75f5b9fef9614f34780fd57a5969ffdd, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2952587958572284774, guid: 75f5b9fef9614f34780fd57a5969ffdd, type: 3}
+      propertyPath: m_TagString
+      value: Floor
       objectReference: {fileID: 0}
     - target: {fileID: 6499847259949235723, guid: 75f5b9fef9614f34780fd57a5969ffdd, type: 3}
       propertyPath: m_LocalPosition.x
@@ -22508,6 +22532,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Platform.Square.Medium (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 2000126231526771342, guid: fcc6da8248e039c4cad9064821db6b24, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2000126231526771342, guid: fcc6da8248e039c4cad9064821db6b24, type: 3}
+      propertyPath: m_TagString
+      value: Floor
+      objectReference: {fileID: 0}
     - target: {fileID: 2626466889906963416, guid: fcc6da8248e039c4cad9064821db6b24, type: 3}
       propertyPath: m_LocalPosition.x
       value: 2.0248704
@@ -23531,6 +23563,14 @@ PrefabInstance:
     - target: {fileID: 2952587958572284774, guid: 75f5b9fef9614f34780fd57a5969ffdd, type: 3}
       propertyPath: m_Name
       value: Platform.Square.Small
+      objectReference: {fileID: 0}
+    - target: {fileID: 2952587958572284774, guid: 75f5b9fef9614f34780fd57a5969ffdd, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2952587958572284774, guid: 75f5b9fef9614f34780fd57a5969ffdd, type: 3}
+      propertyPath: m_TagString
+      value: Floor
       objectReference: {fileID: 0}
     - target: {fileID: 6499847259949235723, guid: 75f5b9fef9614f34780fd57a5969ffdd, type: 3}
       propertyPath: m_LocalPosition.x
@@ -25195,6 +25235,14 @@ PrefabInstance:
     - target: {fileID: 2952587958572284774, guid: 75f5b9fef9614f34780fd57a5969ffdd, type: 3}
       propertyPath: m_Name
       value: Platform.Square.Small (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2952587958572284774, guid: 75f5b9fef9614f34780fd57a5969ffdd, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2952587958572284774, guid: 75f5b9fef9614f34780fd57a5969ffdd, type: 3}
+      propertyPath: m_TagString
+      value: Floor
       objectReference: {fileID: 0}
     - target: {fileID: 6499847259949235723, guid: 75f5b9fef9614f34780fd57a5969ffdd, type: 3}
       propertyPath: m_LocalPosition.x
@@ -30388,6 +30436,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Platform.Square.Small (10)
       objectReference: {fileID: 0}
+    - target: {fileID: 2952587958572284774, guid: 75f5b9fef9614f34780fd57a5969ffdd, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2952587958572284774, guid: 75f5b9fef9614f34780fd57a5969ffdd, type: 3}
+      propertyPath: m_TagString
+      value: Floor
+      objectReference: {fileID: 0}
     - target: {fileID: 6499847259949235723, guid: 75f5b9fef9614f34780fd57a5969ffdd, type: 3}
       propertyPath: m_LocalPosition.x
       value: 123.11
@@ -31904,6 +31960,14 @@ PrefabInstance:
     - target: {fileID: 2952587958572284774, guid: 75f5b9fef9614f34780fd57a5969ffdd, type: 3}
       propertyPath: m_Name
       value: Platform.Square.Small (08)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2952587958572284774, guid: 75f5b9fef9614f34780fd57a5969ffdd, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2952587958572284774, guid: 75f5b9fef9614f34780fd57a5969ffdd, type: 3}
+      propertyPath: m_TagString
+      value: Floor
       objectReference: {fileID: 0}
     - target: {fileID: 6499847259949235723, guid: 75f5b9fef9614f34780fd57a5969ffdd, type: 3}
       propertyPath: m_LocalPosition.x
@@ -34139,6 +34203,14 @@ PrefabInstance:
     - target: {fileID: 2952587958572284774, guid: 75f5b9fef9614f34780fd57a5969ffdd, type: 3}
       propertyPath: m_Name
       value: Platform.Square.Small (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2952587958572284774, guid: 75f5b9fef9614f34780fd57a5969ffdd, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2952587958572284774, guid: 75f5b9fef9614f34780fd57a5969ffdd, type: 3}
+      propertyPath: m_TagString
+      value: Floor
       objectReference: {fileID: 0}
     - target: {fileID: 6499847259949235723, guid: 75f5b9fef9614f34780fd57a5969ffdd, type: 3}
       propertyPath: m_LocalPosition.x
@@ -37035,6 +37107,14 @@ PrefabInstance:
     - target: {fileID: 2952587958572284774, guid: 75f5b9fef9614f34780fd57a5969ffdd, type: 3}
       propertyPath: m_Name
       value: Platform.Square.Small (07)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2952587958572284774, guid: 75f5b9fef9614f34780fd57a5969ffdd, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2952587958572284774, guid: 75f5b9fef9614f34780fd57a5969ffdd, type: 3}
+      propertyPath: m_TagString
+      value: Floor
       objectReference: {fileID: 0}
     - target: {fileID: 6499847259949235723, guid: 75f5b9fef9614f34780fd57a5969ffdd, type: 3}
       propertyPath: m_LocalPosition.x
@@ -41499,6 +41579,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Platform.Square.Small (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 2952587958572284774, guid: 75f5b9fef9614f34780fd57a5969ffdd, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2952587958572284774, guid: 75f5b9fef9614f34780fd57a5969ffdd, type: 3}
+      propertyPath: m_TagString
+      value: Floor
+      objectReference: {fileID: 0}
     - target: {fileID: 6499847259949235723, guid: 75f5b9fef9614f34780fd57a5969ffdd, type: 3}
       propertyPath: m_LocalPosition.x
       value: 130.65
@@ -44049,6 +44137,14 @@ PrefabInstance:
     - target: {fileID: 2952587958572284774, guid: 75f5b9fef9614f34780fd57a5969ffdd, type: 3}
       propertyPath: m_Name
       value: Platform.Square.Small (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2952587958572284774, guid: 75f5b9fef9614f34780fd57a5969ffdd, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2952587958572284774, guid: 75f5b9fef9614f34780fd57a5969ffdd, type: 3}
+      propertyPath: m_TagString
+      value: Floor
       objectReference: {fileID: 0}
     - target: {fileID: 6499847259949235723, guid: 75f5b9fef9614f34780fd57a5969ffdd, type: 3}
       propertyPath: m_LocalPosition.x
@@ -50305,65 +50401,9 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 752495108950001521, guid: 75f5b9fef9614f34780fd57a5969ffdd, type: 3}
-      propertyPath: m_Layer
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 752495108950001521, guid: 75f5b9fef9614f34780fd57a5969ffdd, type: 3}
-      propertyPath: m_TagString
-      value: Floor
-      objectReference: {fileID: 0}
-    - target: {fileID: 854066777463399647, guid: 75f5b9fef9614f34780fd57a5969ffdd, type: 3}
-      propertyPath: m_Layer
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 854066777463399647, guid: 75f5b9fef9614f34780fd57a5969ffdd, type: 3}
-      propertyPath: m_TagString
-      value: Floor
-      objectReference: {fileID: 0}
-    - target: {fileID: 1079592360761763364, guid: 75f5b9fef9614f34780fd57a5969ffdd, type: 3}
-      propertyPath: m_Layer
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 1079592360761763364, guid: 75f5b9fef9614f34780fd57a5969ffdd, type: 3}
-      propertyPath: m_TagString
-      value: Floor
-      objectReference: {fileID: 0}
     - target: {fileID: 2952587958572284774, guid: 75f5b9fef9614f34780fd57a5969ffdd, type: 3}
       propertyPath: m_Name
       value: Platform.Square.Small (09)
-      objectReference: {fileID: 0}
-    - target: {fileID: 2952587958572284774, guid: 75f5b9fef9614f34780fd57a5969ffdd, type: 3}
-      propertyPath: m_Layer
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 2952587958572284774, guid: 75f5b9fef9614f34780fd57a5969ffdd, type: 3}
-      propertyPath: m_TagString
-      value: Floor
-      objectReference: {fileID: 0}
-    - target: {fileID: 3495747388598524331, guid: 75f5b9fef9614f34780fd57a5969ffdd, type: 3}
-      propertyPath: m_Layer
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 3495747388598524331, guid: 75f5b9fef9614f34780fd57a5969ffdd, type: 3}
-      propertyPath: m_TagString
-      value: Floor
-      objectReference: {fileID: 0}
-    - target: {fileID: 6218244699654061356, guid: 75f5b9fef9614f34780fd57a5969ffdd, type: 3}
-      propertyPath: m_Layer
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 6218244699654061356, guid: 75f5b9fef9614f34780fd57a5969ffdd, type: 3}
-      propertyPath: m_TagString
-      value: Floor
-      objectReference: {fileID: 0}
-    - target: {fileID: 6226428694698102254, guid: 75f5b9fef9614f34780fd57a5969ffdd, type: 3}
-      propertyPath: m_Layer
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 6226428694698102254, guid: 75f5b9fef9614f34780fd57a5969ffdd, type: 3}
-      propertyPath: m_TagString
-      value: Floor
       objectReference: {fileID: 0}
     - target: {fileID: 6499847259949235723, guid: 75f5b9fef9614f34780fd57a5969ffdd, type: 3}
       propertyPath: m_LocalPosition.x
@@ -50405,40 +50445,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6849345709192869396, guid: 75f5b9fef9614f34780fd57a5969ffdd, type: 3}
-      propertyPath: m_Layer
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 6849345709192869396, guid: 75f5b9fef9614f34780fd57a5969ffdd, type: 3}
-      propertyPath: m_TagString
-      value: Floor
-      objectReference: {fileID: 0}
-    - target: {fileID: 8225356642216103808, guid: 75f5b9fef9614f34780fd57a5969ffdd, type: 3}
-      propertyPath: m_Layer
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 8225356642216103808, guid: 75f5b9fef9614f34780fd57a5969ffdd, type: 3}
-      propertyPath: m_TagString
-      value: Floor
-      objectReference: {fileID: 0}
-    - target: {fileID: 8697349044988416729, guid: 75f5b9fef9614f34780fd57a5969ffdd, type: 3}
-      propertyPath: m_Layer
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 8697349044988416729, guid: 75f5b9fef9614f34780fd57a5969ffdd, type: 3}
-      propertyPath: m_TagString
-      value: Floor
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects:
-    - {fileID: 5642575608463086216, guid: 75f5b9fef9614f34780fd57a5969ffdd, type: 3}
-    - {fileID: 568551407595747819, guid: 75f5b9fef9614f34780fd57a5969ffdd, type: 3}
-    - {fileID: 3944519199913879358, guid: 75f5b9fef9614f34780fd57a5969ffdd, type: 3}
-    - {fileID: 4636130201198272077, guid: 75f5b9fef9614f34780fd57a5969ffdd, type: 3}
-    - {fileID: 485063353415311584, guid: 75f5b9fef9614f34780fd57a5969ffdd, type: 3}
-    - {fileID: 3171382526853634275, guid: 75f5b9fef9614f34780fd57a5969ffdd, type: 3}
-    - {fileID: 8879873979381834578, guid: 75f5b9fef9614f34780fd57a5969ffdd, type: 3}
-    - {fileID: 2858277700950622297, guid: 75f5b9fef9614f34780fd57a5969ffdd, type: 3}
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 75f5b9fef9614f34780fd57a5969ffdd, type: 3}
@@ -52018,6 +52026,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Platform.Square.Small (12)
       objectReference: {fileID: 0}
+    - target: {fileID: 2952587958572284774, guid: 75f5b9fef9614f34780fd57a5969ffdd, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2952587958572284774, guid: 75f5b9fef9614f34780fd57a5969ffdd, type: 3}
+      propertyPath: m_TagString
+      value: Floor
+      objectReference: {fileID: 0}
     - target: {fileID: 6032575654168150766, guid: 75f5b9fef9614f34780fd57a5969ffdd, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -52558,6 +52574,14 @@ PrefabInstance:
     - target: {fileID: 2000126231526771342, guid: fcc6da8248e039c4cad9064821db6b24, type: 3}
       propertyPath: m_Name
       value: Platform.Square.Medium (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2000126231526771342, guid: fcc6da8248e039c4cad9064821db6b24, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2000126231526771342, guid: fcc6da8248e039c4cad9064821db6b24, type: 3}
+      propertyPath: m_TagString
+      value: Floor
       objectReference: {fileID: 0}
     - target: {fileID: 3347550945474812282, guid: fcc6da8248e039c4cad9064821db6b24, type: 3}
       propertyPath: m_LocalPosition.x
@@ -53142,6 +53166,34 @@ PrefabInstance:
     - target: {fileID: 4000650650065783659, guid: f61d4b0391e9a2342857fe3401d28b81, type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 8936025152624404122, guid: f61d4b0391e9a2342857fe3401d28b81, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 53.928
+      objectReference: {fileID: 0}
+    - target: {fileID: 8936025152624404122, guid: f61d4b0391e9a2342857fe3401d28b81, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 4.28524
+      objectReference: {fileID: 0}
+    - target: {fileID: 8936025152624404122, guid: f61d4b0391e9a2342857fe3401d28b81, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -2.8261719
+      objectReference: {fileID: 0}
+    - target: {fileID: 8936025152624404122, guid: f61d4b0391e9a2342857fe3401d28b81, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.72480536
+      objectReference: {fileID: 0}
+    - target: {fileID: 8936025152624404122, guid: f61d4b0391e9a2342857fe3401d28b81, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.028712738
+      objectReference: {fileID: 0}
+    - target: {fileID: 8936025152624404122, guid: f61d4b0391e9a2342857fe3401d28b81, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.68781567
+      objectReference: {fileID: 0}
+    - target: {fileID: 8936025152624404122, guid: f61d4b0391e9a2342857fe3401d28b81, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.027247414
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -54190,6 +54242,14 @@ PrefabInstance:
     - target: {fileID: 2952587958572284774, guid: 75f5b9fef9614f34780fd57a5969ffdd, type: 3}
       propertyPath: m_Name
       value: Platform.Square.Small (5)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2952587958572284774, guid: 75f5b9fef9614f34780fd57a5969ffdd, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2952587958572284774, guid: 75f5b9fef9614f34780fd57a5969ffdd, type: 3}
+      propertyPath: m_TagString
+      value: Floor
       objectReference: {fileID: 0}
     - target: {fileID: 6499847259949235723, guid: 75f5b9fef9614f34780fd57a5969ffdd, type: 3}
       propertyPath: m_LocalPosition.x

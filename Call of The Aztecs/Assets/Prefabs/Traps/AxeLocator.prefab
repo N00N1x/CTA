@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1804878125895193086}
   - component: {fileID: 504964306113570914}
+  - component: {fileID: 7066041274134540063}
   m_Layer: 0
   m_Name: AxeAni
   m_TagString: Untagged
@@ -55,6 +56,27 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!65 &7066041274134540063
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2102009323154054226}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 7.3, y: 2.7, z: 0.33}
+  m_Center: {x: 0, y: -13.29, z: 0.02}
 --- !u!1 &2259365620269558490
 GameObject:
   m_ObjectHideFlags: 0
@@ -64,6 +86,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 497189051312441207}
+  - component: {fileID: 315846424868875802}
   m_Layer: 0
   m_Name: AxeLocator
   m_TagString: Untagged
@@ -87,6 +110,33 @@ Transform:
   - {fileID: 1804878125895193086}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &315846424868875802
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2259365620269558490}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1feb5d8d20aa17428d57a26e8c82c89, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  damageAmount: 100
+  targetTag: Player
+  targetLayer:
+    serializedVersion: 2
+    m_Bits: 8
+  useTrigger: 1
+  enableColliderOnlyDuringSwing: 1
+  swingActiveDuration: 0.25
+  perTargetCooldown: 0.25
+  hitOncePerSwing: 1
+  bladeCollider: {fileID: 7066041274134540063}
+  bladeColliderName: BladeCollider
+  bladeColliderTag: WeaponBlade
+  debugMode: 1
+  alwaysActiveForTesting: 1
 --- !u!1001 &4716745426111409647
 PrefabInstance:
   m_ObjectHideFlags: 0

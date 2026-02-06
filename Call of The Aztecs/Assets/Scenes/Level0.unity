@@ -20756,6 +20756,7 @@ Transform:
   - {fileID: 1033748494}
   - {fileID: 277314574}
   - {fileID: 1736608695}
+  - {fileID: 938146785}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &742252176
@@ -25606,6 +25607,50 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 936093893}
   m_Mesh: {fileID: 7952271828662247766, guid: 43eba9a2cd783c14c8b20c0248fe8f88, type: 3}
+--- !u!1 &938146784
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 938146785}
+  - component: {fileID: 938146786}
+  m_Layer: 0
+  m_Name: CheckpointManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &938146785
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 938146784}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 737868896}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &938146786
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 938146784}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 648703598976a114092b1b55d094288d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CheckpointManager
 --- !u!1 &938907832
 GameObject:
   m_ObjectHideFlags: 0
@@ -32772,7 +32817,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4240503448975373434, guid: 9a3f4c273a6b0f54bb58243acf593cd1, type: 3}
       propertyPath: m_Name
-      value: Shrine
+      value: Checkpoint0
       objectReference: {fileID: 0}
     - target: {fileID: 5931851631953643522, guid: 9a3f4c273a6b0f54bb58243acf593cd1, type: 3}
       propertyPath: m_LocalPosition.x

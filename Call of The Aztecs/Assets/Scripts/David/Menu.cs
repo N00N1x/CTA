@@ -18,9 +18,6 @@ public class GameManager : MonoBehaviour
         Debug.Log("You pressed the Quit Button");
 
             Application.Quit();
-#if UNITY_EDITOR
-            EditorApplication.isPlaying = false;
-#endif
     }
 
     public void LoadMenu(string menuSceneName)

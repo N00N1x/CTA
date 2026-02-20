@@ -31,7 +31,7 @@ public class Windtrap : MonoBehaviour
 
     private void Awake()
     {
-        // ensure particle doesn't play by itself
+       
         if (windParticles != null)
         {
             var main = windParticles.main;
@@ -179,6 +179,8 @@ public class Windtrap : MonoBehaviour
         }
     }
 
+
+    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx GIZMO / AREA CALCULATION XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX :D
    
     private bool IsInsideWindArea(Vector3 pos)
     {

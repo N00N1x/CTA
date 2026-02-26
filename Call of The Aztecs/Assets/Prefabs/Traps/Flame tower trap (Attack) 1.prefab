@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 1725511692934189120}
   serializedVersion: 2
   m_LocalRotation: {x: -0.7071068, y: -0, z: -0.7071068, w: 0}
-  m_LocalPosition: {x: 0.020135414, y: 0.033839256, z: -0.023246106}
+  m_LocalPosition: {x: 0.0279, y: 0.033839256, z: -0.0232}
   m_LocalScale: {x: 0.16930613, y: 0.16930613, z: 0.16930613}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4863,7 +4863,7 @@ Transform:
   m_GameObject: {fileID: 2268393265703458832}
   serializedVersion: 2
   m_LocalRotation: {x: -0.5, y: -0.5, z: -0.5, w: 0.5}
-  m_LocalPosition: {x: 0.014712726, y: 0.07860798, z: -0.022657596}
+  m_LocalPosition: {x: 0.014712726, y: 0.086, z: -0.022657596}
   m_LocalScale: {x: 0.43704328, y: 0.43704328, z: 0.06707298}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -9878,7 +9878,7 @@ Transform:
   m_GameObject: {fileID: 5095540786747965681}
   serializedVersion: 2
   m_LocalRotation: {x: -0.7071068, y: -0, z: -0.7071068, w: 0}
-  m_LocalPosition: {x: 0.020135414, y: 0.04750107, z: -0.023246106}
+  m_LocalPosition: {x: 0.0295, y: 0.04750107, z: -0.0232}
   m_LocalScale: {x: 0.16930613, y: 0.16930613, z: 0.16930613}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -14714,7 +14714,7 @@ Transform:
   m_GameObject: {fileID: 6122270399539874926}
   serializedVersion: 2
   m_LocalRotation: {x: -0.7071068, y: -0, z: -0.7071068, w: 0}
-  m_LocalPosition: {x: 0.020135414, y: 0.062634155, z: -0.023246106}
+  m_LocalPosition: {x: 0.0284, y: 0.062634155, z: -0.0232}
   m_LocalScale: {x: 0.16930613, y: 0.16930613, z: 0.16930613}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -19532,6 +19532,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1300197725085467051}
+  - component: {fileID: 2687518935799143822}
+  - component: {fileID: 1619237679166278643}
   m_Layer: 0
   m_Name: Flame tower trap (Attack) 1
   m_TagString: Untagged
@@ -19549,7 +19551,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: -21.519999, y: -7.7, z: 1.2}
-  m_LocalScale: {x: 475.77875, y: 475.77875, z: 475.77875}
+  m_LocalScale: {x: 150, y: 150, z: 150}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3761136602061705787}
@@ -19560,3 +19562,64 @@ Transform:
   - {fileID: 3012557881813607874}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+--- !u!65 &2687518935799143822
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6815469810618335369}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.034334365, y: 0.06650421, z: 0.03592893}
+  m_Center: {x: 0.015348845, y: 0.050177246, z: -0.020706303}
+--- !u!114 &1619237679166278643
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6815469810618335369}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2b8701b5609c6a4786117b9d768eace, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FlameTowertrap
+  autoActivate: 1
+  autoRepeat: 1
+  warningDuration: 1.5
+  flamesHoldTime: 3
+  repeatDelay: 5
+  keepWarningDuringActive: 1
+  flameStartInterval: 0.4
+  flameStopInterval: 0.4
+  resetAfterActive: 1
+  resetDelay: 5
+  reactivateAfterCooldown: 0
+  reactivateDelay: 0
+  useCooldownWarning: 1
+  cooldownWarningEffect: {fileID: 7089480005528257732}
+  cooldownWarningDuration: 1
+  postCooldownDelay: 0.5
+  damageAmount: 10
+  tickInterval: 0.5
+  targetLayer:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  targetTag: Player
+  warningEffect: {fileID: 7089480005528257732}
+  flameEffects:
+  - {fileID: 1599059519276575613}
+  - {fileID: 1553957557001218401}
+  - {fileID: 4791978383287991539}
+  debugMode: 1

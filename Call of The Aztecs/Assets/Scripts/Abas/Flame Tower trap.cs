@@ -76,6 +76,13 @@ public class FlameTowertrap : MonoBehaviour
     [Tooltip("Particle systems used for the active flame/fire. Assign your three flame ParticleSystems here in order.")]
     public ParticleSystem[] flameEffects;
 
+    [Header("Audio")]
+    [Tooltip("Optional AudioSource on the trap. If present it will be used for flames that live on the same GameObject.")]
+    public AudioSource flameAudioSource;
+
+    [Tooltip("Three (or more) flame audio clips — for each flame the script will pick a random clip from this array and play it while that flame is active.")]
+    public AudioClip[] flameClips;
+
     [Header("Debug")]
     public bool debugMode = false;
 
@@ -91,6 +98,9 @@ public class FlameTowertrap : MonoBehaviour
     // per-target cooldown/tick bookkeeping
     readonly Dictionary<Transform, float> lastDamageTime = new Dictionary<Transform, float>();
 
+    // per-flame AudioSources (one per flame ParticleSystem GameObject or fallback to trap AudioSource)
+    AudioSource[] flameLocalAudioSources;
+
     void Awake()
     {
         // Stop assigned particle systems initially and ensure they will send collision messages.
@@ -100,10 +110,13 @@ public class FlameTowertrap : MonoBehaviour
         if (cooldownWarningEffect != null && cooldownWarningEffect != warningEffect)
             cooldownWarningEffect.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
 
-        if (flameEffects != null)   
+        if (flameEffects != null)
         {
-            foreach (var p in flameEffects)
+            flameLocalAudioSources = new AudioSource[flameEffects.Length];
+
+            for (int i = 0; i < flameEffects.Length; i++)
             {
+                var p = flameEffects[i];
                 if (p == null) continue;
                 p.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
 
@@ -118,9 +131,42 @@ public class FlameTowertrap : MonoBehaviour
                     var proxy = p.gameObject.GetComponent<ParticleCollisionProxy>();
                     if (proxy == null) proxy = p.gameObject.AddComponent<ParticleCollisionProxy>();
                     proxy.owner = this;
+
+                    // Ensure an AudioSource exists on the flame GameObject for per-flame audio
+                    var a = p.gameObject.GetComponent<AudioSource>();
+                    if (a == null) a = p.gameObject.AddComponent<AudioSource>();
+                    a.playOnAwake = false;
+                    a.loop = true;
+                    // default to spatial (3D) so sounds feel local to flame position
+                    a.spatialBlend = 1f;
+                    flameLocalAudioSources[i] = a;
+                }
+                else
+                {
+                    // Flame lives on same GameObject as trap — fallback to trap AudioSource (create if necessary)
+                    if (flameAudioSource == null)
+                    {
+                        flameAudioSource = GetComponent<AudioSource>();
+                        if (flameAudioSource == null)
+                        {
+                            flameAudioSource = gameObject.AddComponent<AudioSource>();
+                            flameAudioSource.playOnAwake = false;
+                        }
+                    }
+
+                    // reuse trap AudioSource for this flame (note: multiple flames sharing same AudioSource will not overlap)
+                    flameLocalAudioSources[i] = flameAudioSource;
                 }
             }
         }
+        else
+        {
+            flameLocalAudioSources = new AudioSource[0];
+        }
+
+        // if flameClips array is empty, warn in debug
+        if ((flameClips == null || flameClips.Length == 0) && debugMode)
+            Debug.Log("[FlameTowertrap] No flameClips assigned - flames will not play per-flame audio.");
     }
 
     void Start()
@@ -229,6 +275,23 @@ public class FlameTowertrap : MonoBehaviour
             if (p != null)
             {
                 p.Play();
+
+                // assign a random clip to this flame's AudioSource and play it (only while flame active)
+                if (flameClips != null && flameClips.Length > 0 && flameLocalAudioSources != null && i < flameLocalAudioSources.Length)
+                {
+                    var a = flameLocalAudioSources[i];
+                    if (a != null)
+                    {
+                        var clip = flameClips[Random.Range(0, flameClips.Length)];
+                        if (clip != null)
+                        {
+                            a.clip = clip;
+                            a.loop = true;
+                            a.Play();
+                        }
+                    }
+                }
+
                 if (debugMode) Debug.Log($"[FlameTowertrap] Flame {i + 1} started.");
             }
             yield return new WaitForSeconds(flameStartInterval);
@@ -275,6 +338,19 @@ public class FlameTowertrap : MonoBehaviour
                     p.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
                     if (debugMode) Debug.Log($"[FlameTowertrap] Flame {i + 1} stopped.");
                 }
+
+                // stop per-flame audio
+                if (flameLocalAudioSources != null && i < flameLocalAudioSources.Length)
+                {
+                    var a = flameLocalAudioSources[i];
+                    if (a != null && a.isPlaying)
+                    {
+                        a.Stop();
+                        a.clip = null;
+                        a.loop = false;
+                    }
+                }
+
                 yield return new WaitForSeconds(flameStopInterval);
             }
         }
@@ -406,6 +482,21 @@ public class FlameTowertrap : MonoBehaviour
             cooldownWarningEffect.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
         if (flameEffects != null)
             foreach (var p in flameEffects) if (p != null) p.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+
+        // stop all flame audio on disable
+        if (flameLocalAudioSources != null)
+        {
+            for (int i = 0; i < flameLocalAudioSources.Length; i++)
+            {
+                var a = flameLocalAudioSources[i];
+                if (a != null && a.isPlaying)
+                {
+                    a.Stop();
+                    a.clip = null;
+                    a.loop = false;
+                }
+            }
+        }
     }
 
     // Proxy component attached to each flame ParticleSystem GameObject to forward OnParticleCollision to the trap.

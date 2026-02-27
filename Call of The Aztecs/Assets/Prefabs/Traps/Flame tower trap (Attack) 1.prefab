@@ -19586,7 +19586,7 @@ AudioSource:
   MinDistance: 1
   MaxDistance: 10
   Pan2D: 0
-  rolloffMode: 1
+  rolloffMode: 0
   BypassEffects: 0
   BypassListenerEffects: 0
   BypassReverbZones: 0
@@ -19702,4 +19702,5 @@ MonoBehaviour:
   flameClips:
   - {fileID: 8300000, guid: 00c317b560b81eb48920f3e1dba7f98c, type: 3}
   - {fileID: 8300000, guid: afc7aeccc48c56e4c9512de213ac919b, type: 3}
+  warningClip: {fileID: 8300000, guid: 6731a906f510f254e8c0a43dd4575071, type: 3}
   debugMode: 0

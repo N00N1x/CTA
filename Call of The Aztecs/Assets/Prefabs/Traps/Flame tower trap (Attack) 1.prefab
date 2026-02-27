@@ -28,7 +28,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0.7071068, y: -0, z: -0.7071068, w: 0}
   m_LocalPosition: {x: 0.020135414, y: 0.033839256, z: -0.023246106}
-  m_LocalScale: {x: 0.16930613, y: 0.16930613, z: 0.16930613}
+  m_LocalScale: {x: 0.07951801, y: 0.07951801, z: 0.090738006}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1300197725085467051}
@@ -4863,8 +4863,8 @@ Transform:
   m_GameObject: {fileID: 2268393265703458832}
   serializedVersion: 2
   m_LocalRotation: {x: -0.5, y: -0.5, z: -0.5, w: 0.5}
-  m_LocalPosition: {x: 0.014712726, y: 0.07860798, z: -0.022657596}
-  m_LocalScale: {x: 0.43704328, y: 0.43704328, z: 0.06707298}
+  m_LocalPosition: {x: 0.0157, y: 0.0837, z: -0.0227}
+  m_LocalScale: {x: 0.23916669, y: 0.23916669, z: 0.08239014}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1300197725085467051}
@@ -9879,7 +9879,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0.7071068, y: -0, z: -0.7071068, w: 0}
   m_LocalPosition: {x: 0.020135414, y: 0.04750107, z: -0.023246106}
-  m_LocalScale: {x: 0.16930613, y: 0.16930613, z: 0.16930613}
+  m_LocalScale: {x: 0.07592703, y: 0.07592703, z: 0.08530828}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1300197725085467051}
@@ -14715,7 +14715,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0.7071068, y: -0, z: -0.7071068, w: 0}
   m_LocalPosition: {x: 0.020135414, y: 0.062634155, z: -0.023246106}
-  m_LocalScale: {x: 0.16930613, y: 0.16930613, z: 0.16930613}
+  m_LocalScale: {x: 0.0639537, y: 0.0639537, z: 0.090187505}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1300197725085467051}
@@ -19532,6 +19532,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1300197725085467051}
+  - component: {fileID: -4352048141731678879}
+  - component: {fileID: 6820011625743716491}
   m_Layer: 0
   m_Name: Flame tower trap (Attack) 1
   m_TagString: Untagged
@@ -19549,7 +19551,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: -21.519999, y: -7.7, z: 1.2}
-  m_LocalScale: {x: 475.77875, y: 475.77875, z: 475.77875}
+  m_LocalScale: {x: 100, y: 100, z: 100}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3761136602061705787}
@@ -19560,3 +19562,144 @@ Transform:
   - {fileID: 3012557881813607874}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+--- !u!82 &-4352048141731678879
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6815469810618335369}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 8300000, guid: 6731a906f510f254e8c0a43dd4575071, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 10
+  Pan2D: 0
+  rolloffMode: 1
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!114 &6820011625743716491
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6815469810618335369}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2b8701b5609c6a4786117b9d768eace, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FlameTowertrap
+  autoActivate: 1
+  autoRepeat: 1
+  warningDuration: 1.5
+  flamesHoldTime: 2
+  repeatDelay: 5
+  keepWarningDuringActive: 1
+  flameStartInterval: 0.4
+  flameStopInterval: 0.4
+  resetAfterActive: 1
+  resetDelay: 5
+  reactivateAfterCooldown: 1
+  reactivateDelay: 0
+  useCooldownWarning: 1
+  cooldownWarningEffect: {fileID: 7089480005528257732}
+  cooldownWarningDuration: 1
+  postCooldownDelay: 0.5
+  damageAmount: 10
+  tickInterval: 0.5
+  targetLayer:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  targetTag: Player
+  warningEffect: {fileID: 7089480005528257732}
+  flameEffects:
+  - {fileID: 1599059519276575613}
+  - {fileID: 1553957557001218401}
+  - {fileID: 4791978383287991539}
+  flameAudioSource: {fileID: -4352048141731678879}
+  flameClips:
+  - {fileID: 8300000, guid: 00c317b560b81eb48920f3e1dba7f98c, type: 3}
+  - {fileID: 8300000, guid: afc7aeccc48c56e4c9512de213ac919b, type: 3}
+  debugMode: 0

@@ -5,14 +5,14 @@ public class TopDownMovementNew : MonoBehaviour
 {
     [Header("Movement Settings")]
     public float moveSpeed = 5f;
-    public float runMultiplier = 1.8f; // Speed multiplier when running
+    public float runMultiplier = 1.8f;
     public float jumpForce = 8f;
     public float gravity = -9.81f;
     public float fallMultiplier = 2.5f;
     public float lowJumpMultiplier = 3f;
-    public float modelForwardAngle = 180f; // Use to correct model forward orientation (180 flips forward)
+    public float modelForwardAngle = 180f;
 
-[Header("Ground Check Settings")]
+    [Header("Ground Check Settings")]
     public LayerMask groundMask;
     public float groundCheckRadius = 0.5f;
     public float groundCheckOffset = 1.0f;
@@ -22,12 +22,15 @@ public class TopDownMovementNew : MonoBehaviour
     private float lastJumpTime = -999f;
 
     [Header("Camera Snap Settings")]
-    public float snapAngle = 90f; // Change to 45f or 60f for smoother movement  
+    public float snapAngle = 90f;
+
+    [Header("References")]
+    public Animator animator; // DRAG the Character's Animator here
 
     private Rigidbody rb;
-    private Animator animator;
     private Vector2 moveInput;
     private Vector3 moveDirection;
+
     private bool jumpPressed;
     private bool jumpHeld;
     private bool isGrounded;
@@ -36,7 +39,6 @@ public class TopDownMovementNew : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        animator = GetComponent<Animator>();
         rb.freezeRotation = true;
     }
 
@@ -51,11 +53,6 @@ public class TopDownMovementNew : MonoBehaviour
         {
             jumpPressed = true;
             jumpHeld = true;
-            if (animator != null)
-            {
-                // match Animator parameter name in Controller
-                animator.SetTrigger("jumped");
-            }
         }
         else if (context.canceled)
         {
@@ -65,16 +62,21 @@ public class TopDownMovementNew : MonoBehaviour
 
     public void OnRun(InputAction.CallbackContext context)
     {
-        runHeld = context.performed; // Shift pressed  
+        runHeld = context.performed;
     }
 
     void FixedUpdate()
     {
-        // Ground check  
+        // Ground check
         Vector3 groundCheckPos = transform.position + Vector3.down * groundCheckOffset;
-        isGrounded = Physics.CheckSphere(groundCheckPos, groundCheckRadius, groundMask, QueryTriggerInteraction.Collide);
+        isGrounded = Physics.CheckSphere(
+            groundCheckPos,
+            groundCheckRadius,
+            groundMask,
+            QueryTriggerInteraction.Collide
+        );
 
-        // --- CAMERA RELATIVE MOVEMENT WITH SNAP ---  
+        // Camera relative movement
         Transform cam = Camera.main.transform;
         float camYaw = cam.eulerAngles.y;
         float snappedYaw = Mathf.Round(camYaw / snapAngle) * snapAngle;
@@ -84,29 +86,38 @@ public class TopDownMovementNew : MonoBehaviour
 
         moveDirection = (forward * moveInput.y + right * moveInput.x).normalized;
 
-        // --- FACE MOVEMENT DIRECTION (SMOOTH) ---  
+        // Face movement direction
         if (moveDirection.sqrMagnitude > 0.001f)
         {
-            // Apply model forward offset in case the character model faces the wrong way
-            Quaternion targetRot = Quaternion.LookRotation(moveDirection, Vector3.up) * Quaternion.Euler(0f, modelForwardAngle, 0f);
-            rb.MoveRotation(Quaternion.Slerp(rb.rotation, targetRot, 10f * Time.fixedDeltaTime));
+            Quaternion targetRot =
+                Quaternion.LookRotation(moveDirection, Vector3.up) *
+                Quaternion.Euler(0f, modelForwardAngle, 0f);
+
+            rb.MoveRotation(Quaternion.Slerp(
+                rb.rotation,
+                targetRot,
+                10f * Time.fixedDeltaTime
+            ));
         }
 
-        // --- APPLY MOVEMENT ---  
         float currentSpeed = moveSpeed * (runHeld ? runMultiplier : 1f);
+
         Vector3 velocity = rb.linearVelocity;
         velocity.x = moveDirection.x * currentSpeed;
         velocity.z = moveDirection.z * currentSpeed;
 
-        // Jump with cooldown  
+        // Jump
         if (jumpPressed && isGrounded && Time.time >= lastJumpTime + jumpCooldown)
         {
             velocity.y = jumpForce;
             lastJumpTime = Time.time;
             jumpPressed = false;
+
+            if (animator != null)
+                animator.SetTrigger("jumped");
         }
 
-        // Variable gravity  
+        // Variable gravity
         if (rb.linearVelocity.y > 0 && !jumpHeld)
         {
             velocity.y += gravity * lowJumpMultiplier * Time.fixedDeltaTime;
@@ -120,11 +131,11 @@ public class TopDownMovementNew : MonoBehaviour
             velocity.y += gravity * Time.fixedDeltaTime;
         }
 
-        // Update animator parameters
+        // Animator updates
         if (animator != null)
         {
             bool isMoving = moveDirection.sqrMagnitude > 0.001f;
-            // Animator parameters in your controller: "isRunning" and "onGround", and trigger "jumped"
+
             animator.SetBool("isRunning", isMoving && isGrounded);
             animator.SetBool("onGround", isGrounded);
         }
@@ -137,7 +148,5 @@ public class TopDownMovementNew : MonoBehaviour
         Gizmos.color = Color.red;
         Vector3 groundCheckPos = transform.position + Vector3.down * groundCheckOffset;
         Gizmos.DrawWireSphere(groundCheckPos, groundCheckRadius);
-    }  
-
-
+    }
 }

@@ -1,23 +1,44 @@
-using System.Collections;
 using UnityEngine;
+using System.Collections;
 
 public class SpikeTrigger : MonoBehaviour
 {
-    public Animator spikeAnimator;
+    public Animator spikeAnimator;   // Assign the Animator in the inspector
+    public string animationTrigger = "Activate"; // Animator trigger name
 
-    public int damage = 100;
-    public float damageDelay = 0.1f;
-    public float cooldown = 0.6f;
+    public int damage = 40;
+    public float damageDelay = 0.1f; 
+    public float cooldown = 0.6f;   
+
     private bool canDamage = false;
+    private bool isOnCooldown = false;
 
-    public void EnableDamage()
+    public void ActivateSpike()
     {
-        canDamage = true;
+        if (isOnCooldown) return;
+
+        // Play spike animation
+        if (spikeAnimator != null)
+        {
+            spikeAnimator.SetTrigger(animationTrigger);
+        }
+
+        // Enable damage after delay
+        StartCoroutine(DamageWindow());
     }
 
-    public void DisableDamage()
+    private IEnumerator DamageWindow()
     {
+        isOnCooldown = true;
+
+        
+        yield return new WaitForSeconds(damageDelay);
+        canDamage = true;
+
+        yield return new WaitForSeconds(cooldown);
         canDamage = false;
+
+        isOnCooldown = false;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -30,9 +51,5 @@ public class SpikeTrigger : MonoBehaviour
         }
     }
 }
-
-
-
-
 
 

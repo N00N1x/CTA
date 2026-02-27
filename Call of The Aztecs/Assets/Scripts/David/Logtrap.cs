@@ -19,7 +19,7 @@ public class LogTrap : MonoBehaviour
 
         if (Vector3.Distance(startPos, transform.position) >= distance)
         {
-            Destroy(gameObject); // or reset
+            gameObject.SetActive(false); // deactivate instead of destroy
         }
     }
 
@@ -28,12 +28,14 @@ public class LogTrap : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             other.GetComponent<playerHealth>()?.TakeDamage(damage);
-
-            Destroy(gameObject);
+            gameObject.SetActive(false); // deactivate instead of destroy
         }
     }
+}
 
-    public class DirectionGizmo : MonoBehaviour
+
+
+public class DirectionGizmo : MonoBehaviour
     {
         public float length = 2f;
 
@@ -48,4 +50,3 @@ public class LogTrap : MonoBehaviour
             Gizmos.DrawSphere(transform.position + transform.forward * length, 0.1f);
         }
     }
-}

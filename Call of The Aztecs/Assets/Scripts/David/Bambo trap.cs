@@ -4,7 +4,7 @@ using System.Collections;
 public class SpikeTrigger : MonoBehaviour
 {
     public Animator spikeAnimator;   // Assign the Animator in the inspector
-    public string animationTrigger = "Activate"; // Animator trigger name
+    public string animationTrigger = "BambooActivate"; // Animator trigger name
 
     public int damage = 40;
     public float damageDelay = 0.1f; 
@@ -23,7 +23,7 @@ public class SpikeTrigger : MonoBehaviour
             spikeAnimator.SetTrigger(animationTrigger);
         }
 
-        // Enable damage after delay
+       
         StartCoroutine(DamageWindow());
     }
 

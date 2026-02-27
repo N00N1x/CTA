@@ -1,9 +1,11 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class LogSpawner : MonoBehaviour
 {
-    public GameObject logPrefab;
-    public float spawnInterval = 3f;
+    public GameObject logPrefab;        // Your log prefab
+    public int poolSize = 5;            // Number of logs to keep in pool
+    public float spawnInterval = 2f;    // Time between spawns
 
     [Header("Gizmo")]
     public bool showGizmo = true;
@@ -11,56 +13,35 @@ public class LogSpawner : MonoBehaviour
     public float gizmoRadius = 0.25f;
     public float forwardArrowLength = 1f;
 
-    private void Start()
+    private List<LogTrap> logPool = new List<LogTrap>();
+    private int currentIndex = 0;
+
+    void Start()
     {
+        // Pre-instantiate log pool
+        for (int i = 0; i < poolSize; i++)
+        {
+            GameObject logObj = Instantiate(logPrefab, transform.position, transform.rotation);
+            logObj.SetActive(false);
+            logPool.Add(logObj.GetComponent<LogTrap>());
+        }
+
+        // Start spawning repeatedly
         InvokeRepeating(nameof(SpawnLog), 0f, spawnInterval);
     }
 
     void SpawnLog()
     {
-        LogTrap log = FindInactiveLog();
-        if (log != null)
-        {
-            log.transform.position = transform.position;
-            log.transform.rotation = transform.rotation;
-            log.gameObject.SetActive(true);
-        }
-        else
-        {
-            Instantiate(logPrefab, transform.position, transform.rotation);
-        }
-    }
+        LogTrap log = logPool[currentIndex];
 
-    LogTrap FindInactiveLog()
-    {
-        LogTrap[] logs = Object.FindObjectsByType<LogTrap>(FindObjectsSortMode.None);
-        foreach (var log in logs)
-        {
-            if (!log.gameObject.activeInHierarchy)
-                return log;
-        }
-        return null;
-    }
+        // Reset position and rotation
+        log.transform.position = transform.position;
+        log.transform.rotation = transform.rotation;
 
-    // Draw spawn gizmo in the Scene view so devs can see where logs will appear and their forward direction.
-    private void OnDrawGizmos()
-    {
-        if (!showGizmo)
-            return;
+        log.gameObject.SetActive(true);
 
-        Gizmos.color = gizmoColor;
-        Gizmos.DrawWireSphere(transform.position, gizmoRadius);
-
-        // forward line
-        Vector3 forwardEnd = transform.position + transform.forward * forwardArrowLength;
-        Gizmos.DrawLine(transform.position, forwardEnd);
-
-        // simple arrowhead at the tip
-        Vector3 tip = forwardEnd;
-        float headSize = forwardArrowLength * 0.25f;
-        Vector3 rightHead = Quaternion.Euler(0f, 160f, 0f) * (-transform.forward) * headSize;
-        Vector3 leftHead = Quaternion.Euler(0f, -160f, 0f) * (-transform.forward) * headSize;
-        Gizmos.DrawLine(tip, tip + rightHead);
-        Gizmos.DrawLine(tip, tip + leftHead);
+        // Move to next in pool
+        currentIndex = (currentIndex + 1) % poolSize;
     }
 }
+

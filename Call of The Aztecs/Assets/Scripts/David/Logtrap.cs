@@ -7,10 +7,24 @@ public class LogTrap : MonoBehaviour
     public float damage = 30f;
 
     private Vector3 startPos;
+    private Rigidbody rb;
 
-    void Start()
+    private void Awake()
     {
+        rb = GetComponent<Rigidbody>();
+    }
+
+    private void OnEnable()
+    {
+        // Reset position, rotation, and Rigidbody
         startPos = transform.position;
+        transform.rotation = Quaternion.identity;
+
+        if (rb != null)
+        {
+            rb.linearVelocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
+        }
     }
 
     void Update()
@@ -19,21 +33,19 @@ public class LogTrap : MonoBehaviour
 
         if (Vector3.Distance(startPos, transform.position) >= distance)
         {
-            gameObject.SetActive(false); // deactivate instead of destroy
+            gameObject.SetActive(false); // Deactivate instead of destroying
         }
     }
 
-    void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
             other.GetComponent<playerHealth>()?.TakeDamage(damage);
-            gameObject.SetActive(false); // deactivate instead of destroy
+            gameObject.SetActive(false);
         }
     }
 }
-
-
 
 public class DirectionGizmo : MonoBehaviour
     {

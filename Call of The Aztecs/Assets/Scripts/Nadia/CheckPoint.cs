@@ -1,5 +1,4 @@
-using NUnit.Framework;
-using UnityEngine;
+using UnityEngine; 
 
 public class CheckPoint : MonoBehaviour
 {
@@ -23,4 +22,3 @@ public class CheckPoint : MonoBehaviour
         }
     }
 }
-

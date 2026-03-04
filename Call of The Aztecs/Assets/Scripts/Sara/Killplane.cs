@@ -4,6 +4,7 @@ public class Killplane : MonoBehaviour
 {
     private void OnTriggerEnter(Collider other)
     {
+        Debug.Log("enterrd: " + other.gameObject.name + " | tag: " + other.tag);
         TryKillPlayer(other.gameObject);
     }
 
@@ -15,25 +16,25 @@ public class Killplane : MonoBehaviour
     private void TryKillPlayer(GameObject obj)
     {
         if (obj == null) return;
-
-        var playerHealth = obj.GetComponent<playerHealth>() ?? obj.GetComponentInParent<playerHealth>();
-
-        if (playerHealth != null)
+        if (obj.CompareTag("Player"))
         {
-            playerHealth.TakeDamage(float.MaxValue);
+            if (CheckpointManager.Instance != null)
+            {
+                CheckpointManager.Instance.RespawnPlayer(obj);
+            }
+            else
+            {
+                Debug.LogWarning("CheckpointManager not found in scene.");
+            }
+
             return;
         }
 
-        if (obj.CompareTag("Player"))
-       {
-            if (CheckpointManager.Instance != null)
-            {
-               CheckpointManager.Instance.RespawnPlayer(obj);
-            }
-           else
-           {
-               Debug.LogWarning("CheckpointManager not found in scene.");
-           }
-       }
+        var entityHealth = obj.GetComponent<playerHealth>() ?? obj.GetComponentInParent<playerHealth>();
+
+        if (entityHealth != null)
+        {
+            entityHealth.TakeDamage(float.MaxValue);
+        }
     }
 }

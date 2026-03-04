@@ -83,6 +83,9 @@ public class FlameTowertrap : MonoBehaviour
     [Tooltip("Three (or more) flame audio clips — for each flame the script will pick a random clip from this array and play it while that flame is active.")]
     public AudioClip[] flameClips;
 
+    [Tooltip("Optional audio clip played while the top warningEffect is playing.")]
+    public AudioClip warningClip;
+
     [Header("Debug")]
     public bool debugMode = false;
 
@@ -100,6 +103,9 @@ public class FlameTowertrap : MonoBehaviour
 
     // per-flame AudioSources (one per flame ParticleSystem GameObject or fallback to trap AudioSource)
     AudioSource[] flameLocalAudioSources;
+
+    // audio source for the warningEffect (on the warning GameObject or reusing trap AudioSource)
+    AudioSource warningLocalAudioSource;
 
     void Awake()
     {
@@ -164,9 +170,40 @@ public class FlameTowertrap : MonoBehaviour
             flameLocalAudioSources = new AudioSource[0];
         }
 
+        // Setup warning audio source (prefer audio on the warningEffect GameObject)
+        if (warningEffect != null)
+        {
+            if (warningEffect.gameObject != gameObject)
+            {
+                var wa = warningEffect.gameObject.GetComponent<AudioSource>();
+                if (wa == null) wa = warningEffect.gameObject.AddComponent<AudioSource>();
+                wa.playOnAwake = false;
+                wa.loop = true;
+                wa.spatialBlend = 1f;
+                warningLocalAudioSource = wa;
+            }
+            else
+            {
+                // warning lives on same GameObject as trap -> reuse/create flameAudioSource
+                if (flameAudioSource == null)
+                {
+                    flameAudioSource = GetComponent<AudioSource>();
+                    if (flameAudioSource == null)
+                    {
+                        flameAudioSource = gameObject.AddComponent<AudioSource>();
+                        flameAudioSource.playOnAwake = false;
+                    }
+                }
+                warningLocalAudioSource = flameAudioSource;
+            }
+        }
+
         // if flameClips array is empty, warn in debug
         if ((flameClips == null || flameClips.Length == 0) && debugMode)
             Debug.Log("[FlameTowertrap] No flameClips assigned - flames will not play per-flame audio.");
+
+        if (warningEffect != null && warningClip == null && debugMode)
+            Debug.Log("[FlameTowertrap] No warningClip assigned - top warning will not play audio.");
     }
 
     void Start()
@@ -214,13 +251,34 @@ public class FlameTowertrap : MonoBehaviour
         if (isActive || isWarningPlaying || isCoolingDown) yield break;
 
         isWarningPlaying = true;
-        if (warningEffect != null) warningEffect.Play();
+        if (warningEffect != null)
+        {
+            warningEffect.Play();
+
+            // start warning audio
+            if (warningLocalAudioSource != null && warningClip != null)
+            {
+                warningLocalAudioSource.clip = warningClip;
+                warningLocalAudioSource.loop = true;
+                warningLocalAudioSource.Play();
+            }
+        }
         if (debugMode) Debug.Log($"[FlameTowertrap] Warning started for {delay} seconds.");
 
         yield return new WaitForSeconds(delay);
 
         if (!keepWarningDuringActive && warningEffect != null)
+        {
             warningEffect.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+
+            // stop warning audio when warning stops
+            if (warningLocalAudioSource != null && warningLocalAudioSource.isPlaying)
+            {
+                warningLocalAudioSource.Stop();
+                warningLocalAudioSource.clip = null;
+                warningLocalAudioSource.loop = false;
+            }
+        }
 
         isWarningPlaying = false;
 
@@ -357,7 +415,17 @@ public class FlameTowertrap : MonoBehaviour
 
         // stop main warning if it was kept during active
         if (keepWarningDuringActive && warningEffect != null)
+        {
             warningEffect.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+
+            // also stop warning audio if it was playing
+            if (warningLocalAudioSource != null && warningLocalAudioSource.isPlaying)
+            {
+                warningLocalAudioSource.Stop();
+                warningLocalAudioSource.clip = null;
+                warningLocalAudioSource.loop = false;
+            }
+        }
 
         isActive = false;
 
@@ -496,6 +564,14 @@ public class FlameTowertrap : MonoBehaviour
                     a.loop = false;
                 }
             }
+        }
+
+        // stop warning audio on disable
+        if (warningLocalAudioSource != null && warningLocalAudioSource.isPlaying)
+        {
+            warningLocalAudioSource.Stop();
+            warningLocalAudioSource.clip = null;
+            warningLocalAudioSource.loop = false;
         }
     }
 

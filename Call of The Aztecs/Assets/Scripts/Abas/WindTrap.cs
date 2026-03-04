@@ -1,9 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
-public class windTrap : MonoBehaviour
+/// <summary>
+/// Simple WindTrap:
+/// - Uses a trigger collider area to detect the Player (CompareTag("Player")).
+/// - Plays a ParticleSystem only while active (visual only).
+/// - Applies a smooth, continuous push to Player Rigidbodies inside the trigger using FixedUpdate + ForceMode.Acceleration.
+/// - Cycle: idle -> active (pushDuration) -> cooldown -> optional auto-repeat.
+/// - Exposes pushForce, pushDuration, cooldown, direction, autoRepeat, repeatDelay and a single Animator (toggled via bool "IsActive") in the Inspector.
+/// - Includes OnValidate clamps and an editor gizmo showing wind direction.
+/// </summary>
+public class WindTrap : MonoBehaviour
 {
     [Header("Activation")]
     [Tooltip("Automatically start the wind trap on Start.")]
@@ -76,17 +84,6 @@ public class windTrap : MonoBehaviour
         // ensure visuals are off initially
         if (windParticles != null)
             windParticles.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
-
-        // sanity checks
-        var col = GetComponent<Collider>();
-        if (col == null)
-        {
-            if (debugMode) Debug.LogWarning("[WindTrap] No Collider found on GameObject. The trap requires a trigger Collider.");
-        }
-        else if (!col.isTrigger)
-        {
-            if (debugMode) Debug.LogWarning("[WindTrap] Collider is not set as Trigger. Please enable 'Is Trigger' for the Collider.");
-        }
 
         if (autoActivate)
             ActivateTrap(0f);
@@ -197,13 +194,10 @@ public class windTrap : MonoBehaviour
     {
         if (!isActive || playersInside.Count == 0) return;
 
-        // Use world-space direction for both local and custom directions
-        Vector3 dir = useLocalDirection ? transform.forward : transform.TransformDirection(pushDirection.normalized);
-        dir = dir.normalized;
+        Vector3 dir = useLocalDirection ? transform.forward : pushDirection.normalized;
+        dir.Normalize();
 
-        // iterate a snapshot to avoid modification during enumeration
-        var snapshot = playersInside.ToArray();
-        foreach (var col in snapshot)
+        foreach (var col in playersInside)
         {
             if (col == null) continue;
             // find rigidbody: attached or in parent
@@ -215,7 +209,7 @@ public class windTrap : MonoBehaviour
         }
 
         if (debugMode)
-            Debug.Log($"[WindTrap] Applying wind to {playersInside.Count} player(s) — force={pushForce} dir={dir}");
+            Debug.Log($"[WindTrap] Applying wind to {playersInside.Count} player(s) — force={pushForce} dir={(useLocalDirection ? transform.forward : pushDirection.normalized)}");
     }
 
     void OnDisable()

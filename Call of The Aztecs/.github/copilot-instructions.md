@@ -11,3 +11,5 @@
 ## Project-Specific Rules
 - FlameTowertrap should reset automatically after a configurable delay (resetAfterActive/resetDelay). Keep reset behavior implemented.
 - The top warning particle (`warningEffect`) must play a `warningClip` using an AudioSource on the warning ParticleSystem GameObject while the warning is active; fallback to the trap AudioSource if the warning AudioSource is not available.
+- Include a boolean `debugMode` field in trap scripts to control logging and avoid 'debugMode' undefined errors.
+- WindTrap should use a trigger collider to detect only the Player via `CompareTag("Player")`. The particle system is visual only and plays only while active; it should apply continuous force to the player's Rigidbody in `FixedUpdate` for smoothness. Expose inspector controls: `pushForce`, `pushDuration`, `cooldown`, `direction`, `autoRepeat`, `repeatDelay`, and animator controls, including optional animator-driven duration.

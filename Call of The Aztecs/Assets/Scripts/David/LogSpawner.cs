@@ -15,6 +15,7 @@ public class LogSpawner : MonoBehaviour
 
     private List<LogTrap> logPool = new List<LogTrap>();
     private int currentIndex = 0;
+    private Vector3 layDownRotation;
 
     void Start()
     {
@@ -34,13 +35,13 @@ public class LogSpawner : MonoBehaviour
     {
         LogTrap log = logPool[currentIndex];
 
-        // Reset position and rotation
-        log.transform.position = transform.position;
-        log.transform.rotation = transform.rotation;
+        Quaternion finalRotation =
+            transform.rotation * Quaternion.Euler(layDownRotation);
+
+        log.transform.SetPositionAndRotation(transform.position, finalRotation);
 
         log.gameObject.SetActive(true);
 
-        // Move to next in pool
         currentIndex = (currentIndex + 1) % poolSize;
     }
 }

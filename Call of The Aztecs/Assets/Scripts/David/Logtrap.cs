@@ -16,9 +16,7 @@ public class LogTrap : MonoBehaviour
 
     private void OnEnable()
     {
-        // Reset position, rotation, and Rigidbody
         startPos = transform.position;
-        transform.rotation = Quaternion.identity;
 
         if (rb != null)
         {
@@ -26,7 +24,6 @@ public class LogTrap : MonoBehaviour
             rb.angularVelocity = Vector3.zero;
         }
     }
-
     void Update()
     {
         transform.Translate(Vector3.forward * speed * Time.deltaTime);

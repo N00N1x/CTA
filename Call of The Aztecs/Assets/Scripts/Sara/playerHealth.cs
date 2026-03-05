@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -7,6 +8,10 @@ public class playerHealth : MonoBehaviour
     [Header("Health")]
     [SerializeField] private float maxHealth = 100f;
     [SerializeField] private float currentHealth = 100f;
+
+    public float CurrentHealth => currentHealth;
+    public float MaxHealth => maxHealth;
+    public event Action<float, float> OnHealthChanged;
 
     [Header("Scene / Respawn")]
     [SerializeField] private float respawnDelay = 0f;
@@ -23,10 +28,15 @@ public class playerHealth : MonoBehaviour
 
     private void Start()
     {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
 
         if (currentHealth <= 0f)
             currentHealth = maxHealth;
+
+        OnHealthChanged?.Invoke(currentHealth, maxHealth);
     }
+
     public void TakeDamage(float amount)
     {
         if (amount <= 0f) return;
@@ -35,6 +45,8 @@ public class playerHealth : MonoBehaviour
         currentHealth = Mathf.Clamp(currentHealth, 0f, maxHealth);
 
         Debug.Log($"Player took {amount} damage. Current health: {currentHealth}/{maxHealth}");
+
+        OnHealthChanged?.Invoke(currentHealth, maxHealth);
 
         if (currentHealth <= 0f)
             Die();
@@ -51,6 +63,8 @@ public class playerHealth : MonoBehaviour
 
         currentHealth = Mathf.Clamp(currentHealth + amount, 0f, maxHealth);
         Debug.Log($"Player healed {amount}. Current health: {currentHealth}/{maxHealth}");
+
+        OnHealthChanged?.Invoke(currentHealth, maxHealth);
     }
 
     private void Die()

@@ -7,6 +7,12 @@ public class SpikeTrap : MonoBehaviour
     public Animator animator;
     public string triggerName = "Activate";
 
+    [Header("Looping")]
+    [Tooltip("If true the script will toggle a bool parameter to loop the animation state. The animation clip must be set to Loop Time in its import/settings or the Animator state's Motion must loop.")]
+    public bool loopAnimation = false;
+    [Tooltip("Animator bool parameter name used for looping when loopAnimation is true.")]
+    public string loopParameterName = "IsActive";
+
     [Header("Cycle")]
     public bool autoCycle = true;
     public float repeatInterval = 2f;     // time between activations
@@ -72,8 +78,18 @@ public class SpikeTrap : MonoBehaviour
         isBusy = true;
 
         // play animation if assigned
-        if (animator != null && !string.IsNullOrEmpty(triggerName))
-            animator.SetTrigger(triggerName);
+        if (animator != null)
+        {
+            if (loopAnimation)
+            {
+                // enable loop bool; Animator state should have looped motion
+                animator.SetBool(loopParameterName, true);
+            }
+            else if (!string.IsNullOrEmpty(triggerName))
+            {
+                animator.SetTrigger(triggerName);
+            }
+        }
 
         // wait a short delay so spikes have time to appear (tune damageDelay to match animation)
         if (damageDelay > 0f)
@@ -94,6 +110,12 @@ public class SpikeTrap : MonoBehaviour
 
         // remain active for the visual duration
         yield return new WaitForSeconds(activeDuration);
+
+        // stop looping bool if used
+        if (animator != null && loopAnimation)
+        {
+            animator.SetBool(loopParameterName, false);
+        }
 
         // cooldown finished
         isBusy = false;

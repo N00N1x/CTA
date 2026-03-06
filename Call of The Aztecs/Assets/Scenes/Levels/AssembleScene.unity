@@ -1626,7 +1626,7 @@ GameObject:
   - component: {fileID: 263350718}
   - component: {fileID: 263350717}
   m_Layer: 5
-  m_Name: Canvas
+  m_Name: InfoText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -15645,7 +15645,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1728919127
 Transform:
   m_ObjectHideFlags: 0
@@ -16761,10 +16761,10 @@ PrefabInstance:
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 4076459806869236387, guid: 6d4f518bb55ddb047992602d93d29d6e, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 51406367}
+      addedObject: {fileID: 263350716}
     - targetCorrespondingSourceObject: {fileID: 4076459806869236387, guid: 6d4f518bb55ddb047992602d93d29d6e, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 263350716}
+      addedObject: {fileID: 51406367}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6d4f518bb55ddb047992602d93d29d6e, type: 3}
 --- !u!114 &1897685380 stripped

@@ -26,7 +26,7 @@ public class GameManager : MonoBehaviour
     public void StartGame(string Level0) 
     {
 
-        SceneManager.LoadScene("AntonTestScene");
+        SceneManager.LoadScene("AssembleScene");
 
     }
 

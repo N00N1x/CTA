@@ -30,10 +30,10 @@ public class GameManager : MonoBehaviour
 
     }
 
-    public void Options(string Options)
+    public void Options(string MainMenu)
     {
 
-
+        SceneManager.LoadScene("MainMenu");
     }
     public void OnpointerEnter(PointerEventData eventData)
     {

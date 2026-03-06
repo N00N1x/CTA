@@ -99,6 +99,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4770529302849441861}
   - component: {fileID: -4051392605495157284}
+  - component: {fileID: 4042164391687332637}
+  - component: {fileID: 8191127759927387668}
   m_Layer: 0
   m_Name: bamboo trap 1
   m_TagString: Untagged
@@ -220,6 +222,45 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!95 &4042164391687332637
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3903260414358767612}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: c546dbd4b6224be46b75418c35e7c317, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &8191127759927387668
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3903260414358767612}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1fb7bac99b7703a4594802469fc9f4b7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SpikeTrigger
+  spikeAnimator: {fileID: 0}
+  animationTrigger: BambooActivate
+  damage: 40
+  damageDelay: 0.1
+  cooldown: 0.6
 --- !u!1 &5296180697704915900
 GameObject:
   m_ObjectHideFlags: 0

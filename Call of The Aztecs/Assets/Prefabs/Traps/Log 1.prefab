@@ -153,8 +153,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3670ea055e352ac4fb25967b906df114, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LogTrap
-  speed: 3
-  distance: 10
+  speed: 5
+  distance: 30
   damage: 30
 --- !u!82 &7814090202493031595
 AudioSource:

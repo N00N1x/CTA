@@ -5,12 +5,9 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-
     public void RestartGame()
     {
-        Scene currentScene = SceneManager.GetActiveScene();
-        SceneManager.LoadScene(currentScene.name);
-
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     public void QuitGame()
@@ -18,9 +15,6 @@ public class GameManager : MonoBehaviour
         Debug.Log("You pressed the Quit Button");
 
             Application.Quit();
-#if UNITY_EDITOR
-            EditorApplication.isPlaying = false;
-#endif
     }
 
     public void LoadMenu(string menuSceneName)
@@ -32,7 +26,7 @@ public class GameManager : MonoBehaviour
     public void StartGame(string Level0) 
     {
 
-        SceneManager.LoadScene("Level0");
+        SceneManager.LoadScene("AntonTestScene");
 
     }
 

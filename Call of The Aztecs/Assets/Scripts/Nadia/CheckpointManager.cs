@@ -3,7 +3,6 @@ using UnityEngine;
 public class CheckpointManager : MonoBehaviour
 {
     public static CheckpointManager Instance;
-
     private Vector3 lastCheckpoint;
 
     private void Awake()
@@ -27,7 +26,13 @@ public class CheckpointManager : MonoBehaviour
     }
 
     public void RespawnPlayer(GameObject player)
-    {
-        player.transform.position = lastCheckpoint;
+    {player.transform.position = lastCheckpoint;
+
+        Rigidbody rb = player.GetComponent<Rigidbody>();
+        if (rb != null)
+        {
+            rb.linearVelocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
+        }
     }
 }

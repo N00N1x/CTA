@@ -18,7 +18,7 @@ public class LightCookieAnimScript : MonoBehaviour
         foreach(Texture2D n in Cookies)
         {
             RayLight.cookie = n;
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForSeconds(0.05f);
         }
         StartCoroutine(CookiesScrollCor());
     }

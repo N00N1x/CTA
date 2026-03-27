@@ -9,8 +9,8 @@ EditorBuildSettings:
     path: Assets/Scenes/Main Menu.unity
     guid: 90a88c7af40c1ca43ac0b2f76ff886a8
   - enabled: 1
-    path: Assets/Scenes/AntonTestScene.unity
-    guid: be964d603204afe468d21f246ecc9cbd
+    path: Assets/Scenes/Levels/AssembleScene.unity
+    guid: cbfc9aa63b005e04482a42c0d1434604
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: 4019c33d06c9ff843917ccc406c2ac7e, type: 2}
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}

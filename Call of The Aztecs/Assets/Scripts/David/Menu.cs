@@ -26,14 +26,14 @@ public class GameManager : MonoBehaviour
     public void StartGame(string Level0) 
     {
 
-        SceneManager.LoadScene("AntonTestScene");
+        SceneManager.LoadScene("AssembleScene");
 
     }
 
-    public void Options(string Options)
+    public void Options(string MainMenu)
     {
 
-
+        SceneManager.LoadScene("MainMenu");
     }
     public void OnpointerEnter(PointerEventData eventData)
     {

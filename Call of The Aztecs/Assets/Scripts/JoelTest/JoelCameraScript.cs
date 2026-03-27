@@ -7,11 +7,11 @@ public class JoelCameraScript : MonoBehaviour
 
     void Start()
     {
-        offset = transform.position - player.position;
+        offset = transform.position - new Vector3 (player.position.x, 0, player.position.z);
     }
 
     void Update()
     {
-        transform.position = player.position + offset;
+        transform.position = new Vector3 (player.position.x, 0, player.position.z) + offset;
     }
 }

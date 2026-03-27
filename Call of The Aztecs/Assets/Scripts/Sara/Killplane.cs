@@ -1,4 +1,6 @@
+using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Killplane : MonoBehaviour
 {
@@ -16,9 +18,23 @@ public class Killplane : MonoBehaviour
     {
         if (obj == null) return;
 
-        if (obj.CompareTag("Player"))
+        Transform t = obj.transform;
+        while (t != null)
         {
-            Destroy(obj);
+            if (t.CompareTag("Player"))
+            {
+                Destroy(t.gameObject);
+                StartCoroutine(ReloadSceneNextFrame());
+                return;
+            }
+
+            t = t.parent;
         }
+    }
+
+    private IEnumerator ReloadSceneNextFrame()
+    {
+        yield return null;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }

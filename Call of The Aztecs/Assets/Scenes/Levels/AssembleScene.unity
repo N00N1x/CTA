@@ -918,11 +918,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1fb7bac99b7703a4594802469fc9f4b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpikeTrigger
-  spikeAnimator: {fileID: 0}
-  animationTrigger: BambooActivate
-  damage: 50
+  animator: {fileID: 0}
+  triggerName: Activate
+  loopAnimation: 0
+  loopParameterName: IsActive
+  autoCycle: 1
+  repeatInterval: 2
+  activeDuration: 0.6
   damageDelay: 0.1
-  cooldown: 0.6
+  damageAmount: 100
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  damageBoxCenter: {x: 0, y: 0.5, z: 0.5}
+  damageBoxSize: {x: 1, y: 1, z: 1}
 --- !u!1 &151873919
 GameObject:
   m_ObjectHideFlags: 0
@@ -996,11 +1005,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1fb7bac99b7703a4594802469fc9f4b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpikeTrigger
-  spikeAnimator: {fileID: 0}
-  animationTrigger: BambooActivate
-  damage: 50
+  animator: {fileID: 0}
+  triggerName: Activate
+  loopAnimation: 0
+  loopParameterName: IsActive
+  autoCycle: 1
+  repeatInterval: 2
+  activeDuration: 0.6
   damageDelay: 0.1
-  cooldown: 0.6
+  damageAmount: 100
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  damageBoxCenter: {x: 0, y: 0.5, z: 0.5}
+  damageBoxSize: {x: 1, y: 1, z: 1}
 --- !u!1001 &182684906
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5699,7 +5717,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5199351144925756204, guid: eac3a8281f2838e4394a32f5e370385a, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -10.34683
+      value: 790
       objectReference: {fileID: 0}
     - target: {fileID: 5199351144925756204, guid: eac3a8281f2838e4394a32f5e370385a, type: 3}
       propertyPath: m_LocalPosition.z
@@ -11749,11 +11767,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1fb7bac99b7703a4594802469fc9f4b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpikeTrigger
-  spikeAnimator: {fileID: 0}
-  animationTrigger: BambooActivate
-  damage: 50
+  animator: {fileID: 0}
+  triggerName: Activate
+  loopAnimation: 0
+  loopParameterName: IsActive
+  autoCycle: 1
+  repeatInterval: 2
+  activeDuration: 0.6
   damageDelay: 0.1
-  cooldown: 0.6
+  damageAmount: 100
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  damageBoxCenter: {x: 0, y: 0.5, z: 0.5}
+  damageBoxSize: {x: 1, y: 1, z: 1}
 --- !u!1001 &1377250880
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14826,11 +14853,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1fb7bac99b7703a4594802469fc9f4b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpikeTrigger
-  spikeAnimator: {fileID: 0}
-  animationTrigger: BambooActivate
-  damage: 50
+  animator: {fileID: 0}
+  triggerName: Activate
+  loopAnimation: 0
+  loopParameterName: IsActive
+  autoCycle: 1
+  repeatInterval: 2
+  activeDuration: 0.6
   damageDelay: 0.1
-  cooldown: 0.6
+  damageAmount: 100
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  damageBoxCenter: {x: 0, y: 0.5, z: 0.5}
+  damageBoxSize: {x: 1, y: 1, z: 1}
 --- !u!1001 &1648572498
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15150,8 +15186,8 @@ PositionConstraint:
   m_Enabled: 1
   serializedVersion: 2
   m_Weight: 1
-  m_TranslationAtRest: {x: 42.848053, y: 29.623718, z: 38.63452}
-  m_TranslationOffset: {x: 0, y: 5.674999, z: -4}
+  m_TranslationAtRest: {x: 42.848053, y: 27.56872, z: 38.63452}
+  m_TranslationOffset: {x: 0, y: 3.6200008, z: -4}
   m_AffectTranslationX: 1
   m_AffectTranslationY: 1
   m_AffectTranslationZ: 1
@@ -15272,7 +15308,7 @@ Transform:
   m_GameObject: {fileID: 1677024911}
   serializedVersion: 2
   m_LocalRotation: {x: 0.2534014, y: -0.0000000061441874, z: 0.000000001609477, w: 0.9673612}
-  m_LocalPosition: {x: 42.848053, y: 29.623718, z: 38.63452}
+  m_LocalPosition: {x: 42.848053, y: 27.56872, z: 38.63452}
   m_LocalScale: {x: 330.62033, y: 432.57538, z: 432.57544}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -15485,11 +15521,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1fb7bac99b7703a4594802469fc9f4b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpikeTrigger
-  spikeAnimator: {fileID: 0}
-  animationTrigger: BambooActivate
-  damage: 50
+  animator: {fileID: 0}
+  triggerName: Activate
+  loopAnimation: 0
+  loopParameterName: IsActive
+  autoCycle: 1
+  repeatInterval: 2
+  activeDuration: 0.6
   damageDelay: 0.1
-  cooldown: 0.6
+  damageAmount: 100
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  damageBoxCenter: {x: 0, y: 0.5, z: 0.5}
+  damageBoxSize: {x: 1, y: 1, z: 1}
 --- !u!4 &1701298302 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4770529302849441861, guid: 8102ad0abc620cc4cad0d45dd0ef7acd, type: 3}
@@ -16905,11 +16950,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1fb7bac99b7703a4594802469fc9f4b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpikeTrigger
-  spikeAnimator: {fileID: 0}
-  animationTrigger: BambooActivate
-  damage: 50
+  animator: {fileID: 0}
+  triggerName: Activate
+  loopAnimation: 0
+  loopParameterName: IsActive
+  autoCycle: 1
+  repeatInterval: 2
+  activeDuration: 0.6
   damageDelay: 0.1
-  cooldown: 0.6
+  damageAmount: 100
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  damageBoxCenter: {x: 0, y: 0.5, z: 0.5}
+  damageBoxSize: {x: 1, y: 1, z: 1}
 --- !u!1 &1979281311 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3903260414358767612, guid: 8102ad0abc620cc4cad0d45dd0ef7acd, type: 3}
@@ -16932,11 +16986,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1fb7bac99b7703a4594802469fc9f4b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpikeTrigger
-  spikeAnimator: {fileID: 0}
-  animationTrigger: BambooActivate
-  damage: 50
+  animator: {fileID: 0}
+  triggerName: Activate
+  loopAnimation: 0
+  loopParameterName: IsActive
+  autoCycle: 1
+  repeatInterval: 2
+  activeDuration: 0.6
   damageDelay: 0.1
-  cooldown: 0.6
+  damageAmount: 100
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  damageBoxCenter: {x: 0, y: 0.5, z: 0.5}
+  damageBoxSize: {x: 1, y: 1, z: 1}
 --- !u!1001 &1986329450
 PrefabInstance:
   m_ObjectHideFlags: 0

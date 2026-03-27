@@ -31,7 +31,7 @@ public class WindTrap : MonoBehaviour
 
     [Tooltip("How long (seconds) the trap remains active (push + particles).")]
     [Min(0f)]
-    public float pushDuration = 1.0f;
+    public float pushDuration = 10.0f;
 
     [Tooltip("If true use this transform's forward as wind direction. Otherwise use pushDirection (local).")]
     public bool useLocalDirection = true;
@@ -65,6 +65,7 @@ public class WindTrap : MonoBehaviour
     Coroutine activationCoroutine;
     Coroutine cooldownCoroutine;
     Coroutine repeatCoroutine;
+    private Vector3 boxSize;
 
     // players inside trigger (only colliders tagged Player are added)
     readonly HashSet<Collider> playersInside = new HashSet<Collider>();
@@ -235,14 +236,32 @@ public class WindTrap : MonoBehaviour
     // Editor gizmo: show wind direction when selected
     void OnDrawGizmosSelected()
     {
-        Gizmos.color = Color.cyan;
+        // Get direction (same as your force)
+        Vector3 dir = useLocalDirection
+            ? transform.forward
+            : transform.TransformDirection(pushDirection.normalized);
+
+        dir.Normalize();
+
         Vector3 origin = transform.position;
-        Vector3 dir = useLocalDirection ? transform.forward : transform.TransformDirection(pushDirection.normalized);
-        Gizmos.DrawLine(origin, origin + dir.normalized * 2.0f);
-        // small arrow head
+
+        // Main line
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawLine(origin, origin + dir * 3f);
+
+        // Arrow head
+        float arrowSize = 0.5f;
+
         Vector3 right = Quaternion.LookRotation(dir) * Quaternion.Euler(0, 150, 0) * Vector3.forward;
         Vector3 left = Quaternion.LookRotation(dir) * Quaternion.Euler(0, -150, 0) * Vector3.forward;
-        Gizmos.DrawLine(origin + dir.normalized * 2.0f, origin + dir.normalized * 1.6f + right * 0.3f);
-        Gizmos.DrawLine(origin + dir.normalized * 2.0f, origin + dir.normalized * 1.6f + left * 0.3f);
+
+        Vector3 tip = origin + dir * 3f;
+
+        Gizmos.DrawLine(tip, tip + right * arrowSize);
+        Gizmos.DrawLine(tip, tip + left * arrowSize);
+
+        // Optional: draw wind area
+        Gizmos.color = new Color(0, 1, 1, 0.2f);
+        Gizmos.DrawWireCube(transform.position, boxSize);
     }
 }

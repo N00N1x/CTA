@@ -455,6 +455,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!111 &1154459438 stripped
+Animation:
+  m_CorrespondingSourceObject: {fileID: 8137224290866567720, guid: 353d66ca5ccdbfc4daf588f8a7645b21, type: 3}
+  m_PrefabInstance: {fileID: 7281423533982296035}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1184093695
 GameObject:
   m_ObjectHideFlags: 0
@@ -1015,6 +1020,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Log station
       objectReference: {fileID: 0}
+    - target: {fileID: 1974588677290075566, guid: 353d66ca5ccdbfc4daf588f8a7645b21, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3423655263874355122, guid: 353d66ca5ccdbfc4daf588f8a7645b21, type: 3}
+      propertyPath: debugMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3423655263874355122, guid: 353d66ca5ccdbfc4daf588f8a7645b21, type: 3}
+      propertyPath: legacyAnimation
+      value: 
+      objectReference: {fileID: 1154459438}
     - target: {fileID: 8929369805025205798, guid: 353d66ca5ccdbfc4daf588f8a7645b21, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

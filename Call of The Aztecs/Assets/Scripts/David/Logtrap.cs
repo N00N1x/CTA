@@ -10,12 +10,19 @@ public class LogTrap : MonoBehaviour
     public float damage = 30f;
     public string playerTag = "Player";
 
-    [Header("Animation Looping")]
-    public bool loopAnimation = true;                  // if true the animation will be looped while the log is active
-    public Animator logAnimator;                       // assign Animator on the log prefab (preferred)
-    public string loopParameterName = "IsLooping";     // bool parameter on Animator used for looping
-    public Animation legacyAnimation;                  // optional legacy Animation component
-    public string legacyClipName = "";                 // name of legacy clip to play/loop
+    [Header("Animation")]
+    public bool useAnimator = true;                  // prefer Animator (Mecanim)
+    public Animator logAnimator;                     // Animator on the log prefab
+    public string animatorTrigger = "Play";          // trigger to play clip/state
+    public string animatorBoolForLoop = "IsLooping"; // optional bool parameter for looping
+
+    [Header("Legacy / Clip")]
+    public Animation legacyAnimation;                // optional legacy Animation component
+    public AnimationClip animationClip;              // standalone clip to play via legacy Animation
+    public bool clipLoop = true;                     // loop the clip if using legacy Animation
+
+    [Header("Looping")]
+    public bool loopAnimation = true;                // if true animation loops while log active
 
     [Header("Misc")]
     public bool debugMode = false;
@@ -26,6 +33,33 @@ public class LogTrap : MonoBehaviour
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
+
+        // Ensure legacy Animation component exists if the user assigned an AnimationClip
+        if (animationClip != null)
+        {
+            if (legacyAnimation == null)
+            {
+                legacyAnimation = GetComponent<Animation>();
+                if (legacyAnimation == null)
+                {
+                    // add at runtime so the clip can be played
+                    legacyAnimation = gameObject.AddComponent<Animation>();
+                    legacyAnimation.playAutomatically = false;
+                    if (debugMode) Debug.Log($"[LogTrap] Added Animation component at runtime on {name}");
+                }
+            }
+
+            // Register clip under its name if it's not already present
+            if (legacyAnimation != null)
+            {
+                string clipName = animationClip.name;
+                if (legacyAnimation.GetClip(clipName) == null)
+                {
+                    legacyAnimation.AddClip(animationClip, clipName);
+                    if (debugMode) Debug.Log($"[LogTrap] Added clip '{clipName}' to legacy Animation on {name}");
+                }
+            }
+        }
     }
 
     private void OnEnable()
@@ -39,16 +73,17 @@ public class LogTrap : MonoBehaviour
             rb.angularVelocity = Vector3.zero;
         }
 
-        // start looped animation if requested
+        // start looped or playing animation if requested
         if (loopAnimation)
             StartLoopAnimation();
+        else
+            PlayOnceAnimation();
     }
 
     private void OnDisable()
     {
         // ensure animation stops when the log is deactivated
-        if (loopAnimation)
-            StopLoopAnimation();
+        StopLoopAnimation();
     }
 
     private void Update()
@@ -61,7 +96,7 @@ public class LogTrap : MonoBehaviour
         {
             if (debugMode) Debug.Log($"[LogTrap] reached distance, deactivating {name}");
             // stop animation before deactivation
-            if (loopAnimation) StopLoopAnimation();
+            StopLoopAnimation();
             gameObject.SetActive(false); // deactivate for pooling
         }
     }
@@ -75,45 +110,91 @@ public class LogTrap : MonoBehaviour
             if (debugMode) Debug.Log($"[LogTrap] hit player {other.name}, damage={damage}");
 
             // stop animation before deactivation
-            if (loopAnimation) StopLoopAnimation();
+            StopLoopAnimation();
             gameObject.SetActive(false);
         }
     }
 
-    // Start looping animation (Animator bool or legacy clip loop)
+    // Play animation continuously while active (Animator bool or legacy clip)
     private void StartLoopAnimation()
     {
-        if (logAnimator != null && !string.IsNullOrEmpty(loopParameterName))
+        if (useAnimator && logAnimator != null)
         {
-            logAnimator.SetBool(loopParameterName, true);
-            if (debugMode) Debug.Log($"[LogTrap] Animator.SetBool({loopParameterName}, true) on {name}");
-            return;
+            // if animator uses a bool to drive looping state
+            if (!string.IsNullOrEmpty(animatorBoolForLoop))
+            {
+                logAnimator.SetBool(animatorBoolForLoop, true);
+                if (debugMode) Debug.Log($"[LogTrap] Animator.SetBool({animatorBoolForLoop}, true) on {name}");
+                return;
+            }
+
+            // otherwise try a trigger to enter a looping state
+            if (!string.IsNullOrEmpty(animatorTrigger))
+            {
+                logAnimator.SetTrigger(animatorTrigger);
+                if (debugMode) Debug.Log($"[LogTrap] Animator.SetTrigger({animatorTrigger}) on {name}");
+                return;
+            }
         }
 
-        if (legacyAnimation != null && !string.IsNullOrEmpty(legacyClipName))
+        // Legacy Animation path: ensure clip exists then play as loop
+        if (animationClip != null && legacyAnimation != null)
         {
-            legacyAnimation.Play(legacyClipName);
-            var clip = legacyAnimation.GetClip(legacyClipName);
-            if (clip != null)
-                clip.wrapMode = WrapMode.Loop;
-            if (debugMode) Debug.Log($"[LogTrap] legacy animation Play({legacyClipName}) loop on {name}");
+            string clipName = animationClip.name;
+            if (legacyAnimation.GetClip(clipName) == null)
+            {
+                legacyAnimation.AddClip(animationClip, clipName);
+                if (debugMode) Debug.Log($"[LogTrap] Added clip '{clipName}' to legacy Animation at StartLoopAnimation");
+            }
+
+            var state = legacyAnimation[clipName];
+            if (state != null)
+                state.wrapMode = clipLoop ? WrapMode.Loop : WrapMode.Once;
+
+            legacyAnimation.Play(clipName);
+            if (debugMode) Debug.Log($"[LogTrap] legacy Animation.Play({clipName}) loop on {name}");
         }
     }
 
-    // Stop looping animation
-    private void StopLoopAnimation()
+    // Play a single shot animation (non-looping) when log activates
+    private void PlayOnceAnimation()
     {
-        if (logAnimator != null && !string.IsNullOrEmpty(loopParameterName))
+        if (useAnimator && logAnimator != null && !string.IsNullOrEmpty(animatorTrigger))
         {
-            logAnimator.SetBool(loopParameterName, false);
-            if (debugMode) Debug.Log($"[LogTrap] Animator.SetBool({loopParameterName}, false) on {name}");
+            logAnimator.SetTrigger(animatorTrigger);
+            if (debugMode) Debug.Log($"[LogTrap] Animator.SetTrigger({animatorTrigger}) (once) on {name}");
             return;
         }
 
-        if (legacyAnimation != null && !string.IsNullOrEmpty(legacyClipName))
+        if (animationClip != null && legacyAnimation != null)
         {
-            legacyAnimation.Stop(legacyClipName);
-            if (debugMode) Debug.Log($"[LogTrap] legacy animation Stop({legacyClipName}) on {name}");
+            string clipName = animationClip.name;
+            if (legacyAnimation.GetClip(clipName) == null)
+            {
+                legacyAnimation.AddClip(animationClip, clipName);
+                if (debugMode) Debug.Log($"[LogTrap] Added clip '{clipName}' to legacy Animation at PlayOnceAnimation");
+            }
+
+            legacyAnimation[clipName].wrapMode = WrapMode.Once;
+            legacyAnimation.Play(clipName);
+            if (debugMode) Debug.Log($"[LogTrap] legacy Animation.Play({clipName}) (once) on {name}");
+        }
+    }
+
+    private void StopLoopAnimation()
+    {
+        if (useAnimator && logAnimator != null && !string.IsNullOrEmpty(animatorBoolForLoop))
+        {
+            logAnimator.SetBool(animatorBoolForLoop, false);
+            if (debugMode) Debug.Log($"[LogTrap] Animator.SetBool({animatorBoolForLoop}, false) on {name}");
+        }
+
+        if (legacyAnimation != null && animationClip != null)
+        {
+            var clipName = animationClip.name;
+            if (legacyAnimation.IsPlaying(clipName))
+                legacyAnimation.Stop(clipName);
+            if (debugMode) Debug.Log($"[LogTrap] legacy Animation.Stop({clipName}) on {name}");
         }
     }
 }

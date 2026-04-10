@@ -1924,12 +1924,14 @@ GameObject:
   - component: {fileID: 7422545523264779885}
   - component: {fileID: 2808973740700769501}
   - component: {fileID: 8918327929553238667}
-  - component: {fileID: 6495468585692286382}
   - component: {fileID: 8815929957414184756}
+  - component: {fileID: 6495468585692286382}
   - component: {fileID: 1904265532377954615}
   - component: {fileID: 3370159844904433774}
   - component: {fileID: 1708682826372810746}
   - component: {fileID: 4914940231523918841}
+  - component: {fileID: 3440005505602257075}
+  - component: {fileID: 8769934987749965767}
   m_Layer: 3
   m_Name: Joakim 1.0
   m_TagString: Player
@@ -2038,6 +2040,29 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!136 &8815929957414184756
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7776750315745447179}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Height: 3.533966
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.6205368, z: 0}
 --- !u!143 &6495468585692286382
 CharacterController:
   m_ObjectHideFlags: 0
@@ -2063,29 +2088,6 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 20000, z: 0}
---- !u!136 &8815929957414184756
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7776750315745447179}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Height: 3.533966
-  m_Direction: 1
-  m_Center: {x: 0, y: 0.6205368, z: 0}
 --- !u!114 &1904265532377954615
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2144,6 +2146,12 @@ MonoBehaviour:
     m_Bits: 1152
   groundCheckRadius: 3
   groundCheckOffset: 0.5
+  obstacleMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  obstacleSphereRadius: 0.35
+  obstacleCheckDistance: 0.6
+  wallNormalYThreshold: 0.65
   jumpCooldown: 0.5
   snapAngle: 90
   animator: {fileID: 8733622604263639238}
@@ -2225,6 +2233,44 @@ MonoBehaviour:
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &3440005505602257075
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7776750315745447179}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1d696eec778c4541bc68f69dc83f640, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Healthbar
+  playerHealth: {fileID: 3370159844904433774}
+  heartsCount: 3
+  heartHealthObjects:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  damagePerHeart: 0
+--- !u!114 &8769934987749965767
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7776750315745447179}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1d696eec778c4541bc68f69dc83f640, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Healthbar
+  playerHealth: {fileID: 3370159844904433774}
+  heartsCount: 3
+  heartHealthObjects:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  damagePerHeart: 0
 --- !u!1 &7860244475187504261
 GameObject:
   m_ObjectHideFlags: 0

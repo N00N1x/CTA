@@ -17,6 +17,16 @@ public class TopDownMovementNew : MonoBehaviour
     public float groundCheckRadius = 0.5f;
     public float groundCheckOffset = 1.0f;
 
+    [Header("Obstacle / Wall Handling")]
+    [Tooltip("Layers considered as obstacles/walls (use environment layers).")]
+    public LayerMask obstacleMask = ~0;
+    [Tooltip("Radius used for sphere-checking obstacles ahead.")]
+    public float obstacleSphereRadius = 0.35f;
+    [Tooltip("Distance ahead to check for an immediate blocking wall.")]
+    public float obstacleCheckDistance = 0.6f;
+    [Tooltip("If a contact normal's Y is >= this, it's considered ground; otherwise it's a wall.")]
+    public float wallNormalYThreshold = 0.65f;
+
     [Header("Jump Timing")]
     public float jumpCooldown = 0.3f;
     private float lastJumpTime = -999f;
@@ -81,10 +91,45 @@ public class TopDownMovementNew : MonoBehaviour
         float camYaw = cam.eulerAngles.y;
         float snappedYaw = Mathf.Round(camYaw / snapAngle) * snapAngle;
 
-        Vector3 forward = Quaternion.Euler(0f, snappedYaw, 0f) * Vector3.forward;
-        Vector3 right = Quaternion.Euler(0f, snappedYaw, 0f) * Vector3.right;
+        // Snap input to 8 directions (every 45 degrees)
+        if (moveInput.sqrMagnitude < 0.0001f)
+        {
+            moveDirection = Vector3.zero;
+        }
+        else
+        {
+            float inputAngle = Mathf.Atan2(moveInput.x, moveInput.y) * Mathf.Rad2Deg;
+            float snappedInputAngle = Mathf.Round(inputAngle / 45f) * 45f;
+            float totalYaw = snappedYaw + snappedInputAngle;
+            moveDirection = Quaternion.Euler(0f, totalYaw, 0f) * Vector3.forward;
+        }
 
-        moveDirection = (forward * moveInput.y + right * moveInput.x).normalized;
+        // Prevent walking/sticking to immediate walls:
+        // If moving and there's a steep obstacle right in front within obstacleCheckDistance,
+        // project movement onto the obstacle plane (removes into-wall component). If projection
+        // is nearly zero, cancel horizontal movement so the player doesn't "walk along" the wall.
+        if (moveDirection.sqrMagnitude > 0.001f)
+        {
+            RaycastHit hit;
+            Vector3 origin = transform.position; // can be adjusted if character origin is at feet
+            Vector3 dir = moveDirection.normalized;
+
+            if (Physics.SphereCast(origin, obstacleSphereRadius, dir, out hit, obstacleCheckDistance, obstacleMask, QueryTriggerInteraction.Ignore))
+            {
+                // If the hit is a steep surface (not ground), treat it as a blocking wall
+                if (hit.normal.y < wallNormalYThreshold)
+                {
+                    // Remove movement component into the wall
+                    Vector3 projected = Vector3.ProjectOnPlane(moveDirection, hit.normal);
+
+                    // If projection almost zero, cancel movement so player doesn't slide along wall
+                    if (projected.sqrMagnitude < 0.01f)
+                        moveDirection = Vector3.zero;
+                    else
+                        moveDirection = projected.normalized * moveDirection.magnitude;
+                }
+            }
+        }
 
         // Face movement direction
         if (moveDirection.sqrMagnitude > 0.001f)
@@ -148,5 +193,13 @@ public class TopDownMovementNew : MonoBehaviour
         Gizmos.color = Color.red;
         Vector3 groundCheckPos = transform.position + Vector3.down * groundCheckOffset;
         Gizmos.DrawWireSphere(groundCheckPos, groundCheckRadius);
+
+        // draw obstacle check ray when selected
+        if (Application.isPlaying)
+        {
+            Gizmos.color = Color.yellow;
+            Vector3 dir = moveDirection.normalized;
+            Gizmos.DrawWireSphere(transform.position + dir * obstacleCheckDistance, obstacleSphereRadius);
+        }
     }
 }

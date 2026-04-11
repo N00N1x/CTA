@@ -145,17 +145,17 @@ public class LogTrap : MonoBehaviour
             {
                 legacyAnimation.AddClip(animationClip, clipName);
                 if (debugMode) Debug.Log($"[LogTrap] Added clip '{clipName}' to legacy Animation at StartLoopAnimation");
+
+
+                var state = legacyAnimation[clipName];
+                if (state != null)
+                    state.wrapMode = clipLoop ? WrapMode.Loop : WrapMode.Once;
+
+                legacyAnimation.Play(clipName);
+                if (debugMode) Debug.Log($"[LogTrap] legacy Animation.Play({clipName}) loop on {name}");
             }
-
-            var state = legacyAnimation[clipName];
-            if (state != null)
-                state.wrapMode = clipLoop ? WrapMode.Loop : WrapMode.Once;
-
-            legacyAnimation.Play(clipName);
-            if (debugMode) Debug.Log($"[LogTrap] legacy Animation.Play({clipName}) loop on {name}");
         }
     }
-
     // Play a single shot animation (non-looping) when log activates
     private void PlayOnceAnimation()
     {

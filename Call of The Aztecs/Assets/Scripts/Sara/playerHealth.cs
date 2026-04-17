@@ -29,18 +29,7 @@ public class playerHealth : MonoBehaviour
         }
     }
 
-    private void OnEnable()
-    {
-        print("joakim enabled");
-    }
-    private void OnDisable()
-    {
-        print("joakim disabled");
-    }
-    private void OnDestroy()
-    {
-        print("joakim destroyed");
-    }
+  
     private void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;

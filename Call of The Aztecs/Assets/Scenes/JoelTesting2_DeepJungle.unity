@@ -1105,7 +1105,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: WindTrap
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: -5178512987183136317, guid: 96cd3cc7315d8a24e9b9322726ffc018, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

@@ -820,45 +820,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3890009249541046744, guid: 50cf70c1d9306c54090f7e14dc8dda10, type: 3}
   m_PrefabInstance: {fileID: 442726455}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &524012388 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1355432943965314042, guid: bfd4eab5805959a49ac62ebebbdd6746, type: 3}
-  m_PrefabInstance: {fileID: 1368742961}
-  m_PrefabAsset: {fileID: 0}
---- !u!64 &524012393
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 524012388}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &524012394
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 524012388}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 379141b9dc1696c4aa2d32d403af85d6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Killplane
 --- !u!1001 &534081712
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2386,17 +2347,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 2632334818259200558, guid: bfd4eab5805959a49ac62ebebbdd6746, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 1355432943965314042, guid: bfd4eab5805959a49ac62ebebbdd6746, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 524012394}
-    - targetCorrespondingSourceObject: {fileID: 1355432943965314042, guid: bfd4eab5805959a49ac62ebebbdd6746, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 524012393}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bfd4eab5805959a49ac62ebebbdd6746, type: 3}
 --- !u!1001 &1393688296
 PrefabInstance:
@@ -2682,6 +2636,10 @@ PrefabInstance:
       propertyPath: moveSpeed
       value: 7.5
       objectReference: {fileID: 0}
+    - target: {fileID: 1708682826372810746, guid: c9e05183d04c0914089c5dbb2d7b8804, type: 3}
+      propertyPath: groundMask.m_Bits
+      value: 1152
+      objectReference: {fileID: 0}
     - target: {fileID: 3059907444867624130, guid: c9e05183d04c0914089c5dbb2d7b8804, type: 3}
       propertyPath: m_LocalScale.x
       value: 1
@@ -2700,11 +2658,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3059907444867624130, guid: c9e05183d04c0914089c5dbb2d7b8804, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 14.03
+      value: 13.25
       objectReference: {fileID: 0}
     - target: {fileID: 3059907444867624130, guid: c9e05183d04c0914089c5dbb2d7b8804, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 22.08
+      value: 20.7
       objectReference: {fileID: 0}
     - target: {fileID: 3059907444867624130, guid: c9e05183d04c0914089c5dbb2d7b8804, type: 3}
       propertyPath: m_LocalRotation.w

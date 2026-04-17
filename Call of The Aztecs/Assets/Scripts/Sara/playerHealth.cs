@@ -16,6 +16,9 @@ public class playerHealth : MonoBehaviour
     [Header("Scene / Respawn")]
     [SerializeField] private float respawnDelay = 0f;
 
+    // Prevent multiple death/respawn calls causing a loop
+    private bool isDead = false;
+
     private void OnControllerColliderHit(ControllerColliderHit hit)
     {
         if (hit.collider == null) return;
@@ -26,6 +29,18 @@ public class playerHealth : MonoBehaviour
         }
     }
 
+    private void OnEnable()
+    {
+        print("joakim enabled");
+    }
+    private void OnDisable()
+    {
+        print("joakim disabled");
+    }
+    private void OnDestroy()
+    {
+        print("joakim destroyed");
+    }
     private void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
@@ -69,9 +84,19 @@ public class playerHealth : MonoBehaviour
 
     private void Die()
     {
+        // Guard to avoid repeated death/scene loads when multiple triggers/collisions occur
+        if (isDead) return;
+        isDead = true;
+
         Debug.Log("Player died.");
 
-        Destroy(gameObject);
+        // Don't Destroy(gameObject) here — reloading the scene will recreate objects.
+        // Destroying immediately can cause unexpected race conditions where death is retriggered.
+        // If you need a death visual, play it here and optionally destroy after the respawn.
+
+        // Optionally disable this component or player control scripts here:
+        // var controller = GetComponent<CharacterController>();
+        // if (controller != null) controller.enabled = false;
 
         if (respawnDelay <= 0f)
         {

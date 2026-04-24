@@ -43,19 +43,6 @@ public class Menu : MonoBehaviour
         SceneManager.LoadScene("Options");
     }
 
-    public void OnpointerEnter(PointerEventData eventData)
-    {
-
-
-
-    }
-    public void OnPointerExit(PointerEventData eventData)
-    {
-
-
-
-    }
-
     public void UnlockCursor()
     {
         Cursor.lockState = CursorLockMode.None;

@@ -12,6 +12,11 @@ public class TopDownMovementNew : MonoBehaviour
     public float lowJumpMultiplier = 3f;
     public float modelForwardAngle = 180f;
 
+    [Header("Acceleration")]
+    public float acceleration = 30f;      // how fast the player speeds up
+    public float deceleration = 40f;      // how fast the player slows down
+    public float stopThreshold = 0.05f;   // speed below which we treat as stopped
+
     [Header("Ground Check Settings")]
     public LayerMask groundMask;
     public float groundCheckRadius = 0.5f;
@@ -46,10 +51,14 @@ public class TopDownMovementNew : MonoBehaviour
     private bool isGrounded;
     private bool runHeld;
 
+    // current horizontal speed (smoothed)
+    private float currentHorizontalSpeed = 0f;
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        rb.freezeRotation = true;
+        if (rb != null)
+            rb.freezeRotation = true;
     }
 
     public void OnMove(InputAction.CallbackContext context)
@@ -72,11 +81,17 @@ public class TopDownMovementNew : MonoBehaviour
 
     public void OnRun(InputAction.CallbackContext context)
     {
-        runHeld = context.performed;
+        if (context.performed)
+            runHeld = true;
+        else if (context.canceled)
+            runHeld = false;
     }
 
     void FixedUpdate()
     {
+        if (rb == null)
+            return;
+
         // Ground check
         Vector3 groundCheckPos = transform.position + Vector3.down * groundCheckOffset;
         isGrounded = Physics.CheckSphere(
@@ -87,6 +102,9 @@ public class TopDownMovementNew : MonoBehaviour
         );
 
         // Camera relative movement
+        if (Camera.main == null)
+            return;
+
         Transform cam = Camera.main.transform;
         float camYaw = cam.eulerAngles.y;
         float snappedYaw = Mathf.Round(camYaw / snapAngle) * snapAngle;
@@ -105,24 +123,18 @@ public class TopDownMovementNew : MonoBehaviour
         }
 
         // Prevent walking/sticking to immediate walls:
-        // If moving and there's a steep obstacle right in front within obstacleCheckDistance,
-        // project movement onto the obstacle plane (removes into-wall component). If projection
-        // is nearly zero, cancel horizontal movement so the player doesn't "walk along" the wall.
         if (moveDirection.sqrMagnitude > 0.001f)
         {
             RaycastHit hit;
-            Vector3 origin = transform.position; // can be adjusted if character origin is at feet
+            Vector3 origin = transform.position;
             Vector3 dir = moveDirection.normalized;
 
             if (Physics.SphereCast(origin, obstacleSphereRadius, dir, out hit, obstacleCheckDistance, obstacleMask, QueryTriggerInteraction.Ignore))
             {
-                // If the hit is a steep surface (not ground), treat it as a blocking wall
                 if (hit.normal.y < wallNormalYThreshold)
                 {
-                    // Remove movement component into the wall
                     Vector3 projected = Vector3.ProjectOnPlane(moveDirection, hit.normal);
 
-                    // If projection almost zero, cancel movement so player doesn't slide along wall
                     if (projected.sqrMagnitude < 0.01f)
                         moveDirection = Vector3.zero;
                     else
@@ -145,11 +157,18 @@ public class TopDownMovementNew : MonoBehaviour
             ));
         }
 
-        float currentSpeed = moveSpeed * (runHeld ? runMultiplier : 1f);
+        // Smooth acceleration / deceleration
+        float targetSpeed = (moveDirection.sqrMagnitude > 0.001f) ? moveSpeed * (runHeld ? runMultiplier : 1f) : 0f;
+        float rate = (targetSpeed > currentHorizontalSpeed) ? acceleration : deceleration;
+        currentHorizontalSpeed = Mathf.MoveTowards(currentHorizontalSpeed, targetSpeed, rate * Time.fixedDeltaTime);
+
+        if (currentHorizontalSpeed < stopThreshold)
+            currentHorizontalSpeed = 0f;
 
         Vector3 velocity = rb.linearVelocity;
-        velocity.x = moveDirection.x * currentSpeed;
-        velocity.z = moveDirection.z * currentSpeed;
+        Vector3 horizontal = (moveDirection.sqrMagnitude > 0.001f) ? moveDirection.normalized * currentHorizontalSpeed : Vector3.zero;
+        velocity.x = horizontal.x;
+        velocity.z = horizontal.z;
 
         // Jump
         if (jumpPressed && isGrounded && Time.time >= lastJumpTime + jumpCooldown)
@@ -179,7 +198,7 @@ public class TopDownMovementNew : MonoBehaviour
         // Animator updates
         if (animator != null)
         {
-            bool isMoving = moveDirection.sqrMagnitude > 0.001f;
+            bool isMoving = currentHorizontalSpeed > stopThreshold;
 
             animator.SetBool("isRunning", isMoving && isGrounded);
             animator.SetBool("onGround", isGrounded);
@@ -194,7 +213,6 @@ public class TopDownMovementNew : MonoBehaviour
         Vector3 groundCheckPos = transform.position + Vector3.down * groundCheckOffset;
         Gizmos.DrawWireSphere(groundCheckPos, groundCheckRadius);
 
-        // draw obstacle check ray when selected
         if (Application.isPlaying)
         {
             Gizmos.color = Color.yellow;

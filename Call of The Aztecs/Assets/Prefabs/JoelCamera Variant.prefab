@@ -53,6 +53,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3370475028453841438, guid: bd1d7c8f6b01b884fab821c6e35605e8, type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 3370475028453841438, guid: bd1d7c8f6b01b884fab821c6e35605e8, type: 3}
       propertyPath: offset.z
       value: 0.88
       objectReference: {fileID: 0}

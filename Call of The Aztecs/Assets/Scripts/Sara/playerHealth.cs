@@ -16,7 +16,13 @@ public class playerHealth : MonoBehaviour
     [Header("Scene / Respawn")]
     [SerializeField] private float respawnDelay = 0f;
 
-    // Prevent multiple death/respawn calls causing a loop
+    [Header("Restart UI")]
+    [Tooltip("Assign the RestartUI Canvas GameObject that will be activated when the player dies.")]
+    [SerializeField] private GameObject restartUICanvas;
+
+    [Tooltip("If true and Restart UI is assigned, the game will freeze (Time.timeScale = 0) when the player dies.")]
+    [SerializeField] private bool useRestartUIOnDeath = true;
+
     private bool isDead = false;
 
     private void OnControllerColliderHit(ControllerColliderHit hit)
@@ -29,9 +35,10 @@ public class playerHealth : MonoBehaviour
         }
     }
 
-  
     private void Start()
     {
+        Time.timeScale = 1f;
+
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
@@ -73,33 +80,41 @@ public class playerHealth : MonoBehaviour
 
     private void Die()
     {
-        // Guard to avoid repeated death/scene loads when multiple triggers/collisions occur
         if (isDead) return;
         isDead = true;
 
         Debug.Log("Player died.");
 
-        // Don't Destroy(gameObject) here — reloading the scene will recreate objects.
-        // Destroying immediately can cause unexpected race conditions where death is retriggered.
-        // If you need a death visual, play it here and optionally destroy after the respawn.
+        var controller = GetComponent<CharacterController>();
+        if (controller != null) controller.enabled = false;
 
-        // Optionally disable this component or player control scripts here:
-        // var controller = GetComponent<CharacterController>();
-        // if (controller != null) controller.enabled = false;
-
-        if (respawnDelay <= 0f)
+        if (useRestartUIOnDeath && restartUICanvas != null)
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+
+            restartUICanvas.SetActive(true);
+
+            Time.timeScale = 0f;
         }
         else
         {
-            StartCoroutine(ReloadSceneAfterDelay(respawnDelay));
+            if (respawnDelay <= 0f)
+            {
+                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            }
+            else
+            {
+                StartCoroutine(ReloadSceneAfterDelay(respawnDelay));
+            }
         }
     }
+
     private IEnumerator ReloadSceneAfterDelay(float delay)
     {
-        yield return new WaitForSeconds(delay);
+        yield return new WaitForSecondsRealtime(delay);
+
+        Time.timeScale = 1f;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
-
 }

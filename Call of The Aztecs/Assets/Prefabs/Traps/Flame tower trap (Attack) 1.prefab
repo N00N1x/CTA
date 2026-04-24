@@ -3619,7 +3619,7 @@ ParticleSystem:
         m_NumAlphaKeys: 2
     range: {x: 0, y: 1}
   CollisionModule:
-    enabled: 0
+    enabled: 1
     serializedVersion: 4
     type: 0
     collisionMode: 0
@@ -8455,7 +8455,7 @@ ParticleSystem:
         m_NumAlphaKeys: 2
     range: {x: 0, y: 1}
   CollisionModule:
-    enabled: 0
+    enabled: 1
     serializedVersion: 4
     type: 0
     collisionMode: 0
@@ -13470,7 +13470,7 @@ ParticleSystem:
         m_NumAlphaKeys: 2
     range: {x: 0, y: 1}
   CollisionModule:
-    enabled: 0
+    enabled: 1
     serializedVersion: 4
     type: 0
     collisionMode: 0
@@ -18306,7 +18306,7 @@ ParticleSystem:
         m_NumAlphaKeys: 2
     range: {x: 0, y: 1}
   CollisionModule:
-    enabled: 0
+    enabled: 1
     serializedVersion: 4
     type: 0
     collisionMode: 0
@@ -19534,6 +19534,7 @@ GameObject:
   - component: {fileID: 1300197725085467051}
   - component: {fileID: -4352048141731678879}
   - component: {fileID: 6820011625743716491}
+  - component: {fileID: 3507615980436133635}
   m_Layer: 0
   m_Name: Flame tower trap (Attack) 1
   m_TagString: Untagged
@@ -19687,12 +19688,20 @@ MonoBehaviour:
   cooldownWarningEffect: {fileID: 7089480005528257732}
   cooldownWarningDuration: 1
   postCooldownDelay: 0.5
-  damageAmount: 10
+  damageAmount: 50
   tickInterval: 0.5
   targetLayer:
     serializedVersion: 2
     m_Bits: 4294967295
   targetTag: Player
+  hurtBox: {fileID: 3507615980436133635}
+  targetPlayerCollider: {fileID: 0}
+  attackTriggerTag: Player
+  requiredAttackParticles:
+  - {fileID: 1599059519276575613}
+  - {fileID: 1553957557001218401}
+  - {fileID: 4791978383287991539}
+  hurtBoxActivationDelay: 0.5
   warningEffect: {fileID: 7089480005528257732}
   flameEffects:
   - {fileID: 1599059519276575613}
@@ -19704,3 +19713,24 @@ MonoBehaviour:
   - {fileID: 8300000, guid: afc7aeccc48c56e4c9512de213ac919b, type: 3}
   warningClip: {fileID: 8300000, guid: 6731a906f510f254e8c0a43dd4575071, type: 3}
   debugMode: 0
+--- !u!65 &3507615980436133635
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6815469810618335369}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.10854062, y: 0.06616711, z: 0.020101102}
+  m_Center: {x: 0.08000622, y: 0.04698593, z: -0.02401904}

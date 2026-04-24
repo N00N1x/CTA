@@ -173,25 +173,14 @@ public class AxeDamage : MonoBehaviour
             return;
         }
 
+        // Always damage on contact:
+        // - Ignore per-target cooldown and hit-once-per-swing behavior so the axe damages every valid collision.
         Transform t = obj.transform;
-        float now = Time.time;
-
-        if (hitOncePerSwing && hitThisSwing.Contains(t))
-        {
-            if (debugMode) Debug.Log("[AxeDamage] Ignored: already hit this swing");
-            return;
-        }
-
-        if (lastHitTime.TryGetValue(t, out float last) && now - last < perTargetCooldown)
-        {
-            if (debugMode) Debug.Log("[AxeDamage] Ignored: per-target cooldown");
-            return;
-        }
 
         var ph = obj.GetComponent<playerHealth>() ?? obj.GetComponentInParent<playerHealth>();
         if (ph != null && damageAmount > 0)
         {
-            if (debugMode) Debug.Log($"[AxeDamage] Hitting '{obj.name}' for {damageAmount}");
+            if (debugMode) Debug.Log($"[AxeDamage] Hitting '{obj.name}' for {damageAmount} (always-on contact)");
             ph.TakeDamage(damageAmount);
         }
         else
@@ -199,10 +188,9 @@ public class AxeDamage : MonoBehaviour
             if (debugMode) Debug.Log("[AxeDamage] No playerHealth found on target");
         }
 
-        lastHitTime[t] = now;
-        if (hitOncePerSwing) hitThisSwing.Add(t);
+        // Note:
+        // We intentionally do not update lastHitTime or hitThisSwing here so damage is applied on every contact.
     }
-
     private void ClearExpiredHits()
     {
         float now = Time.time;

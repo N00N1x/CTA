@@ -58,7 +58,7 @@ public class FlameTowertrap : MonoBehaviour
 
     [Header("Damage")]
     [Tooltip("Damage applied per tick")]
-    public int damageAmount = 10;
+    public int damageAmount = 50; // changed default to 50 per request
 
     [Tooltip("How often damage is applied per target (seconds).")]
     public float tickInterval = 0.5f;
@@ -68,6 +68,22 @@ public class FlameTowertrap : MonoBehaviour
 
     [Tooltip("Optional tag filter for targets (empty = ignore tag).")]
     public string targetTag = "Player";
+
+    [Header("HurtBox (optional)")]
+    [Tooltip("Optional BoxCollider (set as trigger) that will cause the trap to apply damage when other colliders enter it.")]
+    public BoxCollider hurtBox;
+
+    [Tooltip("Optional: drag the specific player's Collider here so the trap will only consider that collider (preferred). Leave empty to use generic overlap checks.")]
+    public Collider targetPlayerCollider;
+
+    [Tooltip("Optional tag to require on the incoming trigger (e.g. 'Attack'). Leave empty to not check.")]
+    public string attackTriggerTag = "Attack";
+
+    [Tooltip("Optional: require at least one of these attack ParticleSystems to be playing on the incoming object before applying hurt-box damage. Leave empty to skip.")]
+    public ParticleSystem[] requiredAttackParticles;
+
+    [Tooltip("Delay (seconds) after flames start before the hurt-box overlap check applies damage. Useful to let particles\"build up\" visually.")]
+    public float hurtBoxActivationDelay = 0.5f;
 
     [Header("References")]
     [Tooltip("Particle system used as the 'warning' (e.g. small flame or smoke on top).")]
@@ -106,6 +122,9 @@ public class FlameTowertrap : MonoBehaviour
 
     // audio source for the warningEffect (on the warning GameObject or reusing trap AudioSource)
     AudioSource warningLocalAudioSource;
+
+    // coroutine handle for delayed hurt-box activation
+    Coroutine hurtBoxDelayCoroutine = null;
 
     void Awake()
     {
@@ -317,6 +336,10 @@ public class FlameTowertrap : MonoBehaviour
         lastDamageTime.Clear();
         StartCoroutine(StartFlamesSequential());
 
+        // start delayed hurt-box activation so particles can build up visually
+        if (hurtBoxDelayCoroutine != null) StopCoroutine(hurtBoxDelayCoroutine);
+        hurtBoxDelayCoroutine = StartCoroutine(HurtBoxDelayedRoutine());
+
         // Damage application now follows flame visuals: while isActive == true OnParticleHit applies damage.
         if (debugMode) Debug.Log("[FlameTowertrap] Flames activated; damage will apply while active.");
     }
@@ -411,6 +434,13 @@ public class FlameTowertrap : MonoBehaviour
 
                 yield return new WaitForSeconds(flameStopInterval);
             }
+        }
+
+        // stop pending delayed hurt-box activation if flames stop before it fired
+        if (hurtBoxDelayCoroutine != null)
+        {
+            StopCoroutine(hurtBoxDelayCoroutine);
+            hurtBoxDelayCoroutine = null;
         }
 
         // stop main warning if it was kept during active
@@ -513,6 +543,97 @@ public class FlameTowertrap : MonoBehaviour
         TryDamage(other);
     }
 
+    // Optional trigger-based hurt-box handling: if a Collider (e.g. attack hitbox) enters the trap's hurtBox,
+    // apply damage to the owning player/object while the trap is active and optional conditions (attack particles) are met.
+    void OnTriggerEnter(Collider other)
+    {
+        // only run if we actually have a hurtBox configured and trap is active
+        if (hurtBox == null) return;
+        if (!hurtBox.isTrigger) return; // ensure configured as trigger
+        if (!isActive) return;
+        if (other == null) return;
+
+        // If a specific player collider is assigned in the Inspector, only accept that collider.
+        if (targetPlayerCollider != null)
+        {
+            if (other != targetPlayerCollider) return;
+        }
+        else
+        {
+            // If attackTriggerTag is set, require it on the incoming collider (only when no explicit collider assigned)
+            if (!string.IsNullOrEmpty(attackTriggerTag) && !other.CompareTag(attackTriggerTag))
+                return;
+        }
+
+        // If requiredAttackParticles is set, require at least one of them (or a playing particle on the incoming collider) to be playing.
+        if (requiredAttackParticles != null && requiredAttackParticles.Length > 0)
+        {
+            bool anyPlaying = false;
+
+            // Check explicitly assigned particles first
+            foreach (var ps in requiredAttackParticles)
+            {
+                if (ps != null && ps.isPlaying)
+                {
+                    anyPlaying = true;
+                    break;
+                }
+            }
+
+            // If none of the assigned ones are playing, also check the incoming object hierarchy for any playing ParticleSystem.
+            if (!anyPlaying)
+            {
+                var incomingParticles = other.GetComponentsInChildren<ParticleSystem>();
+                foreach (var ps in incomingParticles)
+                {
+                    if (ps != null && ps.isPlaying)
+                    {
+                        anyPlaying = true;
+                        break;
+                    }
+                }
+            }
+
+            if (!anyPlaying) return;
+        }
+        else
+        {
+            // No required particles configured: attempt to find any ParticleSystem on the incoming object and require at least one playing.
+            var incomingPsAll = other.GetComponentsInChildren<ParticleSystem>();
+            if (incomingPsAll != null && incomingPsAll.Length > 0)
+            {
+                bool anyPlaying = false;
+                foreach (var ps in incomingPsAll)
+                {
+                    if (ps != null && ps.isPlaying)
+                    {
+                        anyPlaying = true;
+                        break;
+                    }
+                }
+                if (!anyPlaying) return;
+            }
+            // if no particle systems exist on incoming object, treat as OK (do not block)
+        }
+
+        // layer filter on incoming collider's GameObject (skip if specific player collider is assigned because we assume user targeted it)
+        if (targetPlayerCollider == null)
+        {
+            if (((1 << other.gameObject.layer) & targetLayer) == 0) return;
+        }
+
+        // tag filter — allow either the collider itself or its root object to match the configured targetTag (e.g. Player).
+        // If targetPlayerCollider is assigned the user intends this collider specifically, so skip tag checks.
+        if (targetPlayerCollider == null && !string.IsNullOrEmpty(targetTag))
+        {
+            if (!other.CompareTag(targetTag) && !other.transform.root.CompareTag(targetTag))
+                return;
+        }
+
+        // apply damage to the object/owner (TryDamage will locate playerHealth on the object or its parents)
+        TryDamage(other.gameObject);
+    }
+
     void TryDamage(GameObject obj)
     {
         if (obj == null) return;
@@ -535,11 +656,116 @@ public class FlameTowertrap : MonoBehaviour
         lastDamageTime[t] = now;
     }
 
+    // One-time overlap check used when flames start to damage players already inside the hurtBox.
+    void CheckHurtBoxOverlap()
+    {
+        if (hurtBox == null) return;
+
+        // require at least one flame particle to be playing
+        bool anyFlamePlaying = false;
+        if (flameEffects != null)
+        {
+            foreach (var f in flameEffects)
+            {
+                if (f != null && f.isPlaying)
+                {
+                    anyFlamePlaying = true;
+                    break;
+                }
+            }
+        }
+        if (!anyFlamePlaying) return;
+
+        // If a specific player collider was assigned, only check that collider (use Bounds intersection)
+        if (targetPlayerCollider != null)
+        {
+            // optional: also require attack particles on the target if configured
+            if (requiredAttackParticles != null && requiredAttackParticles.Length > 0)
+            {
+                bool anyPlaying = false;
+                foreach (var ps in requiredAttackParticles)
+                {
+                    if (ps != null && ps.isPlaying) { anyPlaying = true; break; }
+                }
+                if (!anyPlaying)
+                {
+                    // check incoming player's own particles as fallback
+                    var incomingPs = targetPlayerCollider.GetComponentsInChildren<ParticleSystem>();
+                    foreach (var ps in incomingPs) { if (ps != null && ps.isPlaying) { anyPlaying = true; break; } }
+                }
+                if (!anyPlaying) return;
+            }
+            else
+            {
+                // If no requiredAttackParticles set: check player's own particles if any exist and require one playing.
+                var incomingPsAll = targetPlayerCollider.GetComponentsInChildren<ParticleSystem>();
+                if (incomingPsAll != null && incomingPsAll.Length > 0)
+                {
+                    bool anyPlaying = false;
+                    foreach (var ps in incomingPsAll) { if (ps != null && ps.isPlaying) { anyPlaying = true; break; } }
+                    if (!anyPlaying) return;
+                }
+            }
+
+            // use bounds intersection to determine if player collider sits inside hurt box
+            if (hurtBox.bounds.Intersects(targetPlayerCollider.bounds))
+            {
+                TryDamage(targetPlayerCollider.gameObject);
+            }
+
+            return;
+        }
+
+        // use world-space bounds of the BoxCollider for overlap check when no specific collider assigned
+        Vector3 center = hurtBox.bounds.center;
+        Vector3 halfExtents = hurtBox.bounds.extents;
+        Quaternion orientation = hurtBox.transform.rotation;
+
+        int layerMask = targetLayer.value;
+
+        Collider[] cols = Physics.OverlapBox(center, halfExtents, orientation, layerMask);
+        if (cols == null || cols.Length == 0) return;
+
+        foreach (var c in cols)
+        {
+            if (c == null) continue;
+
+            // tag filter — allow collider or its root to match targetTag
+            if (!string.IsNullOrEmpty(targetTag))
+            {
+                if (!c.CompareTag(targetTag) && !c.transform.root.CompareTag(targetTag))
+                    continue;
+            }
+
+            TryDamage(c.gameObject);
+        }
+    }
+
+    // Delayed routine that waits hurtBoxActivationDelay then performs the one-time overlap check.
+    IEnumerator HurtBoxDelayedRoutine()
+    {
+        if (hurtBoxActivationDelay > 0f)
+            yield return new WaitForSeconds(hurtBoxActivationDelay);
+        else
+            yield return null;
+
+        // only perform overlap damage if trap is still active
+        if (!isActive)
+        {
+            hurtBoxDelayCoroutine = null;
+            yield break;
+        }
+
+        CheckHurtBoxOverlap();
+        hurtBoxDelayCoroutine = null;
+    }
+
     void OnDisable()
     {
         if (resetCoroutine != null) { StopCoroutine(resetCoroutine); resetCoroutine = null; }
         if (cycleCoroutine != null) { StopCoroutine(cycleCoroutine); cycleCoroutine = null; }
         if (reactivateCoroutine != null) { StopCoroutine(reactivateCoroutine); reactivateCoroutine = null; }
+        if (hurtBoxDelayCoroutine != null) { StopCoroutine(hurtBoxDelayCoroutine); hurtBoxDelayCoroutine = null; }
 
         isActive = false;
         isWarningPlaying = false;
@@ -580,7 +806,7 @@ public class FlameTowertrap : MonoBehaviour
     {
         [HideInInspector] public FlameTowertrap owner;
 
-        void OnParticleCollision(GameObject other)
+        void OnParticleCollision(GameObject other)  
         {
             owner?.OnParticleHit(other);
         }

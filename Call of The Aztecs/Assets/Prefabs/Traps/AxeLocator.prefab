@@ -105,7 +105,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -4.5, y: -3.5, z: 4.2}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.8231609, y: 0.8231609, z: 0.8231609}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1804878125895193086}
@@ -123,7 +123,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1feb5d8d20aa17428d57a26e8c82c89, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  damageAmount: 100
+  damageAmount: 50
   targetTag: Player
   targetLayer:
     serializedVersion: 2

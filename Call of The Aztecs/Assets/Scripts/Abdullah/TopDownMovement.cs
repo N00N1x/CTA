@@ -148,8 +148,11 @@ public class TopDownMovementNew : MonoBehaviour
         float currentSpeed = moveSpeed * (runHeld ? runMultiplier : 1f);
 
         Vector3 velocity = rb.linearVelocity;
-        velocity.x = moveDirection.x * currentSpeed;
-        velocity.z = moveDirection.z * currentSpeed;
+
+        Vector3 currentVel = rb.linearVelocity;
+
+velocity.x = moveDirection.x * currentSpeed;
+velocity.z = moveDirection.z * currentSpeed;
 
         // Jump
         if (jumpPressed && isGrounded && Time.time >= lastJumpTime + jumpCooldown)

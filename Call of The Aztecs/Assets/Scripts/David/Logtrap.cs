@@ -28,6 +28,7 @@ public class LogTrap : MonoBehaviour
     public bool debugMode = false;
 
     private Vector3 startPos;
+    bool hasHit = false;
     private Rigidbody rb;
 
     private void Awake()
@@ -103,15 +104,24 @@ public class LogTrap : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        if (hasHit) return;
+
         if (other.CompareTag(playerTag))
         {
-            other.GetComponent<playerHealth>()?.TakeDamage(damage);
+            hasHit = true;
 
-            if (debugMode) Debug.Log($"[LogTrap] hit player {other.name}, damage={damage}");
+            var health = other.GetComponent<playerHealth>();
+            if (health != null)
+                health.TakeDamage(damage);
 
-            // stop animation before deactivation
+            if (debugMode)
+                Debug.Log($"[LogTrap] hit player {other.name}, damage={damage}");
+
+            // Optional: stop animation before destroying
             StopLoopAnimation();
-            gameObject.SetActive(false);
+
+            // Destroy after short delay (so effects/animation can play)
+            Destroy(gameObject, 0.1f);
         }
     }
 

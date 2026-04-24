@@ -484,6 +484,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5085860829451915243, guid: 94c1dae300d21ac44810b286fd604475, type: 3}
+      propertyPath: animationClip
+      value: 
+      objectReference: {fileID: 7400000, guid: 42843784785b29d49914f9f82c636d63, type: 2}
+    - target: {fileID: 5085860829451915243, guid: 94c1dae300d21ac44810b286fd604475, type: 3}
       propertyPath: legacyAnimation
       value: 
       objectReference: {fileID: 1995780875544121276}
@@ -493,7 +497,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6869959096411868462, guid: 94c1dae300d21ac44810b286fd604475, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -5.9
+      value: -3.33
       objectReference: {fileID: 0}
     - target: {fileID: 6869959096411868462, guid: 94c1dae300d21ac44810b286fd604475, type: 3}
       propertyPath: m_LocalPosition.y
@@ -501,7 +505,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6869959096411868462, guid: 94c1dae300d21ac44810b286fd604475, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.33
+      value: 0.27
       objectReference: {fileID: 0}
     - target: {fileID: 6869959096411868462, guid: 94c1dae300d21ac44810b286fd604475, type: 3}
       propertyPath: m_LocalRotation.w
@@ -564,7 +568,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3

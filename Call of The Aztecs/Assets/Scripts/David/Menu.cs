@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 
-public class GameManager : MonoBehaviour
+public class Menu : MonoBehaviour
 {
     public void RestartGame()
     {
@@ -30,22 +30,17 @@ public class GameManager : MonoBehaviour
 
     }
 
-    public void Options(string MainMenu)
+    public void MainMenu(string MainMenu)
     {
 
         SceneManager.LoadScene("MainMenu");
     }
-    public void OnpointerEnter(PointerEventData eventData)
+
+
+    public void Options(string Options)
     {
 
-
-
-    }
-    public void OnPointerExit(PointerEventData eventData)
-    {
-
-
-
+        SceneManager.LoadScene("Options");
     }
 
     public void UnlockCursor()

@@ -1,7 +1,6 @@
 using System;
-using System.Collections;
+using System.Reflection;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class playerHealth : MonoBehaviour
 {
@@ -13,15 +12,9 @@ public class playerHealth : MonoBehaviour
     public float MaxHealth => maxHealth;
     public event Action<float, float> OnHealthChanged;
 
-    [Header("Scene / Respawn")]
-    [SerializeField] private float respawnDelay = 0f;
-
-    [Header("Restart UI")]
-    [Tooltip("Assign the RestartUI Canvas GameObject that will be activated when the player dies.")]
-    [SerializeField] private GameObject restartUICanvas;
-
-    [Tooltip("If true and Restart UI is assigned, the game will freeze (Time.timeScale = 0) when the player dies.")]
-    [SerializeField] private bool useRestartUIOnDeath = true;
+    [Header("Menu")]
+    [Tooltip("Optional reference to the MenuManager. If not set, the script will try to find one at Start.")]
+    [SerializeField] private MenuManager menuManager;
 
     private bool isDead = false;
 
@@ -31,7 +24,9 @@ public class playerHealth : MonoBehaviour
 
         if (hit.collider.CompareTag("Killplane"))
         {
-            Die();
+            currentHealth = 0f;
+            OnHealthChanged?.Invoke(currentHealth, maxHealth);
+            HandleDeathIfNeeded();
         }
     }
 
@@ -45,7 +40,23 @@ public class playerHealth : MonoBehaviour
         if (currentHealth <= 0f)
             currentHealth = maxHealth;
 
+        if (menuManager == null)
+        {
+#if UNITY_2023_2_OR_NEWER
+            menuManager = UnityEngine.Object.FindFirstObjectByType<MenuManager>();
+#elif UNITY_2021_2_OR_NEWER
+            menuManager = UnityEngine.Object.FindObjectOfType<MenuManager>();
+#else
+            menuManager = FindObjectOfType<MenuManager>();
+#endif
+        }
+
         OnHealthChanged?.Invoke(currentHealth, maxHealth);
+    }
+
+    private void Update()
+    {
+        HandleDeathIfNeeded();
     }
 
     public void TakeDamage(float amount)
@@ -59,8 +70,7 @@ public class playerHealth : MonoBehaviour
 
         OnHealthChanged?.Invoke(currentHealth, maxHealth);
 
-        if (currentHealth <= 0f)
-            Die();
+        HandleDeathIfNeeded();
     }
 
     public void ApplyDamage(float amount)
@@ -78,43 +88,39 @@ public class playerHealth : MonoBehaviour
         OnHealthChanged?.Invoke(currentHealth, maxHealth);
     }
 
-    private void Die()
+    public void ForceDeath()
     {
         if (isDead) return;
-        isDead = true;
 
-        Debug.Log("Player died.");
+        currentHealth = 0f;
+        OnHealthChanged?.Invoke(currentHealth, maxHealth);
+        HandleDeathIfNeeded();
+    }
+
+    private void HandleDeathIfNeeded()
+    {
+        if (isDead || currentHealth > 0f) return;
+
+        isDead = true;
+        Debug.Log("Player health reached 0 — freezing game and showing Restart UI via MenuManager.");
 
         var controller = GetComponent<CharacterController>();
         if (controller != null) controller.enabled = false;
 
-        if (useRestartUIOnDeath && restartUICanvas != null)
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+
+        Time.timeScale = 0f;
+
+        if (menuManager != null)
         {
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
-
-            restartUICanvas.SetActive(true);
-
-            Time.timeScale = 0f;
+            menuManager.ShowRestartUI();
         }
         else
         {
-            if (respawnDelay <= 0f)
-            {
-                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-            }
-            else
-            {
-                StartCoroutine(ReloadSceneAfterDelay(respawnDelay));
-            }
+            Debug.LogWarning("[playerHealth] MenuManager reference is missing. Restart UI cannot be shown from here.");
         }
-    }
 
-    private IEnumerator ReloadSceneAfterDelay(float delay)
-    {
-        yield return new WaitForSecondsRealtime(delay);
-
-        Time.timeScale = 1f;
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        gameObject.SetActive(false);
     }
 }

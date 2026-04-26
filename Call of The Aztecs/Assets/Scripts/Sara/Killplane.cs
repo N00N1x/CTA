@@ -1,40 +1,34 @@
-using System.Collections;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class Killplane : MonoBehaviour
 {
-    private void OnTriggerEnter(Collider other)
-    {
-        TryKillPlayer(other.gameObject);
-    }
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        TryKillPlayer(collision.gameObject);
-    }
-
-    private void TryKillPlayer(GameObject obj)
+    public void TryKillPlayer(GameObject obj)
     {
         if (obj == null) return;
 
-        Transform t = obj.transform;
-        while (t != null)
+        var ph = obj.GetComponent<playerHealth>();
+        if (ph != null)
         {
-            if (t.CompareTag("Player"))
-            {
-                Destroy(t.gameObject);
-                StartCoroutine(ReloadSceneNextFrame());
-                return;
-            }
-
-            t = t.parent;
+            ph.ForceDeath();
+            return;
         }
+
+        ph = obj.GetComponentInChildren<playerHealth>();
+        if (ph != null)
+        {
+            ph.ForceDeath();
+            return;
+        }
+
+        Debug.LogWarning("[Killplane] No playerHealth found on object; disabling GameObject as fallback.");
+        obj.SetActive(false);
     }
 
-    private IEnumerator ReloadSceneNextFrame()
+    private void OnTriggerEnter(Collider other)
     {
-        yield return null;
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        if (other.CompareTag("Player"))
+        {
+            TryKillPlayer(other.gameObject);
+        }
     }
 }

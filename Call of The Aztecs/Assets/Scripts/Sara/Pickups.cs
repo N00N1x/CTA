@@ -1,5 +1,8 @@
-using TMPro;
+using System;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using TMPro;
 
 public class Pickups : MonoBehaviour
 {
@@ -8,6 +11,10 @@ public class Pickups : MonoBehaviour
 
     [Header("Refrences to Gem: text in Canvas")]
     public TextMeshProUGUI GemsText;
+
+    [Header("Scenes that should display the stashed Gems on load")]
+    [Tooltip("Enter scene names (exact) where the stashed gems should be applied to the GemsText when that scene loads.")]
+    [SerializeField] private List<string> gemApplySceneNames = new List<string>();
 
     [Header("TopDownMovementNew slowdown")]
     public float slowPerPoint = 1f;
@@ -26,6 +33,15 @@ public class Pickups : MonoBehaviour
 
     private TopDownMovementNew movement;
     private playerHealth playerHealthRef;
+
+    private const string PlayerPrefsGemsKey = "TotalGems";
+    private const string PlayerPrefsGemsHistoryKey = "GemsHistory";
+
+    private List<int> addedHistory = new List<int>();
+
+    [Header("Reset")]
+    [Tooltip("If a scene name is set here, the stashed gems will be reset when that scene starts/loads.")]
+    [SerializeField] private string resetStashSceneName = "Level1";
 
     private void Awake()
     {
@@ -62,6 +78,60 @@ public class Pickups : MonoBehaviour
         if (playerHealthRef == null)
         {
             Debug.LogWarning("playerHealth component not found in Awake. Health pickups will attempt to find it at runtime.");
+        }
+
+        LoadGemData();
+
+        var activeSceneName = SceneManager.GetActiveScene().name;
+        if (!string.IsNullOrEmpty(resetStashSceneName) && activeSceneName == resetStashSceneName)
+        {
+            ResetStashedGems();
+        }
+
+        SceneManager.sceneLoaded += OnSceneLoaded;
+
+        if (ShouldApplyGemsToScene(activeSceneName))
+        {
+            FindAndAssignGemsTextIfNeeded();
+            UpdateGemsText();
+        }
+    }
+
+    private void OnDestroy()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (!string.IsNullOrEmpty(resetStashSceneName) && scene.name == resetStashSceneName)
+        {
+            ResetStashedGems();
+        }
+
+        if (ShouldApplyGemsToScene(scene.name))
+        {
+            FindAndAssignGemsTextIfNeeded();
+            UpdateGemsText();
+        }
+        else
+        {
+            // Optional: if we want to hide GemsText in scenes not listed, you can clear reference here.
+            // GemsText = null;
+        }
+    }
+
+    private bool ShouldApplyGemsToScene(string sceneName)
+    {
+        if (string.IsNullOrEmpty(sceneName)) return false;
+        return gemApplySceneNames != null && gemApplySceneNames.Contains(sceneName);
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            UndoLastAdded();
         }
     }
 
@@ -117,7 +187,16 @@ public class Pickups : MonoBehaviour
         }
 
         Gem += pointsToAdd;
-        GemsText.text = "Gems: " + Gem.ToString();
+        addedHistory.Add(pointsToAdd);
+
+        SaveGemData();
+
+        if (ShouldApplyGemsToScene(SceneManager.GetActiveScene().name))
+        {
+            FindAndAssignGemsTextIfNeeded();
+            UpdateGemsText();
+        }
+
         Debug.Log("Gems total: " + Gem + " (added " + pointsToAdd + ")");
 
         pickupsDestroyed += 1;
@@ -125,6 +204,95 @@ public class Pickups : MonoBehaviour
         ApplySlowEffect();
 
         Destroy(other.gameObject);
+    }
+    private void UndoLastAdded()
+    {
+        if (addedHistory.Count == 0)
+        {
+            Debug.Log("[Pickups] No pickup history to undo.");
+            return;
+        }
+
+        int last = addedHistory[addedHistory.Count - 1];
+        addedHistory.RemoveAt(addedHistory.Count - 1);
+
+        Gem = Mathf.Max(0, Gem - last);
+
+        SaveGemData();
+
+        pickupsDestroyed = Mathf.Max(0, pickupsDestroyed - 1);
+        ApplySlowEffect();
+
+        if (ShouldApplyGemsToScene(SceneManager.GetActiveScene().name))
+        {
+            FindAndAssignGemsTextIfNeeded();
+            UpdateGemsText();
+        }
+
+        Debug.Log($"Removed last-added gems: {last}. New total: {Gem}");
+    }
+
+    private void UpdateGemsText()
+    {
+        if (GemsText != null)
+        {
+            GemsText.text = "Gems: " + Gem.ToString();
+        }
+        else
+        {
+            var go = GameObject.Find("GemsText");
+            if (go != null)
+            {
+                var tmp = go.GetComponent<TextMeshProUGUI>();
+                if (tmp != null)
+                {
+                    GemsText = tmp;
+                    GemsText.text = "Gems: " + Gem.ToString();
+                    return;
+                }
+            }
+
+            var byTag = GameObject.FindWithTag("GemsText");
+            if (byTag != null)
+            {
+                var tmp2 = byTag.GetComponent<TextMeshProUGUI>();
+                if (tmp2 != null)
+                {
+                    GemsText = tmp2;
+                    GemsText.text = "Gems: " + Gem.ToString();
+                    return;
+                }
+            }
+
+            Debug.LogWarning("[Pickups] GemsText is not assigned and no fallback found. Current gems: " + Gem);
+        }
+    }
+    private void FindAndAssignGemsTextIfNeeded()
+    {
+        if (GemsText != null) return;
+
+        var go = GameObject.Find("GemsText");
+        if (go != null)
+        {
+            var tmp = go.GetComponent<TextMeshProUGUI>();
+            if (tmp != null)
+            {
+                GemsText = tmp;
+                return;
+            }
+        }
+
+        var byTag = GameObject.FindWithTag("GemsText");
+        if (byTag != null)
+        {
+            var tmp2 = byTag.GetComponent<TextMeshProUGUI>();
+            if (tmp2 != null)
+            {
+                GemsText = tmp2;
+                return;
+            }
+        }
+
     }
 
     private void ApplySlowEffect()
@@ -150,5 +318,59 @@ public class Pickups : MonoBehaviour
 
         float newSpeed = baseMoveSpeed - (pickupsDestroyed * slowPerPoint);
         movement.moveSpeed = Mathf.Max(newSpeed, minMoveSpeed);
+    }
+
+    private void SaveGemData()
+    {
+        PlayerPrefs.SetInt(PlayerPrefsGemsKey, Gem);
+
+        // Save history as CSV oldest->newest
+        if (addedHistory.Count > 0)
+        {
+            PlayerPrefs.SetString(PlayerPrefsGemsHistoryKey, string.Join(",", addedHistory));
+        }
+        else
+        {
+            PlayerPrefs.SetString(PlayerPrefsGemsHistoryKey, "");
+        }
+
+        PlayerPrefs.Save();
+    }
+
+    private void LoadGemData()
+    {
+        Gem = PlayerPrefs.GetInt(PlayerPrefsGemsKey, 0);
+
+        addedHistory.Clear();
+        var hist = PlayerPrefs.GetString(PlayerPrefsGemsHistoryKey, "");
+        if (!string.IsNullOrEmpty(hist))
+        {
+            var tokens = hist.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+            foreach (var t in tokens)
+            {
+                if (int.TryParse(t, out int v))
+                {
+                    addedHistory.Add(v);
+                }
+            }
+        }
+
+        pickupsDestroyed = addedHistory.Count;
+    }
+
+    private void ResetStashedGems()
+    {
+        Gem = 0;
+        addedHistory.Clear();
+        pickupsDestroyed = 0;
+
+        PlayerPrefs.DeleteKey(PlayerPrefsGemsKey);
+        PlayerPrefs.DeleteKey(PlayerPrefsGemsHistoryKey);
+        PlayerPrefs.Save();
+
+        FindAndAssignGemsTextIfNeeded();
+        UpdateGemsText();
+
+        Debug.Log("[Pickups] Stashed gems reset for scene: " + resetStashSceneName);
     }
 }

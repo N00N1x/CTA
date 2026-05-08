@@ -2111,7 +2111,8 @@ MonoBehaviour:
   gemPoints: 2
   goldbarPoints: 5
   healthRestoreAmount: 50
-  resetStashSceneName: Level1
+  resetStashSceneNames:
+  - MainMenuTester
 --- !u!114 &3370159844904433774
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -10,6 +10,7 @@ TagManager:
   - Trap
   - Healthpoint
   - Checkpoint
+  - SceneChanger
   layers:
   - Default
   - TransparentFX

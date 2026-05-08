@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -13,7 +12,6 @@ public class Pickups : MonoBehaviour
     public TextMeshProUGUI GemsText;
 
     [Header("Scenes that should display the stashed Gems on load")]
-    [Tooltip("Enter scene names (exact) where the stashed gems should be applied to the GemsText when that scene loads.")]
     [SerializeField] private List<string> gemApplySceneNames = new List<string>();
 
     [Header("TopDownMovementNew slowdown")]
@@ -40,8 +38,7 @@ public class Pickups : MonoBehaviour
     private List<int> addedHistory = new List<int>();
 
     [Header("Reset")]
-    [Tooltip("If a scene name is set here, the stashed gems will be reset when that scene starts/loads.")]
-    [SerializeField] private string resetStashSceneName = "Level1";
+    [SerializeField] private List<string> resetStashSceneNames = new List<string>() { "Level1", "MainMenuTester" };
 
     private void Awake()
     {
@@ -83,7 +80,7 @@ public class Pickups : MonoBehaviour
         LoadGemData();
 
         var activeSceneName = SceneManager.GetActiveScene().name;
-        if (!string.IsNullOrEmpty(resetStashSceneName) && activeSceneName == resetStashSceneName)
+        if (resetStashSceneNames != null && resetStashSceneNames.Contains(activeSceneName))
         {
             ResetStashedGems();
         }
@@ -104,7 +101,7 @@ public class Pickups : MonoBehaviour
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        if (!string.IsNullOrEmpty(resetStashSceneName) && scene.name == resetStashSceneName)
+        if (resetStashSceneNames != null && resetStashSceneNames.Contains(scene.name))
         {
             ResetStashedGems();
         }
@@ -324,7 +321,6 @@ public class Pickups : MonoBehaviour
     {
         PlayerPrefs.SetInt(PlayerPrefsGemsKey, Gem);
 
-        // Save history as CSV oldest->newest
         if (addedHistory.Count > 0)
         {
             PlayerPrefs.SetString(PlayerPrefsGemsHistoryKey, string.Join(",", addedHistory));
@@ -345,7 +341,7 @@ public class Pickups : MonoBehaviour
         var hist = PlayerPrefs.GetString(PlayerPrefsGemsHistoryKey, "");
         if (!string.IsNullOrEmpty(hist))
         {
-            var tokens = hist.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+            var tokens = hist.Split(new[] { ',' }, System.StringSplitOptions.RemoveEmptyEntries);
             foreach (var t in tokens)
             {
                 if (int.TryParse(t, out int v))
@@ -358,7 +354,7 @@ public class Pickups : MonoBehaviour
         pickupsDestroyed = addedHistory.Count;
     }
 
-    private void ResetStashedGems()
+    public void ResetStashedGems()
     {
         Gem = 0;
         addedHistory.Clear();
@@ -371,6 +367,7 @@ public class Pickups : MonoBehaviour
         FindAndAssignGemsTextIfNeeded();
         UpdateGemsText();
 
-        Debug.Log("[Pickups] Stashed gems reset for scene: " + resetStashSceneName);
+        var resetList = resetStashSceneNames != null ? string.Join(",", resetStashSceneNames) : "(none)";
+        Debug.Log("[Pickups] Stashed gems reset for scenes: " + resetList);
     }
 }

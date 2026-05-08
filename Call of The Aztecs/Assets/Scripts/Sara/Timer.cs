@@ -3,28 +3,23 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
 
-public class TimerManager : MonoBehaviour
+public class Timer : MonoBehaviour
 {
-    public static TimerManager Instance { get; private set; }
+    public static Timer Instance { get; private set; }
 
-    [Header("Optional: assign timer UI in inspector")]
     [SerializeField] private TextMeshProUGUI timerText;
 
     [Header("Scenes that should show the stashed time on load")]
-    [Tooltip("Exact scene names where TotalTimeSeconds should be displayed on the TimerText.")]
     [SerializeField] private List<string> timeApplySceneNames = new List<string>();
 
     [Header("Reset")]
-    [Tooltip("If set, TotalTimeSeconds will be reset when this scene is loaded.")]
-    [SerializeField] private string resetStashSceneName = "";
+    [SerializeField] private List<string> resetStashSceneNames = new List<string>() { "MainMenuTester" };
     public float TotalTimeSeconds { get; private set; } = 0f;
 
     private const string PlayerPrefsTimeKey = "TotalPlayTimeSeconds";
 
     private void Awake()
     {
-        var rootGameObject = transform.root.gameObject;
-
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
@@ -32,8 +27,6 @@ public class TimerManager : MonoBehaviour
         }
 
         Instance = this;
-
-        DontDestroyOnLoad(rootGameObject);
 
         TotalTimeSeconds = PlayerPrefs.GetFloat(PlayerPrefsTimeKey, 0f);
 
@@ -46,7 +39,7 @@ public class TimerManager : MonoBehaviour
             UpdateTimerUI();
         }
 
-        if (!string.IsNullOrEmpty(resetStashSceneName) && active == resetStashSceneName)
+        if (resetStashSceneNames != null && resetStashSceneNames.Contains(active))
         {
             ResetStashedTime();
         }
@@ -54,12 +47,13 @@ public class TimerManager : MonoBehaviour
 
     private void OnDestroy()
     {
+        SaveTotalTime();
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        if (!string.IsNullOrEmpty(resetStashSceneName) && scene.name == resetStashSceneName)
+        if (resetStashSceneNames != null && resetStashSceneNames.Contains(scene.name))
         {
             ResetStashedTime();
         }
@@ -157,5 +151,7 @@ public class TimerManager : MonoBehaviour
             FindAndAssignTimerTextIfNeeded();
             UpdateTimerUI();
         }
+        var resetList = resetStashSceneNames != null ? string.Join(",", resetStashSceneNames) : "(none)";
+        Debug.Log("[Timer] Stashed time reset for scenes: " + resetList);
     }
 }

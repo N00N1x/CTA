@@ -2100,12 +2100,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GemCollector
   GemsText: {fileID: 0}
+  gemApplySceneNames:
+  - SaraTestScene
+  - Level1
+  - Level2
+  - Level3
   slowPerPoint: 1
   minMoveSpeed: 1
   diamondPoints: 10
   gemPoints: 2
   goldbarPoints: 5
   healthRestoreAmount: 50
+  resetStashSceneName: Level1
 --- !u!114 &3370159844904433774
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2120,7 +2126,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   maxHealth: 150
   currentHealth: 150
-  respawnDelay: 0
+  menuManager: {fileID: 0}
 --- !u!114 &1708682826372810746
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2253,7 +2259,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  damagePerHeart: 0
+  damagePerHeart: 50
 --- !u!1 &7860244475187504261
 GameObject:
   m_ObjectHideFlags: 0

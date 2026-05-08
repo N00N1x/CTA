@@ -4,13 +4,14 @@ using UnityEngine.SceneManagement;
 public class MenuManager : MonoBehaviour
 {
     [Header("Scenes")]
-    [SerializeField] private string assembleSceneName = "AssembleScene";
+    [SerializeField] private string SaraTestSceneName = "SaraTestScene";
     [SerializeField] private string mainMenuSceneName = "MainMenuTester";
 
     [Header("UI")]
     [SerializeField] private GameObject optionsUI;
     [SerializeField] private GameObject restartUI;
     [SerializeField] private GameObject howToPlayUI;
+    public GameObject CanvasStuff;
 
     [Header("Player")]
     [SerializeField] private playerHealth playerHealthReference;
@@ -20,24 +21,13 @@ public class MenuManager : MonoBehaviour
 
     private void Awake()
     {
-        if (playerHealthReference == null)
-        {
-            var player = GameObject.FindWithTag("Player");
-            if (player != null)
-            {
-                playerHealthReference = player.GetComponent<playerHealth>();
-            }
-        }
+        FindAndSubscribePlayer();
 
         if (optionsUI != null) optionsUI.SetActive(false);
         if (restartUI != null) restartUI.SetActive(false);
         if (howToPlayUI != null) howToPlayUI.SetActive(false);
 
-        if (playerHealthReference != null)
-        {
-            playerHealthReference.OnHealthChanged += HandleHealthChanged;
-        }
-        else if (debugMode)
+        if (playerHealthReference == null && debugMode)
         {
             Debug.LogWarning("[MenuManager] No playerHealth reference found. Restart UI will not auto-show on death.");
         }
@@ -70,9 +60,9 @@ public class MenuManager : MonoBehaviour
 
     public void OnPlayButton()
     {
-        if (debugMode) Debug.Log("[MenuManager] Loading scene: " + assembleSceneName);
-        if (!string.IsNullOrEmpty(assembleSceneName))
-            SceneManager.LoadScene(assembleSceneName);
+        if (debugMode) Debug.Log("[MenuManager] Loading scene: " + SaraTestSceneName);
+        if (!string.IsNullOrEmpty(SaraTestSceneName))
+            SceneManager.LoadScene(SaraTestSceneName);
     }
 
     public void OnQuitButton()
@@ -88,6 +78,15 @@ public class MenuManager : MonoBehaviour
     public void OnMainMenuButton()
     {
         if (debugMode) Debug.Log("[MenuManager] Loading main menu scene: " + mainMenuSceneName);
+
+        Time.timeScale = 1f;
+        HideRestartUI();
+
+        if (CanvasStuff != null)
+        {
+            CanvasStuff.SetActive(false);
+        }
+
         if (!string.IsNullOrEmpty(mainMenuSceneName))
             SceneManager.LoadScene(mainMenuSceneName);
     }
@@ -95,6 +94,9 @@ public class MenuManager : MonoBehaviour
     public void OnRestartButton()
     {
         if (debugMode) Debug.Log("[MenuManager] Restarting current scene.");
+
+        HideRestartUI();
+
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
@@ -140,5 +142,27 @@ public class MenuManager : MonoBehaviour
 
         howToPlayUI.SetActive(false);
         if (debugMode) Debug.Log("[MenuManager] HowToPlay UI closed.");
+    }
+
+    private void FindAndSubscribePlayer()
+    {
+        if (playerHealthReference == null)
+        {
+            var player = GameObject.FindWithTag("Player");
+            if (player != null)
+            {
+                playerHealthReference = player.GetComponent<playerHealth>();
+            }
+        }
+
+        if (playerHealthReference != null)
+        {
+            playerHealthReference.OnHealthChanged -= HandleHealthChanged;
+            playerHealthReference.OnHealthChanged += HandleHealthChanged;
+        }
+        else if (debugMode)
+        {
+            Debug.LogWarning("[MenuManager] No playerHealth reference found.");
+        }
     }
 }

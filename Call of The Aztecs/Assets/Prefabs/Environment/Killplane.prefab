@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 1730968733764091960}
   - component: {fileID: 4102910266346268394}
   - component: {fileID: 5114897418564988472}
+  - component: {fileID: 7733511280402658805}
   m_Layer: 7
   m_Name: Killplane
   m_TagString: Killplane
@@ -147,3 +148,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 379141b9dc1696c4aa2d32d403af85d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Killplane
+--- !u!65 &7733511280402658805
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1246934887279235042}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 10, y: 0, z: 10.000001}
+  m_Center: {x: 0, y: 0, z: 0}

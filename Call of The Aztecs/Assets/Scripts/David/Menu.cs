@@ -14,7 +14,7 @@ public class Menu : MonoBehaviour
     {
         Debug.Log("You pressed the Quit Button");
 
-            Application.Quit();
+        Application.Quit();
     }
 
     public void LoadMenu(string menuSceneName)
@@ -23,7 +23,7 @@ public class Menu : MonoBehaviour
 
     }
 
-    public void StartGame(string Level0) 
+    public void StartGame(string Level0)
     {
 
         SceneManager.LoadScene("AssembleScene");
@@ -49,7 +49,3 @@ public class Menu : MonoBehaviour
         Cursor.visible = true;
     }
 }
-
-
-
-

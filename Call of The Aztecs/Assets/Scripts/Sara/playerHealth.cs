@@ -1,7 +1,6 @@
 using System;
-using System.Collections;
+using System.Reflection;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class playerHealth : MonoBehaviour
 {
@@ -13,10 +12,10 @@ public class playerHealth : MonoBehaviour
     public float MaxHealth => maxHealth;
     public event Action<float, float> OnHealthChanged;
 
-    [Header("Scene / Respawn")]
-    [SerializeField] private float respawnDelay = 0f;
+    [Header("Menu")]
+    [Tooltip("Optional reference to the MenuManager. If not set, the script will try to find one at Start.")]
+    [SerializeField] private MenuManager menuManager;
 
-    // Prevent multiple death/respawn calls causing a loop
     private bool isDead = false;
 
     private void OnControllerColliderHit(ControllerColliderHit hit)
@@ -25,20 +24,39 @@ public class playerHealth : MonoBehaviour
 
         if (hit.collider.CompareTag("Killplane"))
         {
-            Die();
+            currentHealth = 0f;
+            OnHealthChanged?.Invoke(currentHealth, maxHealth);
+            HandleDeathIfNeeded();
         }
     }
 
-  
     private void Start()
     {
+        Time.timeScale = 1f;
+
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
         if (currentHealth <= 0f)
             currentHealth = maxHealth;
 
+        if (menuManager == null)
+        {
+#if UNITY_2023_2_OR_NEWER
+            menuManager = UnityEngine.Object.FindFirstObjectByType<MenuManager>();
+#elif UNITY_2021_2_OR_NEWER
+            menuManager = UnityEngine.Object.FindObjectOfType<MenuManager>();
+#else
+            menuManager = FindObjectOfType<MenuManager>();
+#endif
+        }
+
         OnHealthChanged?.Invoke(currentHealth, maxHealth);
+    }
+
+    private void Update()
+    {
+        HandleDeathIfNeeded();
     }
 
     public void TakeDamage(float amount)
@@ -52,8 +70,7 @@ public class playerHealth : MonoBehaviour
 
         OnHealthChanged?.Invoke(currentHealth, maxHealth);
 
-        if (currentHealth <= 0f)
-            Die();
+        HandleDeathIfNeeded();
     }
 
     public void ApplyDamage(float amount)
@@ -71,35 +88,39 @@ public class playerHealth : MonoBehaviour
         OnHealthChanged?.Invoke(currentHealth, maxHealth);
     }
 
-    private void Die()
+    public void ForceDeath()
     {
-        // Guard to avoid repeated death/scene loads when multiple triggers/collisions occur
         if (isDead) return;
+
+        currentHealth = 0f;
+        OnHealthChanged?.Invoke(currentHealth, maxHealth);
+        HandleDeathIfNeeded();
+    }
+
+    private void HandleDeathIfNeeded()
+    {
+        if (isDead || currentHealth > 0f) return;
+
         isDead = true;
+        Debug.Log("Player health reached 0 — freezing game and showing Restart UI via MenuManager.");
 
-        Debug.Log("Player died.");
+        var controller = GetComponent<CharacterController>();
+        if (controller != null) controller.enabled = false;
 
-        // Don't Destroy(gameObject) here â€” reloading the scene will recreate objects.
-        // Destroying immediately can cause unexpected race conditions where death is retriggered.
-        // If you need a death visual, play it here and optionally destroy after the respawn.
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
 
-        // Optionally disable this component or player control scripts here:
-        // var controller = GetComponent<CharacterController>();
-        // if (controller != null) controller.enabled = false;
+        Time.timeScale = 0f;
 
-        if (respawnDelay <= 0f)
+        if (menuManager != null)
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            menuManager.ShowRestartUI();
         }
         else
         {
-            StartCoroutine(ReloadSceneAfterDelay(respawnDelay));
+            Debug.LogWarning("[playerHealth] MenuManager reference is missing. Restart UI cannot be shown from here.");
         }
-    }
-    private IEnumerator ReloadSceneAfterDelay(float delay)
-    {
-        yield return new WaitForSeconds(delay);
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-    }
 
+        gameObject.SetActive(false);
+    }
 }

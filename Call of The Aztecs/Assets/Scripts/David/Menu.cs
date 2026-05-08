@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 
-public class GameManager : MonoBehaviour
+public class Menu : MonoBehaviour
 {
     public void RestartGame()
     {
@@ -14,7 +14,7 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("You pressed the Quit Button");
 
-            Application.Quit();
+        Application.Quit();
     }
 
     public void LoadMenu(string menuSceneName)
@@ -23,29 +23,24 @@ public class GameManager : MonoBehaviour
 
     }
 
-    public void StartGame(string Level0) 
+    public void StartGame(string Level0)
     {
 
         SceneManager.LoadScene("AssembleScene");
 
     }
 
-    public void Options(string MainMenu)
+    public void MainMenu(string MainMenu)
     {
 
         SceneManager.LoadScene("MainMenu");
     }
-    public void OnpointerEnter(PointerEventData eventData)
+
+
+    public void Options(string Options)
     {
 
-
-
-    }
-    public void OnPointerExit(PointerEventData eventData)
-    {
-
-
-
+        SceneManager.LoadScene("Options");
     }
 
     public void UnlockCursor()
@@ -54,7 +49,3 @@ public class GameManager : MonoBehaviour
         Cursor.visible = true;
     }
 }
-
-
-
-

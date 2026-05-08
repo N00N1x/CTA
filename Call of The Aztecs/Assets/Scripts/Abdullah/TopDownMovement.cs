@@ -165,10 +165,26 @@ public class TopDownMovementNew : MonoBehaviour
         if (currentHorizontalSpeed < stopThreshold)
             currentHorizontalSpeed = 0f;
 
+        // Preserve external forces like wind/knockback
+        Vector3 currentVelocity = rb.linearVelocity;
+
+        // Desired horizontal movement
+        Vector3 targetVelocity =
+            (moveDirection.sqrMagnitude > 0.001f)
+            ? moveDirection.normalized * currentHorizontalSpeed
+            : Vector3.zero;
+
+        // Calculate velocity difference
+        Vector3 velocityChange =
+            targetVelocity -
+            new Vector3(currentVelocity.x, 0f, currentVelocity.z);
+
+        // Apply movement force
+        rb.AddForce(velocityChange, ForceMode.VelocityChange);
+
+        // Handle vertical velocity separately
         Vector3 velocity = rb.linearVelocity;
-        Vector3 horizontal = (moveDirection.sqrMagnitude > 0.001f) ? moveDirection.normalized * currentHorizontalSpeed : Vector3.zero;
-        velocity.x = horizontal.x;
-        velocity.z = horizontal.z;
+
 
         // Jump
         if (jumpPressed && isGrounded && Time.time >= lastJumpTime + jumpCooldown)
@@ -195,6 +211,8 @@ public class TopDownMovementNew : MonoBehaviour
             velocity.y += gravity * Time.fixedDeltaTime;
         }
 
+
+
         // Animator updates
         if (animator != null)
         {
@@ -204,7 +222,16 @@ public class TopDownMovementNew : MonoBehaviour
             animator.SetBool("onGround", isGrounded);
         }
 
-        rb.linearVelocity = velocity;
+      rb.linearVelocity = new Vector3(
+     rb.linearVelocity.x,
+     velocity.y,
+     rb.linearVelocity.z
+ 
+    
+        );
+
+        // Reset jump press
+        jumpPressed = false;
     }
 
     private void OnDrawGizmosSelected()

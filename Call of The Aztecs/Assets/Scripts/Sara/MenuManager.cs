@@ -79,6 +79,8 @@ public class MenuManager : MonoBehaviour
     {
         if (debugMode) Debug.Log("[MenuManager] Loading main menu scene: " + mainMenuSceneName);
 
+        ResetStashes();
+
         Time.timeScale = 1f;
         HideRestartUI();
 
@@ -94,6 +96,8 @@ public class MenuManager : MonoBehaviour
     public void OnRestartButton()
     {
         if (debugMode) Debug.Log("[MenuManager] Restarting current scene.");
+
+        ResetStashes();
 
         HideRestartUI();
 
@@ -164,5 +168,29 @@ public class MenuManager : MonoBehaviour
         {
             Debug.LogWarning("[MenuManager] No playerHealth reference found.");
         }
+    }
+
+    private void ResetStashes()
+    {
+        var timer = Timer.Instance;
+        if (timer != null)
+        {
+            if (debugMode) Debug.Log("[MenuManager] Resetting Timer instance.");
+            timer.ResetStashedTime();
+        }
+
+        PlayerPrefs.DeleteKey("TotalPlayTimeSeconds");
+
+        var pickups = Object.FindFirstObjectByType<Pickups>();
+        if (pickups != null)
+        {
+            if (debugMode) Debug.Log("[MenuManager] Resetting Pickups stash.");
+            pickups.ResetStashedGems();
+        }
+
+        PlayerPrefs.DeleteKey("TotalGems");
+        PlayerPrefs.DeleteKey("GemsHistory");
+
+        PlayerPrefs.Save();
     }
 }

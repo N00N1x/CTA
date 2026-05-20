@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(Collider))]
@@ -5,6 +6,12 @@ public class ForcePush : MonoBehaviour
 {
     [Header("Force Settings")]
     public float pushForce = 25f;
+
+    [Tooltip("How long the wind stays ON")]
+    public float activeTime = 3f;
+
+    [Tooltip("How long the wind stays OFF")]
+    public float inactiveTime = 5f;
 
     [Tooltip("Use this object's forward direction")]
     public bool useLocalForward = true;
@@ -20,19 +27,53 @@ public class ForcePush : MonoBehaviour
     [Header("Debug")]
     public bool debugMode = false;
 
+    private bool isActive = true;
+    private Collider triggerCol;
+
     private void Start()
     {
-        // Make sure trigger is enabled
-        Collider col = GetComponent<Collider>();
-        col.isTrigger = true;
+        triggerCol = GetComponent<Collider>();
+        triggerCol.isTrigger = true;
 
-        // Play particles automatically
-        if (windParticles != null)
-            windParticles.Play();
+        StartCoroutine(WindCycle());
+    }
+
+    IEnumerator WindCycle()
+    {
+        while (true)
+        {
+            // ===== WIND ON =====
+            isActive = true;
+
+            if (windParticles != null)
+                windParticles.Play();
+
+            if (debugMode)
+                Debug.Log("[ForcePush] WIND ON");
+
+            yield return new WaitForSeconds(activeTime);
+
+            // ===== WIND OFF =====
+            isActive = false;
+
+            if (windParticles != null)
+                windParticles.Stop();
+
+            if (debugMode)
+                Debug.Log("[ForcePush] WIND OFF");
+
+            // During OFF state:
+            // player can walk through freely
+            yield return new WaitForSeconds(inactiveTime);
+        }
     }
 
     private void OnTriggerStay(Collider other)
     {
+        // Do nothing if wind is OFF
+        if (!isActive)
+            return;
+
         if (!other.CompareTag(playerTag))
             return;
 
@@ -47,7 +88,10 @@ public class ForcePush : MonoBehaviour
             ? transform.forward
             : transform.TransformDirection(pushDirection.normalized);
 
-        rb.AddForce(dir.normalized * pushForce, ForceMode.Acceleration);
+        rb.AddForce(
+            dir.normalized * pushForce,
+            ForceMode.Acceleration
+        );
 
         if (debugMode)
         {
@@ -84,5 +128,20 @@ public class ForcePush : MonoBehaviour
 
         Gizmos.DrawLine(end, end + right * 0.5f);
         Gizmos.DrawLine(end, end + left * 0.5f);
+
+        // Draw trigger area
+        Collider col = GetComponent<Collider>();
+
+        if (col is BoxCollider box)
+        {
+            Gizmos.color = new Color(0f, 1f, 1f, 0.25f);
+
+            Matrix4x4 oldMatrix = Gizmos.matrix;
+            Gizmos.matrix = transform.localToWorldMatrix;
+
+            Gizmos.DrawWireCube(box.center, box.size);
+
+            Gizmos.matrix = oldMatrix;
+        }
     }
 }

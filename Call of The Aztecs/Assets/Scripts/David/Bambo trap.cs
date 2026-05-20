@@ -1,150 +1,188 @@
-using System.Collections;
-using UnityEngine;
 
-public class SpikeTrap : MonoBehaviour
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.Playables;
+using UnityEngine.Animations;
+
+public class BamboTrap : MonoBehaviour
 {
     [Header("Animation")]
+    [Tooltip("Animation clip to play when the trap is triggered (only one).")]
+    public AnimationClip triggerAnimation;
+    [Tooltip("Optional Animator to play the clip on. If not set, a legacy Animation component will be used if available.")]
     public Animator animator;
-    public string triggerName = "Activate";
 
-    [Header("Looping")]
-    [Tooltip("If true the script will toggle a bool parameter to loop the animation state. The animation clip must be set to Loop Time in its import/settings or the Animator state's Motion must loop.")]
-    public bool loopAnimation = false;
-    [Tooltip("Animator bool parameter name used for looping when loopAnimation is true.")]
-    public string loopParameterName = "IsActive";
+    [Header("Detection")]
+    public string targetTag = "Player";    // only objects with this tag will trigger
+    [Tooltip("If true, the trap will only trigger when the object is 'on top' of the collider (not passing over).")]
+    public bool requireOnTop = true;
+    [Tooltip("Tolerance used when deciding if the other collider is sitting on the trap top.")]
+    public float topThreshold = 0.1f;
 
-    [Header("Cycle")]
-    public bool autoCycle = true;
-    public float repeatInterval = 2f;     // time between activations
-    public float activeDuration = 0.6f;   // how long spikes are dangerous
-    public float damageDelay = 0.1f;      // delay before applying damage after animation start
+    [Header("Misc")]
+    public bool debugMode = false;
 
-    [Header("Damage")]
-    public int damageAmount = 100;
-    public LayerMask playerLayer = 1 << 6; // set to your player layer in Inspector
+    // tracking colliders currently occupying the trap so we only play once while occupied
+    private readonly HashSet<Collider> occupants = new HashSet<Collider>();
+    private Collider triggerCollider;
 
-    [Header("Damage area (local)")]
-    public Vector3 damageBoxCenter = new Vector3(0f, 0.5f, 0.5f);
-    public Vector3 damageBoxSize = new Vector3(1f, 1f, 1f);
+    // PlayableGraph used to play the clip on an Animator
+    private PlayableGraph playableGraph;
+    private bool isPlaying = false;
 
-    // runtime
-    private bool isBusy;
+    // Legacy Animation fallback
+    private Animation legacyAnimation;
 
-    private void Reset()
+    private void Awake()
     {
-        var c = GetComponent<Collider>();
-        if (c != null) c.isTrigger = true;
-    }
-
-    private void Start()
-    {
-        if (autoCycle)
-            StartCoroutine(AutoCycleRoutine());
-    }
-
-    // public API to trigger the trap once (e.g. from a pressure plate)
-    public void TriggerOnce()
-    {
-        if (!isBusy)
-            StartCoroutine(ActivateRoutine(null));
-    }
-
-    private IEnumerator AutoCycleRoutine()
-    {
-        while (true)
+        triggerCollider = GetComponent<Collider>();
+        if (triggerCollider == null)
         {
-            if (!isBusy)
-                StartCoroutine(ActivateRoutine(null));
+            Debug.LogError($"[BamboTrap] No Collider found on {name}. Please add a Collider and set it to 'Is Trigger'.");
+        }
+        else if (!triggerCollider.isTrigger)
+        {
+            if (debugMode) Debug.LogWarning($"[BamboTrap] Collider on {name} is not set to IsTrigger. For best results set it as a trigger.");
+        }
 
-            yield return new WaitForSeconds(repeatInterval);
+        if (animator == null)
+        {
+            animator = GetComponent<Animator>();
+        }
+
+        legacyAnimation = GetComponent<Animation>();
+        if (animator == null && legacyAnimation == null && debugMode)
+        {
+            Debug.Log($"[BamboTrap] No Animator or legacy Animation component found on {name}. The clip will not play without one.");
         }
     }
 
-    // If the trigger is a plate, this will start the activation and also pass the player reference for immediate damage
     private void OnTriggerEnter(Collider other)
     {
-        if (!other) return;
-        if (!other.CompareTag("Player")) return;
+        if (triggerCollider == null) return;
+        if (!other.CompareTag(targetTag)) return;
 
-        // If the trap is busy, ignore additional enters
-        if (isBusy) return;
+        if (requireOnTop)
+        {
+            // Recalculate trap top based on current bounds (works for moving traps too)
+            float trapTop = triggerCollider.bounds.max.y;
+            float otherBottom = other.bounds.min.y;
 
-        // start activation and pass in the player that stepped on it
-        StartCoroutine(ActivateRoutine(other.gameObject));
+            // Only treat as "stepped on" if the other collider's bottom is at or above the trap top minus tolerance
+            if (otherBottom < trapTop - topThreshold)
+            {
+                if (debugMode) Debug.Log($"[BamboTrap] Ignoring {other.name} entering because it's not on top (otherBottom={otherBottom:F3}, trapTop={trapTop:F3}).");
+                return;
+            }
+        }
+
+        // Add to occupants; play only when the first occupant arrives
+        bool added = occupants.Add(other);
+        if (added)
+        {
+            if (occupants.Count == 1)
+            {
+                PlayTriggerAnimation();
+            }
+            if (debugMode) Debug.Log($"[BamboTrap] {other.name} stepped on {name}. occupants={occupants.Count}");
+        }
     }
 
-    private IEnumerator ActivateRoutine(GameObject triggeringPlayer)
+    private void OnTriggerExit(Collider other)
     {
-        isBusy = true;
+        if (!occupants.Contains(other)) return;
 
-        // play animation if assigned
+        bool removed = occupants.Remove(other);
+        if (removed)
+        {
+            if (debugMode) Debug.Log($"[BamboTrap] {other.name} left {name}. occupants={occupants.Count}");
+            if (occupants.Count == 0)
+            {
+                // last object left -> stop animation
+                StopAnimation();
+            }
+        }
+    }
+
+    private void PlayTriggerAnimation()
+    {
+        if (triggerAnimation == null)
+        {
+            if (debugMode) Debug.Log("[BamboTrap] No triggerAnimation assigned.");
+            return;
+        }
+
+        if (isPlaying)
+        {
+            if (debugMode) Debug.Log("[BamboTrap] Animation already playing.");
+            return;
+        }
+
+        // Preferred: play clip on Animator via PlayableGraph (works without requiring animator states)
         if (animator != null)
         {
-            if (loopAnimation)
-            {
-                // enable loop bool; Animator state should have looped motion
-                animator.SetBool(loopParameterName, true);
-            }
-            else if (!string.IsNullOrEmpty(triggerName))
-            {
-                animator.SetTrigger(triggerName);
-            }
+            playableGraph = PlayableGraph.Create($"BamboTrap_{name}");
+            var playableOutput = AnimationPlayableOutput.Create(playableGraph, "BamboTrapOutput", animator);
+            var clipPlayable = AnimationClipPlayable.Create(playableGraph, triggerAnimation);
+            clipPlayable.SetApplyFootIK(false);
+            playableOutput.SetSourcePlayable(clipPlayable);
+            playableGraph.Play();
+            isPlaying = true;
+            if (debugMode) Debug.Log($"[BamboTrap] Playing '{triggerAnimation.name}' on Animator via PlayableGraph.");
+            return;
         }
 
-        // wait a short delay so spikes have time to appear (tune damageDelay to match animation)
-        if (damageDelay > 0f)
-            yield return new WaitForSeconds(damageDelay);
-
-        // apply damage once to any player inside the damage box
-        ApplyDamageInBox();
-
-        // if a specific triggering player was provided, also attempt to damage via direct reference (redundant but immediate)
-        if (triggeringPlayer != null)
+        // Fallback: legacy Animation component
+        if (legacyAnimation != null)
         {
-            var ph = triggeringPlayer.GetComponent<playerHealth>();
-            if (ph != null)
-                ph.TakeDamage((float)damageAmount);
-            else
-                triggeringPlayer.SendMessage("TakeDamage", damageAmount, SendMessageOptions.DontRequireReceiver);
+            if (!legacyAnimation.GetClip(triggerAnimation.name))
+            {
+                legacyAnimation.AddClip(triggerAnimation, triggerAnimation.name);
+            }
+            legacyAnimation.Play(triggerAnimation.name);
+            isPlaying = true;
+            if (debugMode) Debug.Log($"[BamboTrap] Playing '{triggerAnimation.name}' via legacy Animation.");
+            return;
         }
 
-        // remain active for the visual duration
-        yield return new WaitForSeconds(activeDuration);
-
-        // stop looping bool if used
-        if (animator != null && loopAnimation)
-        {
-            animator.SetBool(loopParameterName, false);
-        }
-
-        // cooldown finished
-        isBusy = false;
+        if (debugMode) Debug.LogWarning("[BamboTrap] No Animator or legacy Animation available to play the clip.");
     }
 
-    private void ApplyDamageInBox()
+    private void StopAnimation()
     {
-        Vector3 worldCenter = transform.TransformPoint(damageBoxCenter);
-        Vector3 halfExtents = damageBoxSize * 0.5f;
-        Collider[] hits = Physics.OverlapBox(worldCenter, halfExtents, transform.rotation, playerLayer, QueryTriggerInteraction.Collide);
+        if (!isPlaying) return;
 
-        foreach (var c in hits)
+        if (playableGraph.IsValid())
         {
-            if (c == null) continue;
-            var ph = c.GetComponent<playerHealth>();
-            if (ph != null)
-                ph.TakeDamage((float)damageAmount);
-            else
-                c.gameObject.SendMessage("TakeDamage", damageAmount, SendMessageOptions.DontRequireReceiver);
+            playableGraph.Stop();
+            playableGraph.Destroy();
+            playableGraph = default;
+            isPlaying = false;
+            if (debugMode) Debug.Log("[BamboTrap] Stopped PlayableGraph animation.");
+            return;
         }
+
+        if (legacyAnimation != null)
+        {
+            legacyAnimation.Stop();
+            isPlaying = false;
+            if (debugMode) Debug.Log("[BamboTrap] Stopped legacy Animation.");
+            return;
+        }
+
+        isPlaying = false;
     }
 
-    private void OnDrawGizmosSelected()
+    private void OnDisable()
     {
-        Gizmos.color = Color.red;
-        Vector3 worldCenter = transform.TransformPoint(damageBoxCenter);
-        Matrix4x4 old = Gizmos.matrix;
-        Gizmos.matrix = Matrix4x4.TRS(worldCenter, transform.rotation, Vector3.one);
-        Gizmos.DrawWireCube(Vector3.zero, damageBoxSize);
-        Gizmos.matrix = old;
+        StopAnimation();
+    }
+
+    // Optional: expose a method to forcibly clear occupants (useful for respawn/pooling)
+    public void ResetOccupants()
+    {
+        occupants.Clear();
+        StopAnimation();
+        if (debugMode) Debug.Log($"[BamboTrap] ResetOccupants called on {name}.");
     }
 }

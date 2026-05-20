@@ -36,7 +36,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -45}
+  m_AnchoredPosition: {x: 0, y: -48.6}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5691679889358988821
@@ -121,7 +121,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1777314951617711044}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: MenuManager, Assembly-CSharp
         m_MethodName: OnMainMenuButton
         m_Mode: 1
@@ -214,8 +214,8 @@ MonoBehaviour:
 
     Play Again?'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: cab8adb1ef3e01e4baf1a5ca6c2360e9, type: 2}
-  m_sharedMaterial: {fileID: -9145498075289368449, guid: cab8adb1ef3e01e4baf1a5ca6c2360e9, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 44e2ca329cb04df4abab81759023711b, type: 2}
+  m_sharedMaterial: {fileID: 5428406037907028780, guid: 44e2ca329cb04df4abab81759023711b, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -754,8 +754,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Gems:0
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 84ead50f3a793e14ba863db5bf183824, type: 2}
-  m_sharedMaterial: {fileID: -2887712965480458809, guid: 84ead50f3a793e14ba863db5bf183824, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 44e2ca329cb04df4abab81759023711b, type: 2}
+  m_sharedMaterial: {fileID: 5428406037907028780, guid: 44e2ca329cb04df4abab81759023711b, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -834,7 +834,6 @@ GameObject:
   - component: {fileID: 3220193411904508017}
   - component: {fileID: 2019514954181428115}
   - component: {fileID: 714855409982580961}
-  - component: {fileID: 1403656393810251178}
   m_Layer: 5
   m_Name: TimerText
   m_TagString: Untagged
@@ -891,8 +890,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'Time:'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 84ead50f3a793e14ba863db5bf183824, type: 2}
-  m_sharedMaterial: {fileID: -2887712965480458809, guid: 84ead50f3a793e14ba863db5bf183824, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 44e2ca329cb04df4abab81759023711b, type: 2}
+  m_sharedMaterial: {fileID: 5428406037907028780, guid: 44e2ca329cb04df4abab81759023711b, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -960,25 +959,6 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!114 &1403656393810251178
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3206305934264169609}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f809d853a72b9684b92540e4191d6b14, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Timer
-  timerText: {fileID: 714855409982580961}
-  timeApplySceneNames:
-  - SaraTestScene
-  - Level1
-  - Level2
-  - Level3
-  resetStashSceneName: 
 --- !u!1 &3371576544062831707
 GameObject:
   m_ObjectHideFlags: 0
@@ -1192,8 +1172,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Quit
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: cab8adb1ef3e01e4baf1a5ca6c2360e9, type: 2}
-  m_sharedMaterial: {fileID: -9145498075289368449, guid: cab8adb1ef3e01e4baf1a5ca6c2360e9, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 44e2ca329cb04df4abab81759023711b, type: 2}
+  m_sharedMaterial: {fileID: 5428406037907028780, guid: 44e2ca329cb04df4abab81759023711b, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1328,8 +1308,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: MainMenu
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: cab8adb1ef3e01e4baf1a5ca6c2360e9, type: 2}
-  m_sharedMaterial: {fileID: -9145498075289368449, guid: cab8adb1ef3e01e4baf1a5ca6c2360e9, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 44e2ca329cb04df4abab81759023711b, type: 2}
+  m_sharedMaterial: {fileID: 5428406037907028780, guid: 44e2ca329cb04df4abab81759023711b, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1597,7 +1577,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1777314951617711044}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: MenuManager, Assembly-CSharp
         m_MethodName: OnQuitButton
         m_Mode: 1
@@ -1760,8 +1740,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Play
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: cab8adb1ef3e01e4baf1a5ca6c2360e9, type: 2}
-  m_sharedMaterial: {fileID: -9145498075289368449, guid: cab8adb1ef3e01e4baf1a5ca6c2360e9, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 44e2ca329cb04df4abab81759023711b, type: 2}
+  m_sharedMaterial: {fileID: 5428406037907028780, guid: 44e2ca329cb04df4abab81759023711b, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1965,7 +1945,6 @@ Transform:
   - {fileID: 47786510685663688}
   - {fileID: 9211175156817290499}
   - {fileID: 5566986086119032458}
-  - {fileID: 6683742240300569934}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7165377121099680295
@@ -2161,7 +2140,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1777314951617711044}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: MenuManager, Assembly-CSharp
         m_MethodName: OnRestartButton
         m_Mode: 1
@@ -2333,88 +2312,3 @@ MonoBehaviour:
     y: 0
     width: 1
     height: 1
---- !u!1001 &21794627075051175
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 4076459806869236387}
-    m_Modifications:
-    - target: {fileID: 1794443182356301155, guid: 41a136c2008868246943404aede48d49, type: 3}
-      propertyPath: hudPanel
-      value: 
-      objectReference: {fileID: 6316181057286130185}
-    - target: {fileID: 1794443182356301155, guid: 41a136c2008868246943404aede48d49, type: 3}
-      propertyPath: restartUI
-      value: 
-      objectReference: {fileID: 1068311876343598521}
-    - target: {fileID: 1794443182356301155, guid: 41a136c2008868246943404aede48d49, type: 3}
-      propertyPath: CanvasStuff
-      value: 
-      objectReference: {fileID: 6316181057286130185}
-    - target: {fileID: 2377036091139387630, guid: 41a136c2008868246943404aede48d49, type: 3}
-      propertyPath: m_Name
-      value: MenuManager
-      objectReference: {fileID: 0}
-    - target: {fileID: 6668707617293048809, guid: 41a136c2008868246943404aede48d49, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 288.7081
-      objectReference: {fileID: 0}
-    - target: {fileID: 6668707617293048809, guid: 41a136c2008868246943404aede48d49, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -0.000030040741
-      objectReference: {fileID: 0}
-    - target: {fileID: 6668707617293048809, guid: 41a136c2008868246943404aede48d49, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 199.31866
-      objectReference: {fileID: 0}
-    - target: {fileID: 6668707617293048809, guid: 41a136c2008868246943404aede48d49, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6668707617293048809, guid: 41a136c2008868246943404aede48d49, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6668707617293048809, guid: 41a136c2008868246943404aede48d49, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6668707617293048809, guid: 41a136c2008868246943404aede48d49, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6668707617293048809, guid: 41a136c2008868246943404aede48d49, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6668707617293048809, guid: 41a136c2008868246943404aede48d49, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6668707617293048809, guid: 41a136c2008868246943404aede48d49, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 41a136c2008868246943404aede48d49, type: 3}
---- !u!114 &1777314951617711044 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1794443182356301155, guid: 41a136c2008868246943404aede48d49, type: 3}
-  m_PrefabInstance: {fileID: 21794627075051175}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 96ce3910bef33c14895876130f662a23, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MenuController
---- !u!4 &6683742240300569934 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 6668707617293048809, guid: 41a136c2008868246943404aede48d49, type: 3}
-  m_PrefabInstance: {fileID: 21794627075051175}
-  m_PrefabAsset: {fileID: 0}
